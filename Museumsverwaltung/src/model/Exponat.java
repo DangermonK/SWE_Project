@@ -7,7 +7,7 @@ public class Exponat {
     private static int invZaehler = 0;
 
     private String name;
-    private String inventarnummer;
+    private int inventarnummer;
     private String kategorie;
 
     private int erstellungsJahr;
@@ -24,6 +24,9 @@ public class Exponat {
     private Historie historie;
     private Raum raum;
 
+    private ExponatsFoerderung[] foerderungArray;
+    private Bild[] bildArray;
+
     public Exponat() {
 
     }
@@ -34,6 +37,11 @@ public class Exponat {
 
     public boolean isInMuseum() {
         return true; //TODO: implement logic
+    }
+
+    @Override
+    public int hashCode() {
+        return inventarnummer;
     }
 
 }
