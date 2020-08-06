@@ -1,5 +1,5 @@
 # Don't track content of these folders
 .idea/
-
+target/
 
 # Don't track these files
