@@ -7,7 +7,12 @@ public class Exponat {
     private static int invZaehler = 0;
 
     private String name;
-    private int inventarnummer;
+    private String inventarnummer;
+    private List<Exponattyp> expTypArray;
+    private Besitzer[] besitzerArray;
+
+    private Historie historie;
+    private Raum raum;
     private String kategorie;
 
     private int erstellungsJahr;
@@ -18,19 +23,13 @@ public class Exponat {
     private boolean inWeb;
 
     private Kuenstler kuenstler;
-    private Exponattyp[] expTypArray;
-    private Besitzer[] besitzerArray;
-
-    private Historie historie;
-    private Raum raum;
 
     private ExponatsFoerderung[] foerderungArray;
-    private Bild[] bildArray;
+    private List<Bild> bildArray;
 
-    public Exponat(String name) {
+    public Exponat(String inventarnummer, String name) {
 
-        this.inventarnummer = invZaehler;
-        invZaehler++;
+        this.inventarnummer = inventarnummer;
 
         this.name = name;
 
@@ -44,9 +43,8 @@ public class Exponat {
         return true; //TODO: implement logic
     }
 
-    @Override
-    public int hashCode() {
-        return inventarnummer;
+    public String getInventarnummer() {
+        return this.inventarnummer;
     }
 
     public String getKategorie() {
@@ -121,4 +119,19 @@ public class Exponat {
         this.raum = raum;
     }
 
+    public List<Bild> getBildArray() {
+        return bildArray;
+    }
+
+    public void setBildArray(List<Bild> bildArray) {
+        this.bildArray = bildArray;
+    }
+
+    public List<Exponattyp> getExpTypArray() {
+        return expTypArray;
+    }
+
+    public void setExpTypArray(List<Exponattyp> expTypArray) {
+        this.expTypArray = expTypArray;
+    }
 }
