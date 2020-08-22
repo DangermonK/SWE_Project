@@ -27,6 +27,10 @@ public class Raum {
 
     }
 
+    public int getNummer() {
+        return this.nummer;
+    }
+
     public List<Bild> getBildArray() {
         return bildArray;
     }

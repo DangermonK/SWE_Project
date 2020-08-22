@@ -32,23 +32,24 @@ public class ElementFactory {
         exp.setMaterial(args[6]);
         exp.setInWeb(Boolean.parseBoolean(args[7]));
 
-        // TODO: Check if regexes can be used like this.
-        String bildArgArr[] = args[8].split(",");
-        List<Bild> bildArr = new LinkedList<Bild>();
-        for (String bild : bildArgArr) {
-            String bildArgs[] = bild.split(".");
-            bildArr.add(createBild(bildArgs));
-        }
-        exp.setBildArray(bildArr);
+        if(args.length > 8) {
+            // TODO: Check if regexes can be used like this.
+            String bildArgArr[] = args[8].split(",");
+            List<Bild> bildArr = new LinkedList<Bild>();
+            for (String bild : bildArgArr) {
+                String bildArgs[] = bild.split(".");
+                bildArr.add(createBild(bildArgs));
+            }
+            exp.setBildArray(bildArr);
 
-        String exponatTypArgArr[] = args[9].split(",");
-        List<Exponattyp> exponatTypArr = new LinkedList<Exponattyp>();
-        for (String exponatTyp : exponatTypArgArr) {
-            String exponatTypArg[] = exponatTyp.split(".");
-            exponatTypArr.add(createExponattyp(exponatTypArg));
+            String exponatTypArgArr[] = args[9].split(",");
+            List<Exponattyp> exponatTypArr = new LinkedList<Exponattyp>();
+            for (String exponatTyp : exponatTypArgArr) {
+                String exponatTypArg[] = exponatTyp.split(".");
+                exponatTypArr.add(createExponattyp(exponatTypArg));
+            }
+            exp.setExpTypArray(exponatTypArr);
         }
-        exp.setExpTypArray(exponatTypArr);
-
         // TODO: implement Besitzer and Foerderungs array
 
         return exp;

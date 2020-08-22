@@ -1,9 +1,7 @@
 package util;
 
 import datentypen.Classtype;
-import model.Exponat;
-import model.Person;
-import model.Raum;
+import model.*;
 
 public class EntityAdapter {
 
@@ -53,19 +51,24 @@ public class EntityAdapter {
         String argList[] = data.split(";");
         switch (type) {
             case RAUM:
-                ElementFactory.getInstance(this).createRaum(argList);
+                Raum raum = ElementFactory.getInstance(this).createRaum(argList);
+                raumEntityManager.persist(raum.getNummer(), raum);
                 break;
             case EXPONAT:
-                ElementFactory.getInstance(this).createExponat(argList);
+                Exponat exponat = ElementFactory.getInstance(this).createExponat(argList);
+                exponatEntityManager.persist(exponat.getInventarnummer(), exponat);
                 break;
             case ANGESTELLTER:
-                ElementFactory.getInstance(this).createAngestellter(argList);
+                Angestellter angestellter = ElementFactory.getInstance(this).createAngestellter(argList);
+                personEntityManager.persist(angestellter.getPersNr(), angestellter);
                 break;
             case BESITZER:
-                ElementFactory.getInstance(this).createBesitzer(argList);
+                Besitzer besitzer = ElementFactory.getInstance(this).createBesitzer(argList);
+                personEntityManager.persist(besitzer.getPersNr(), besitzer);
                 break;
             case FOERDERNDER:
-                ElementFactory.getInstance(this).createFoerdernder(argList);
+                Foerdernder foerdernder = ElementFactory.getInstance(this).createFoerdernder(argList);
+                personEntityManager.persist(foerdernder.getPersNr(), foerdernder);
                 break;
         }
     }

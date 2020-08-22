@@ -21,7 +21,7 @@ public class StorageAdapter {
 
     public String loadTestData() {
 
-        return "E1034;Der Schrei;Eine Menscgliche Figur unter rotem Himmel, die ihre Hände gegen den Kopf presst, während sie Mund und Augen angstvoll aufreißt;Expressionismus;1910;200.0;Öl, Tempera und Pastell auf Pappe;false;;;";
+        return "E1034;Der Schrei;Eine Menschliche Figur unter rotem Himmel, die ihre Hände gegen den Kopf presst, während sie Mund und Augen angstvoll aufreißt;Expressionismus;1910;200.0;Öl, Tempera und Pastell auf Pappe;false;";
 
 
     }

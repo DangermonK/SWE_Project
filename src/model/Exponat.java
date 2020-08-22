@@ -134,4 +134,12 @@ public class Exponat {
     public void setExpTypArray(List<Exponattyp> expTypArray) {
         this.expTypArray = expTypArray;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
