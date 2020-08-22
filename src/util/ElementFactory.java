@@ -32,24 +32,23 @@ public class ElementFactory {
         exp.setMaterial(args[6]);
         exp.setInWeb(Boolean.parseBoolean(args[7]));
 
-        if(args.length > 8) {
-            // TODO: Check if regexes can be used like this.
-            String bildArgArr[] = args[8].split(",");
-            List<Bild> bildArr = new LinkedList<Bild>();
-            for (String bild : bildArgArr) {
-                String bildArgs[] = bild.split(".");
-                bildArr.add(createBild(bildArgs));
-            }
-            exp.setBildArray(bildArr);
-
-            String exponatTypArgArr[] = args[9].split(",");
-            List<Exponattyp> exponatTypArr = new LinkedList<Exponattyp>();
-            for (String exponatTyp : exponatTypArgArr) {
-                String exponatTypArg[] = exponatTyp.split(".");
-                exponatTypArr.add(createExponattyp(exponatTypArg));
-            }
-            exp.setExpTypArray(exponatTypArr);
+        // TODO: Check if regexes can be used like this.
+        String bildArgArr[] = args[8].split(",");
+        List<Bild> bildArr = new LinkedList<Bild>();
+        for (String bild : bildArgArr) {
+            String bildArgs[] = bild.split("\\.");
+            bildArr.add(createBild(bildArgs));
         }
+        exp.setBildArray(bildArr);
+
+        String exponatTypArgArr[] = args[9].split(",");
+        List<Exponattyp> exponatTypArr = new LinkedList<Exponattyp>();
+        for (String exponatTyp : exponatTypArgArr) {
+            String exponatTypArg[] = exponatTyp.split("\\.");
+            exponatTypArr.add(createExponattyp(exponatTypArg));
+        }
+        exp.setExpTypArray(exponatTypArr);
+
         // TODO: implement Besitzer and Foerderungs array
 
         return exp;
@@ -65,7 +64,7 @@ public class ElementFactory {
         String bildArgArr[] = args[4].split(",");
         List<Bild> bildArr = new LinkedList<Bild>();
         for (String bild : bildArgArr) {
-            String bildArgs[] = bild.split(".");
+            String bildArgs[] = bild.split("\\.");
             bildArr.add(createBild(bildArgs));
         }
         angestellter.setBildArray(bildArr);
@@ -84,7 +83,7 @@ public class ElementFactory {
         String bildArgArr[] = args[5].split(",");
         List<Bild> bildArr = new LinkedList<Bild>();
         for (String bild : bildArgArr) {
-            String bildArgs[] = bild.split(".");
+            String bildArgs[] = bild.split("\\.");
             bildArr.add(createBild(bildArgs));
         }
         besitzer.setBildArray(bildArr);
@@ -103,7 +102,7 @@ public class ElementFactory {
         String bildArgArr[] = args[5].split(",");
         List<Bild> bildArr = new LinkedList<Bild>();
         for (String bild : bildArgArr) {
-            String bildArgs[] = bild.split(".");
+            String bildArgs[] = bild.split("\\.");
             bildArr.add(createBild(bildArgs));
         }
         foerdernder.setBildArray(bildArr);
@@ -122,7 +121,7 @@ public class ElementFactory {
         String bildArgArr[] = args[4].split(",");
         List<Bild> bildArr = new LinkedList<Bild>();
         for (String bild : bildArgArr) {
-            String bildArgs[] = bild.split(".");
+            String bildArgs[] = bild.split("\\.");
             bildArr.add(createBild(bildArgs));
         }
         raum.setBildArray(bildArr);
