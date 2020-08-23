@@ -1,11 +1,9 @@
 import datentypen.Classtype;
-import de.dhbwka.swe.utils.gui.SlideshowComponent;
 import de.dhbwka.swe.utils.gui.TextComponent;
 import model.Exponat;
-import util.ElementFactory;
 import util.EntityAdapter;
+import util.Statics;
 import util.StorageAdapter;
-
 import javax.swing.*;
 
 public class MuseumsController {
@@ -14,7 +12,6 @@ public class MuseumsController {
 
     public MuseumsController() {
         entityAdapter = new EntityAdapter();
-
     }
 
     public static void main(String[] args) {
@@ -26,7 +23,9 @@ public class MuseumsController {
 
         controller.entityAdapter.addElement(Classtype.EXPONAT, new StorageAdapter().loadTestData());
 
-        TextComponent text = TextComponent.builder("text").initialText(((Exponat)controller.entityAdapter.getElement(Classtype.EXPONAT, "E1034")).getName()).title("Testbox").build();
+        Exponat exp = (Exponat)controller.entityAdapter.getElement(Classtype.EXPONAT, "E1034");
+
+        TextComponent text = TextComponent.builder("text").initialText(Statics.dateFormat.format(exp.getKuenstler().getGeburtsdatum())).title("Testbox").build();
 
         frame.add(text);
 

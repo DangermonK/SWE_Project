@@ -2,7 +2,11 @@ package util;
 
 import model.*;
 
+import javax.swing.text.DateFormatter;
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,31 +29,36 @@ public class ElementFactory {
     public Exponat createExponat(String[] args) {
 
         Exponat exp = new Exponat(args[0], args[1]);
-        exp.setBeschreibung(args[2]);
-        exp.setKategorie(args[3]);
-        exp.setErstellungsJahr(Integer.valueOf(args[4]));
-        exp.setSchaetzWert(Double.valueOf(args[5]));
-        exp.setMaterial(args[6]);
-        exp.setInWeb(Boolean.parseBoolean(args[7]));
+
+        if(args.length > 2)
+            exp.setBeschreibung(args[2]);
+        if(args.length > 3)
+            exp.setKategorie(args[3]);
+        if(args.length > 4) {
+            if(args[4].matches("[0-9]*"))
+                exp.setErstellungsJahr(Integer.valueOf(args[4]));
+        }
+        if(args.length > 5) {
+            if(args[5].matches("[0-9]+\\.[0-9]*"))
+            exp.setSchaetzWert(Double.valueOf(args[5]));
+        }
+        if(args.length > 6)
+            exp.setMaterial(args[6]);
+        if(args.length > 7)
+            exp.setInWeb(Boolean.parseBoolean(args[7]));
+        if(args.length > 8)
+            exp.setKuenstler(createKuenstler(args[8].split(",")));
 
         // TODO: Check if regexes can be used like this.
-        String bildArgArr[] = args[8].split(",");
-        List<Bild> bildArr = new LinkedList<Bild>();
-        for (String bild : bildArgArr) {
-            String bildArgs[] = bild.split("\\.");
-            bildArr.add(createBild(bildArgs));
+        if(args.length > 9) {
+            exp.setBildArray(createBildArray(args[9].split(",")));
         }
-        exp.setBildArray(bildArr);
 
-        String exponatTypArgArr[] = args[9].split(",");
-        List<Exponattyp> exponatTypArr = new LinkedList<Exponattyp>();
-        for (String exponatTyp : exponatTypArgArr) {
-            String exponatTypArg[] = exponatTyp.split("\\.");
-            exponatTypArr.add(createExponattyp(exponatTypArg));
+        if(args.length > 10) {
+            exp.setExpTypArray(createExponattypList(args[10].split(",")));
         }
-        exp.setExpTypArray(exponatTypArr);
 
-        // TODO: implement Besitzer and Foerderungs array
+        // TODO: implement Besitzer, Foerderungs, Raum, Historie array
 
         return exp;
 
@@ -60,14 +69,7 @@ public class ElementFactory {
         Angestellter angestellter = new Angestellter(args[0], args[1], args[2]);
         angestellter.setRolle(Rolle.valueOf(args[3]));
 
-        // TODO: Check if regexes can be used like this.
-        String bildArgArr[] = args[4].split(",");
-        List<Bild> bildArr = new LinkedList<Bild>();
-        for (String bild : bildArgArr) {
-            String bildArgs[] = bild.split("\\.");
-            bildArr.add(createBild(bildArgs));
-        }
-        angestellter.setBildArray(bildArr);
+        angestellter.setBildArray(createBildArray(args[4].split(",")));
 
         // TODO: implement Anlage and Aenderung array
 
@@ -79,14 +81,7 @@ public class ElementFactory {
 
         Besitzer besitzer = new Besitzer(args[0], args[1], args[2], args[3], args[4]);
 
-        // TODO: Check if regexes can be used like this.
-        String bildArgArr[] = args[5].split(",");
-        List<Bild> bildArr = new LinkedList<Bild>();
-        for (String bild : bildArgArr) {
-            String bildArgs[] = bild.split("\\.");
-            bildArr.add(createBild(bildArgs));
-        }
-        besitzer.setBildArray(bildArr);
+        besitzer.setBildArray(createBildArray(args[5].split(",")));
 
         // TODO: implement Exponat array
 
@@ -98,14 +93,7 @@ public class ElementFactory {
 
         Foerdernder foerdernder = new Foerdernder(args[0], args[1], args[2], args[3], args[4]);
 
-        // TODO: Check if regexes can be used like this.
-        String bildArgArr[] = args[5].split(",");
-        List<Bild> bildArr = new LinkedList<Bild>();
-        for (String bild : bildArgArr) {
-            String bildArgs[] = bild.split("\\.");
-            bildArr.add(createBild(bildArgs));
-        }
-        foerdernder.setBildArray(bildArr);
+        foerdernder.setBildArray(createBildArray(args[5].split(",")));
 
         // TODO: implement Exponat array
 
@@ -117,19 +105,22 @@ public class ElementFactory {
 
         Raum raum = new Raum(Integer.valueOf(args[0]), Integer.valueOf(args[1]), Integer.valueOf(args[2]));
 
-        // TODO: Check if regexes can be used like this.
-        String bildArgArr[] = args[4].split(",");
-        List<Bild> bildArr = new LinkedList<Bild>();
-        for (String bild : bildArgArr) {
-            String bildArgs[] = bild.split("\\.");
-            bildArr.add(createBild(bildArgs));
-        }
-        raum.setBildArray(bildArr);
+        raum.setBildArray(createBildArray(args[4].split(",")));
 
         // TODO: implement Exponat array
 
         return raum;
 
+    }
+
+    private List<Bild> createBildArray(String[] args) {
+        // TODO: Check if regexes can be used like this.
+        List<Bild> bildArr = new LinkedList<Bild>();
+        for (String bild : args) {
+            String[] bildArgs = bild.split("\\.");
+            bildArr.add(createBild(bildArgs));
+        }
+        return bildArr;
     }
 
     public Bild createBild(String[] args) {
@@ -178,6 +169,15 @@ public class ElementFactory {
 
     }
 
+    private List<Exponattyp> createExponattypList(String[] args) {
+        List<Exponattyp> exponatTypArr = new LinkedList<Exponattyp>();
+        for (String exponatTyp : args) {
+            String[] exponatTypArg = exponatTyp.split("\\.");
+            exponatTypArr.add(createExponattyp(exponatTypArg));
+        }
+        return exponatTypArr;
+    }
+
     public Exponattyp createExponattyp(String[] args) {
         return new Exponattyp(args[0], args[1]);
     }
@@ -195,8 +195,12 @@ public class ElementFactory {
     }
 
     public Kuenstler createKuenstler(String[] args) {
-
-        return new Kuenstler(args[0], Date.valueOf(args[1]), Date.valueOf(args[2]), args[3]);
+        try {
+            return new Kuenstler(args[0], Statics.dateFormat.parse(args[1]), Statics.dateFormat.parse(args[2]), args[3]);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
 
     }
 
