@@ -4,8 +4,6 @@ import datentypen.Dateiformat;
 
 public class StorageAdapter {
 
-
-
     public String[] importData(String path, Dateiformat format) {
         return null;
     }

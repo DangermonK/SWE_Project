@@ -10,8 +10,11 @@ public class MuseumsController {
 
     private EntityAdapter entityAdapter;
 
+    private StorageAdapter storageAdapter;
+
     public MuseumsController() {
         entityAdapter = new EntityAdapter();
+        storageAdapter = new StorageAdapter();
     }
 
     public static void main(String[] args) {
