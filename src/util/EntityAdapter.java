@@ -73,6 +73,11 @@ public class EntityAdapter {
         }
     }
 
-    public void createAll(String data) {}
+    public void createAll(String data) {
+        String argList[] = data.split("\n");
+        for(String arg: argList) {
+            addElement(Classtype.EXPONAT, arg);
+        }
+    }
 
 }

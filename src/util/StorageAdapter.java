@@ -8,9 +8,7 @@ public class StorageAdapter {
         return null;
     }
 
-    public void exportData(String path) {
-
-    }
+    public void exportData(String path) {}
 
     public void savedata() {}
     public void loadalldata() {}
@@ -19,13 +17,12 @@ public class StorageAdapter {
 
     public String loadTestData() {
 
-        String exponatData[] = {
-                "E8593; ; ; ; ; ; ; ; . ; . ",
-                "E1034;Der Schrei;Eine Menschliche Figur unter rotem Himmel, die ihre Hände gegen den Kopf presst, während sie Mund und Augen angstvoll aufreißt;Expressionismus;1910;200.0;Öl, Tempera und Pastell auf Pappe;false;Van Gogh,3.2.1879,23.5.1936,Französisch; . ; . ",
-                "E2839;Martin-Luther;Portrait von Martin Luther;Expressionismus;1730;90000.0;Acryl;true; . ; . "
-        };
+        String exponatData =
+                "E0000;Name;Beschreibung;Kategorie;Erstellungsjahr;Schätzwert;Material;Webanzeige;Künstlername,1.1.1111,1.1.1111,Nationalität;Bildname.Bildpfad,Bildname.Bildpfad;bezeichner.beschreibung,bez.beschr\n"+
+                "E1000;Test;Test beschreibung;Skulptur;1920;5010.5;Marmor;true;Max,2.3.1880,23.4.1945,Fransösisch;test1.a/b,test2.a/b;Epoche.beschreibung,bez.beschr\n"+
+                "E1001;Test2;Test2 beschreibung;Bild;1978;100;Wax;true;Tim,20.9.1934,7.5.2014,Deutsch;test1.a/b,test2.a/b;Epoche.beschreibung,bez.beschr";
 
-        return exponatData[1];
+        return exponatData;
 
 
     }
