@@ -3,6 +3,8 @@ package util;
 import datentypen.Classtype;
 import model.*;
 
+import java.util.List;
+
 public class EntityAdapter {
 
     private EntityManager<Person> personEntityManager;
@@ -10,9 +12,9 @@ public class EntityAdapter {
     private EntityManager<Raum> raumEntityManager;
 
     public EntityAdapter() {
-        personEntityManager = new EntityManager<Person>();
-        exponatEntityManager = new EntityManager<Exponat>();
-        raumEntityManager = new EntityManager<Raum>();
+        personEntityManager = new EntityManager<>();
+        exponatEntityManager = new EntityManager<>();
+        raumEntityManager = new EntityManager<>();
     }
 
     public void getAllData() {}
@@ -47,37 +49,33 @@ public class EntityAdapter {
 
     public void changeElement(Classtype type, String key, String data) {}
 
-    public void addElement(Classtype type, String data) {
-        String argList[] = data.split(";");
+    public void addElement(Classtype type, String[] data) {
         switch (type) {
             case RAUM:
-                Raum raum = ElementFactory.getInstance(this).createRaum(argList);
+                Raum raum = ElementFactory.getInstance(this).createRaum(data);
                 raumEntityManager.persist(raum.getNummer(), raum);
                 break;
             case EXPONAT:
-                Exponat exponat = ElementFactory.getInstance(this).createExponat(argList);
+                Exponat exponat = ElementFactory.getInstance(this).createExponat(data);
                 exponatEntityManager.persist(exponat.getInventarnummer(), exponat);
                 break;
             case ANGESTELLTER:
-                Angestellter angestellter = ElementFactory.getInstance(this).createAngestellter(argList);
+                Angestellter angestellter = ElementFactory.getInstance(this).createAngestellter(data);
                 personEntityManager.persist(angestellter.getPersNr(), angestellter);
                 break;
             case BESITZER:
-                Besitzer besitzer = ElementFactory.getInstance(this).createBesitzer(argList);
+                Besitzer besitzer = ElementFactory.getInstance(this).createBesitzer(data);
                 personEntityManager.persist(besitzer.getPersNr(), besitzer);
                 break;
             case FOERDERNDER:
-                Foerdernder foerdernder = ElementFactory.getInstance(this).createFoerdernder(argList);
+                Foerdernder foerdernder = ElementFactory.getInstance(this).createFoerdernder(data);
                 personEntityManager.persist(foerdernder.getPersNr(), foerdernder);
                 break;
         }
     }
 
-    public void createAll(String data) {
-        String argList[] = data.split("\n");
-        for(String arg: argList) {
-            addElement(Classtype.EXPONAT, arg);
-        }
+    public void createAll(List<String[]> data) {
+        data.forEach(element -> addElement(Classtype.EXPONAT, element));
     }
 
 }

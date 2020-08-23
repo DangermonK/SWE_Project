@@ -3,8 +3,7 @@ package util;
 import model.*;
 
 import java.text.ParseException;
-import java.util.Date;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ElementFactory {
@@ -105,7 +104,7 @@ public class ElementFactory {
 
     private List<Bild> createBildArray(String[] args) {
         // TODO: Check if regexes can be used like this.
-        List<Bild> bildArr = new LinkedList<Bild>();
+        List<Bild> bildArr = new ArrayList<>();
         for (String bild : args) {
             String[] bildArgs = bild.split("\\.");
             bildArr.add(createBild(bildArgs));
@@ -150,7 +149,7 @@ public class ElementFactory {
     }
 
     public List<Verleih> createVerleihList(String[] args) {
-        List<Verleih> verleihList = new LinkedList<Verleih>();
+        List<Verleih> verleihList = new ArrayList<Verleih>();
         for (String verleih : args) {
             String[] verleihArgs = verleih.split("-");
             verleihList.add(createVerleih(verleihArgs));
@@ -172,7 +171,7 @@ public class ElementFactory {
     }
 
     public List<Ausleihe> createAusleiheList(String[] args) {
-        List<Ausleihe> ausleiheList = new LinkedList<Ausleihe>();
+        List<Ausleihe> ausleiheList = new ArrayList<Ausleihe>();
         for (String ausleihe : args) {
             String[] ausleiheArgs = ausleihe.split("-");
             ausleiheList.add(createAusleihe(ausleiheArgs));
@@ -194,7 +193,7 @@ public class ElementFactory {
     }
 
     public List<Kauf> createKaufList(String[] args) {
-        List<Kauf> kaufList = new LinkedList<Kauf>();
+        List<Kauf> kaufList = new ArrayList<Kauf>();
         for (String kauf : args) {
             String[] kaufArgs = kauf.split("-");
             kaufList.add(createKauf(kaufArgs));
@@ -216,7 +215,7 @@ public class ElementFactory {
     }
 
     public List<Verkauf> createVerkaufList(String[] args) {
-        List<Verkauf> verkaufList = new LinkedList<Verkauf>();
+        List<Verkauf> verkaufList = new ArrayList<Verkauf>();
         for (String verkauf : args) {
             String[] verkaufArgs = verkauf.split("-");
             verkaufList.add(createVerkauf(verkaufArgs));
@@ -251,7 +250,7 @@ public class ElementFactory {
     }
 
     public List<Aenderung> createaenderungList(String[] args) {
-        List<Aenderung> aenderungList = new LinkedList<Aenderung>();
+        List<Aenderung> aenderungList = new ArrayList<Aenderung>();
         for (String aenderung : args) {
             aenderungList.add(createAenderung(aenderung));
         }
@@ -272,7 +271,7 @@ public class ElementFactory {
     }
 
     private List<Exponattyp> createExponattypList(String[] args) {
-        List<Exponattyp> exponatTypArr = new LinkedList<Exponattyp>();
+        List<Exponattyp> exponatTypArr = new ArrayList<Exponattyp>();
         for (String exponatTyp : args) {
             String[] exponatTypArg = exponatTyp.split("\\.");
             exponatTypArr.add(createExponattyp(exponatTypArg));

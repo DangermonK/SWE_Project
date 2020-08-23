@@ -1,4 +1,5 @@
 import datentypen.Classtype;
+import datentypen.Dateiformat;
 import de.dhbwka.swe.utils.gui.TextComponent;
 import model.Exponat;
 import model.Historie;
@@ -8,6 +9,7 @@ import util.Statics;
 import util.StorageAdapter;
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class MuseumsController {
 
@@ -24,16 +26,17 @@ public class MuseumsController {
 
         MuseumsController controller = new MuseumsController();
 
+        List<String[]> data = controller.storageAdapter.importData("src/assets/database/TestData.csv", Dateiformat.CSV);
+        controller.entityAdapter.createAll(data);
+
         JFrame frame = new JFrame("test");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 400);
 
-        controller.entityAdapter.createAll(controller.storageAdapter.loadTestData());
+        Exponat exp = (Exponat)controller.entityAdapter.getElement(Classtype.EXPONAT, data.get(0)[0]);
 
-        Exponat exp1 = (Exponat)controller.entityAdapter.getElement(Classtype.EXPONAT, "E2103");
-
-        String exp1Info = TestAusgabe(exp1.getInventarnummer(), exp1.getName(), exp1.getBeschreibung(), exp1.getKategorie(), exp1.getErstellungsJahr(),
-                exp1.getSchaetzWert(), exp1.getMaterial(), exp1.isInWeb(), exp1.getKuenstler(), exp1.getHistorie());
+        String exp1Info = TestAusgabe(exp.getInventarnummer(), exp.getName(), exp.getBeschreibung(), exp.getKategorie(), exp.getErstellungsJahr(),
+                exp.getSchaetzWert(), exp.getMaterial(), exp.isInWeb(), exp.getKuenstler(), exp.getHistorie());
 
         TextComponent text = TextComponent.builder("text").editable(false).notEditableColor(Color.BLACK).initialText(exp1Info).title("Testbox").build();
 
