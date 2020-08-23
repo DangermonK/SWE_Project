@@ -2,11 +2,8 @@ package util;
 
 import model.*;
 
-import javax.swing.text.DateFormatter;
-import java.sql.Date;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,39 +25,32 @@ public class ElementFactory {
 
     public Exponat createExponat(String[] args) {
 
-        Exponat exp = new Exponat(args[0], args[1]);
+        Exponat exponat = new Exponat(args[0], args[1]);
 
-        if(args.length > 2)
-            exp.setBeschreibung(args[2]);
-        if(args.length > 3)
-            exp.setKategorie(args[3]);
-        if(args.length > 4) {
-            if(args[4].matches("[0-9]*"))
-                exp.setErstellungsJahr(Integer.valueOf(args[4]));
-        }
-        if(args.length > 5) {
-            if(args[5].matches("[0-9]+\\.[0-9]*"))
-            exp.setSchaetzWert(Double.valueOf(args[5]));
-        }
-        if(args.length > 6)
-            exp.setMaterial(args[6]);
-        if(args.length > 7)
-            exp.setInWeb(Boolean.parseBoolean(args[7]));
-        if(args.length > 8)
-            exp.setKuenstler(createKuenstler(args[8].split(",")));
+        exponat.setBeschreibung(args[2]);
+        exponat.setKategorie(args[3]);
+
+        if(args[4].matches("[0-9]*"))
+            exponat.setErstellungsJahr(Integer.valueOf(args[4]));
+        if(args[5].matches("[0-9]+\\.[0-9]*"))
+            exponat.setSchaetzWert(Double.valueOf(args[5]));
+
+        exponat.setMaterial(args[6]);
+        exponat.setInWeb(Boolean.parseBoolean(args[7]));
+        exponat.setKuenstler(createKuenstler(args[8].split(",")));
 
         // TODO: Check if regexes can be used like this.
-        if(args.length > 9) {
-            exp.setBildArray(createBildArray(args[9].split(",")));
-        }
+        exponat.setBildArray(createBildArray(args[9].split(",")));
 
-        if(args.length > 10) {
-            exp.setExpTypArray(createExponattypList(args[10].split(",")));
-        }
+        exponat.setExpTypArray(createExponattypList(args[10].split(",")));
 
-        // TODO: implement Besitzer, Foerderungs, Raum, Historie array
+        Historie historie = createHistorie(args[11].split(":"));
+        historie.setExponat(exponat);
+        exponat.setHistorie(historie);
 
-        return exp;
+        // TODO: implement Besitzer, Foerderungs, Raum array solve historie references
+
+        return exponat;
 
     }
 
@@ -129,41 +119,153 @@ public class ElementFactory {
 
     public Historie createHistorie(String[] args) {
 
-        return null;
+        Historie historie = new Historie();
 
+        List<Verleih> verleihList = createVerleihList(args[0].split(","));
+        verleihList.forEach((verleih) -> {verleih.setHistorie(historie);});
+        historie.setVerleihList(verleihList);
+
+        List<Ausleihe> ausleiheList = createAusleiheList(args[1].split(","));
+        ausleiheList.forEach((ausleihe -> {ausleihe.setHistorie(historie);}));
+        historie.setAusleiheList(ausleiheList);
+
+        List<Kauf> kaufList = createKaufList(args[2].split(","));
+        kaufList.forEach((kauf -> {kauf.setHistorie(historie);}));
+        historie.setKaufList(kaufList);
+
+        List<Verkauf> verkaufList = createVerkaufList(args[3].split(","));
+        verkaufList.forEach((verkauf -> {verkauf.setHistorie(historie);}));
+        historie.setVerkaufList(verkaufList);
+
+        Anlage anlage = createAnlage(args[4]);
+        anlage.setHistorie(historie);
+        historie.setAnlage(anlage);
+
+        List<Aenderung> aenderungList = createaenderungList(args[5].split(","));
+        aenderungList.forEach((aenderung -> {aenderung.setHistorie(historie);}));
+        historie.setAenderungList(aenderungList);
+
+        return historie;
+
+    }
+
+    public List<Verleih> createVerleihList(String[] args) {
+        List<Verleih> verleihList = new LinkedList<Verleih>();
+        for (String verleih : args) {
+            String[] verleihArgs = verleih.split("-");
+            verleihList.add(createVerleih(verleihArgs));
+        }
+        return verleihList;
     }
 
     public Verleih createVerleih(String[] args) {
 
+        try {
+            Verleih verleih = new Verleih(Statics.dateFormat.parse(args[0]), Statics.dateFormat.parse(args[1]), Double.parseDouble(args[2]));
+            return verleih;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         return null;
 
+    }
+
+    public List<Ausleihe> createAusleiheList(String[] args) {
+        List<Ausleihe> ausleiheList = new LinkedList<Ausleihe>();
+        for (String ausleihe : args) {
+            String[] ausleiheArgs = ausleihe.split("-");
+            ausleiheList.add(createAusleihe(ausleiheArgs));
+        }
+        return ausleiheList;
     }
 
     public Ausleihe createAusleihe(String[] args) {
 
+        try {
+            Ausleihe ausleihe = new Ausleihe(Statics.dateFormat.parse(args[0]), Statics.dateFormat.parse(args[1]));
+            return ausleihe;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         return null;
 
+    }
+
+    public List<Kauf> createKaufList(String[] args) {
+        List<Kauf> kaufList = new LinkedList<Kauf>();
+        for (String kauf : args) {
+            String[] kaufArgs = kauf.split("-");
+            kaufList.add(createKauf(kaufArgs));
+        }
+        return kaufList;
     }
 
     public Kauf createKauf(String[] args) {
 
+        try {
+            Kauf kauf = new Kauf(Statics.dateFormat.parse(args[0]), Double.parseDouble(args[1]));
+            return kauf;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         return null;
 
+    }
+
+    public List<Verkauf> createVerkaufList(String[] args) {
+        List<Verkauf> verkaufList = new LinkedList<Verkauf>();
+        for (String verkauf : args) {
+            String[] verkaufArgs = verkauf.split("-");
+            verkaufList.add(createVerkauf(verkaufArgs));
+        }
+        return verkaufList;
     }
 
     public Verkauf createVerkauf(String[] args) {
 
+        try {
+            Verkauf verkauf = new Verkauf(Statics.dateFormat.parse(args[0]), Double.parseDouble(args[1]));
+            return verkauf;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         return null;
 
     }
 
-    public Anlage createAnlage(String[] args) {
+    public Anlage createAnlage(String arg) {
+
+        try {
+            Anlage anlage = new Anlage(Statics.dateFormat.parse(arg));
+            return anlage;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         return null;
 
     }
 
-    public Aenderung createAenderung(String[] args) {
+    public List<Aenderung> createaenderungList(String[] args) {
+        List<Aenderung> aenderungList = new LinkedList<Aenderung>();
+        for (String aenderung : args) {
+            aenderungList.add(createAenderung(aenderung));
+        }
+        return aenderungList;
+    }
+
+    public Aenderung createAenderung(String arg) {
+
+        try {
+            Aenderung aenderung = new Aenderung(Statics.dateFormat.parse(arg));
+            return aenderung;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         return null;
 

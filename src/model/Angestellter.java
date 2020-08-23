@@ -1,17 +1,18 @@
 package model;
 
+import java.util.List;
+
 public class Angestellter extends Person {
 
     private Rolle rolle;
 
     private String domaenenName;
 
-    private Anlage[] anlageArray;
-    private Aenderung[] aenderungsarray;
+    private List<Anlage> anlageArray;
+    private List<Aenderung> aenderungsarray;
 
     public Angestellter(String persNr, String name, String domaenenName) {
         super(persNr, name);
-
         this.domaenenName = domaenenName;
 
     }
@@ -24,27 +25,27 @@ public class Angestellter extends Person {
         this.rolle = rolle;
     }
 
-    public Anlage[] getAnlageArray() {
-        return anlageArray;
-    }
-
-    public void setAnlageArray(Anlage[] anlageArray) {
-        this.anlageArray = anlageArray;
-    }
-
-    public Aenderung[] getAenderungsarray() {
-        return aenderungsarray;
-    }
-
-    public void setAenderungsarray(Aenderung[] aenderungsarray) {
-        this.aenderungsarray = aenderungsarray;
-    }
-
     public String getDomaenenName() {
         return domaenenName;
     }
 
     public void setDomaenenName(String domaenenName) {
         this.domaenenName = domaenenName;
+    }
+
+    public List<Anlage> getAnlageArray() {
+        return anlageArray;
+    }
+
+    public void setAnlageArray(List<Anlage> anlageArray) {
+        this.anlageArray = anlageArray;
+    }
+
+    public List<Aenderung> getAenderungsarray() {
+        return aenderungsarray;
+    }
+
+    public void setAenderungsarray(List<Aenderung> aenderungsarray) {
+        this.aenderungsarray = aenderungsarray;
     }
 }
