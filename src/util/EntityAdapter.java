@@ -3,6 +3,7 @@ package util;
 import datentypen.Classtype;
 import model.*;
 
+import java.lang.reflect.Array;
 import java.util.List;
 
 public class EntityAdapter {
@@ -19,7 +20,7 @@ public class EntityAdapter {
 
     public void getAllData() {}
 
-    public Object getElement(Classtype type, String key) {
+    public Object getElement(Classtype type, Object key) {
         switch (type) {
             case EXPONAT:
                 return exponatEntityManager.find(key);
@@ -34,7 +35,7 @@ public class EntityAdapter {
         }
     }
 
-    public void removeElement(Classtype type, String key) {
+    public void removeElement(Classtype type, Object key) {
         switch (type) {
             case EXPONAT:
                 exponatEntityManager.remove(key);
@@ -47,7 +48,7 @@ public class EntityAdapter {
         }
     }
 
-    public void changeElement(Classtype type, String key, String data) {}
+    public void changeElement(Classtype type, Object key, String data) {}
 
     public void addElement(Classtype type, String[] data) {
         switch (type) {
@@ -75,7 +76,12 @@ public class EntityAdapter {
     }
 
     public void createAll(List<String[]> data) {
-        data.forEach(element -> addElement(Classtype.EXPONAT, element));
+        data.forEach(element -> {
+            Classtype type = Classtype.valueOf(element[0]);
+            String[] attribuutes = new String[element.length-1];
+            System.arraycopy(element, 1, attribuutes, 0, attribuutes.length);
+            addElement(type, attribuutes);
+        });
     }
 
 }

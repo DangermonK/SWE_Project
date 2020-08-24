@@ -1,9 +1,11 @@
 package util;
 
+import datentypen.Classtype;
 import model.*;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ElementFactory {
@@ -39,9 +41,9 @@ public class ElementFactory {
         exponat.setKuenstler(createKuenstler(args[8].split(",")));
 
         // TODO: Check if regexes can be used like this.
-        exponat.setBildArray(createBildArray(args[9].split(",")));
+        exponat.setBildList(createBildArray(args[9].split(",")));
 
-        exponat.setExpTypArray(createExponattypList(args[10].split(",")));
+        exponat.setExpTypList(createExponattypList(args[10].split(",")));
 
         Historie historie = createHistorie(args[11].split(":"));
         historie.setExponat(exponat);
@@ -94,9 +96,21 @@ public class ElementFactory {
 
         Raum raum = new Raum(Integer.valueOf(args[0]), Integer.valueOf(args[1]), Integer.valueOf(args[2]));
 
-        raum.setBildArray(createBildArray(args[4].split(",")));
+        raum.setBeschreibung(args[3]);
+        raum.setKategorie(args[4]);
+
+        raum.setBildList(createBildArray(args[5].split(",")));
 
         // TODO: implement Exponat array
+        // This is a temporary test
+        // ----------------------------
+        String[] expRefArray = args[6].split(",");
+        List<Exponat> expList = new ArrayList<>();
+        for(String ref: expRefArray) {
+            expList.add((Exponat) adapter.getElement(Classtype.EXPONAT, ref));
+        }
+        raum.setExponatList(expList);
+        // ----------------------------
 
         return raum;
 
@@ -297,7 +311,9 @@ public class ElementFactory {
 
     public Kuenstler createKuenstler(String[] args) {
         try {
-            return new Kuenstler(args[0], Statics.dateFormat.parse(args[1]), Statics.dateFormat.parse(args[2]), args[3]);
+            Date geburt = Statics.dateFormat.parse(args[1]);
+            Date tod = Statics.dateFormat.parse(args[2]);
+            return new Kuenstler(args[0], geburt, tod, args[3]);
         } catch (ParseException e) {
             e.printStackTrace();
             return null;

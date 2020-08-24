@@ -8,8 +8,8 @@ public class Angestellter extends Person {
 
     private String domaenenName;
 
-    private List<Anlage> anlageArray;
-    private List<Aenderung> aenderungsarray;
+    private List<Anlage> anlageList;
+    private List<Aenderung> aenderungsList;
 
     public Angestellter(String persNr, String name, String domaenenName) {
         super(persNr, name);
@@ -33,19 +33,19 @@ public class Angestellter extends Person {
         this.domaenenName = domaenenName;
     }
 
-    public List<Anlage> getAnlageArray() {
-        return anlageArray;
+    public List<Anlage> getAnlageList() {
+        return anlageList;
     }
 
-    public void setAnlageArray(List<Anlage> anlageArray) {
-        this.anlageArray = anlageArray;
+    public void setAnlageList(List<Anlage> anlageList) {
+        this.anlageList = anlageList;
     }
 
-    public List<Aenderung> getAenderungsarray() {
-        return aenderungsarray;
+    public List<Aenderung> getAenderungsList() {
+        return aenderungsList;
     }
 
-    public void setAenderungsarray(List<Aenderung> aenderungsarray) {
-        this.aenderungsarray = aenderungsarray;
+    public void setAenderungsList(List<Aenderung> aenderungsList) {
+        this.aenderungsList = aenderungsList;
     }
 }

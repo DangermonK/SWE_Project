@@ -8,8 +8,8 @@ public class Exponat {
 
     private String name;
     private String inventarnummer;
-    private List<Exponattyp> expTypArray;
-    private Besitzer[] besitzerArray;
+    private List<Exponattyp> expTypList;
+    private List<Besitzer> besitzerList;
 
     private Historie historie;
     private Raum raum;
@@ -24,8 +24,8 @@ public class Exponat {
 
     private Kuenstler kuenstler;
 
-    private ExponatsFoerderung[] foerderungArray;
-    private List<Bild> bildArray;
+    private List<Foerderung> foerderungList;
+    private List<Bild> bildList;
 
     public Exponat(String inventarnummer, String name) {
 
@@ -119,20 +119,20 @@ public class Exponat {
         this.raum = raum;
     }
 
-    public List<Bild> getBildArray() {
-        return bildArray;
+    public List<Bild> getBildList() {
+        return bildList;
     }
 
-    public void setBildArray(List<Bild> bildArray) {
-        this.bildArray = bildArray;
+    public void setBildList(List<Bild> bildList) {
+        this.bildList = bildList;
     }
 
-    public List<Exponattyp> getExpTypArray() {
-        return expTypArray;
+    public List<Exponattyp> getExpTypList() {
+        return expTypList;
     }
 
-    public void setExpTypArray(List<Exponattyp> expTypArray) {
-        this.expTypArray = expTypArray;
+    public void setExpTypList(List<Exponattyp> expTypList) {
+        this.expTypList = expTypList;
     }
 
     public String getName() {
