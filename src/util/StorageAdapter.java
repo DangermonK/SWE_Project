@@ -20,6 +20,7 @@ public class StorageAdapter {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                data.removeIf(element -> element.length == 0 || element[0].matches("KOMMENTAR"));
                 break;
             case JSON:
 

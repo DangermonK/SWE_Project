@@ -107,6 +107,7 @@ public class ElementFactory {
         String[] expRefArray = args[6].split(",");
         List<Exponat> expList = new ArrayList<>();
         for(String ref: expRefArray) {
+            ((Exponat)adapter.getElement(Classtype.EXPONAT, ref)).setRaum(raum);
             expList.add((Exponat) adapter.getElement(Classtype.EXPONAT, ref));
         }
         raum.setExponatList(expList);

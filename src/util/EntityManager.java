@@ -16,7 +16,7 @@ public class EntityManager <T> {
         }
     }
 
-    public T find(Object key) {
+    public T find(Object key)  {
         if(contains(entityMap.get(key))) {
             return entityMap.get(key);
         }
