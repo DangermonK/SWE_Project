@@ -41,7 +41,7 @@ public class ElementFactory {
         exponat.setKuenstler(createKuenstler(args[8].split(",")));
 
         // TODO: Check if regexes can be used like this.
-        exponat.setBildList(createBildArray(args[9].split(",")));
+        exponat.setBildList(createBildList(args[9].split(",")));
 
         exponat.setExpTypList(createExponattypList(args[10].split(",")));
 
@@ -49,7 +49,12 @@ public class ElementFactory {
         historie.setExponat(exponat);
         exponat.setHistorie(historie);
 
-        // TODO: implement Besitzer, Foerderungs, Raum array solve historie references
+        // TODO: implement Foerderungs array solve historie references
+        String[] besitzerArray = args[12].split(",");
+        for(String ref : besitzerArray) {
+            ((Besitzer)adapter.getElement(Classtype.BESITZER, ref)).addExponat(exponat);
+            exponat.addBesitzer((Besitzer)adapter.getElement(Classtype.BESITZER, ref));
+        }
 
         return exponat;
 
@@ -60,7 +65,7 @@ public class ElementFactory {
         Angestellter angestellter = new Angestellter(args[0], args[1], args[2]);
         angestellter.setRolle(Rolle.valueOf(args[3]));
 
-        angestellter.setBildArray(createBildArray(args[4].split(",")));
+        angestellter.setBildList(createBildList(args[4].split(",")));
 
         // TODO: implement Anlage and Aenderung array
 
@@ -72,7 +77,7 @@ public class ElementFactory {
 
         Besitzer besitzer = new Besitzer(args[0], args[1], args[2], args[3], args[4]);
 
-        besitzer.setBildArray(createBildArray(args[5].split(",")));
+        besitzer.setBildList(createBildList(args[5].split(",")));
 
         // TODO: implement Exponat array
 
@@ -84,9 +89,23 @@ public class ElementFactory {
 
         Foerdernder foerdernder = new Foerdernder(args[0], args[1], args[2], args[3], args[4]);
 
-        foerdernder.setBildArray(createBildArray(args[5].split(",")));
+        foerdernder.setBildList(createBildList(args[5].split(",")));
 
         // TODO: implement Exponat array
+
+        String[] exponatFoerderungArray = args[6].split(",");
+        for(String exponatFoerderung : exponatFoerderungArray) {
+            ExponatsFoerderung foerderung = createExponatFoerderung(exponatFoerderung.split("-"));
+            foerderung.setFoerdernder(foerdernder);
+            foerdernder.addFoerderung(foerderung);
+        }
+
+        String[] museumFoerderungArray = args[7].split(",");
+        for(String museumFoerderung : museumFoerderungArray) {
+            MuseumsFoerderung foerderung = createMuseumsFoerderung(museumFoerderung.split("-"));
+            foerderung.setFoerdernder(foerdernder);
+            foerdernder.addFoerderung(foerderung);
+        }
 
         return foerdernder;
 
@@ -99,32 +118,30 @@ public class ElementFactory {
         raum.setBeschreibung(args[3]);
         raum.setKategorie(args[4]);
 
-        raum.setBildList(createBildArray(args[5].split(",")));
+        raum.setBildList(createBildList(args[5].split(",")));
 
         // TODO: implement Exponat array
         // This is a temporary test
         // ----------------------------
         String[] expRefArray = args[6].split(",");
-        List<Exponat> expList = new ArrayList<>();
         for(String ref: expRefArray) {
             ((Exponat)adapter.getElement(Classtype.EXPONAT, ref)).setRaum(raum);
-            expList.add((Exponat) adapter.getElement(Classtype.EXPONAT, ref));
+            raum.addExponat((Exponat)adapter.getElement(Classtype.EXPONAT, ref));
         }
-        raum.setExponatList(expList);
         // ----------------------------
 
         return raum;
 
     }
 
-    private List<Bild> createBildArray(String[] args) {
+    private List<Bild> createBildList(String[] args) {
         // TODO: Check if regexes can be used like this.
-        List<Bild> bildArr = new ArrayList<>();
+        List<Bild> bildList = new ArrayList<>();
         for (String bild : args) {
             String[] bildArgs = bild.split("\\.");
-            bildArr.add(createBild(bildArgs));
+            bildList.add(createBild(bildArgs));
         }
-        return bildArr;
+        return bildList;
     }
 
     public Bild createBild(String[] args) {
@@ -151,7 +168,7 @@ public class ElementFactory {
         verkaufList.forEach((verkauf -> {verkauf.setHistorie(historie);}));
         historie.setVerkaufList(verkaufList);
 
-        Anlage anlage = createAnlage(args[4]);
+        Anlage anlage = createAnlage(args[4].split("-"));
         anlage.setHistorie(historie);
         historie.setAnlage(anlage);
 
@@ -251,10 +268,12 @@ public class ElementFactory {
 
     }
 
-    public Anlage createAnlage(String arg) {
+    public Anlage createAnlage(String[] arg) {
 
         try {
-            Anlage anlage = new Anlage(Statics.dateFormat.parse(arg));
+            Anlage anlage = new Anlage(Statics.dateFormat.parse(arg[0]));
+            ((Angestellter)adapter.getElement(Classtype.ANGESTELLTER, arg[1])).addAnlage(anlage);
+            anlage.setAngestellter((Angestellter)adapter.getElement(Classtype.ANGESTELLTER, arg[1]));
             return anlage;
         } catch (ParseException e) {
             e.printStackTrace();
@@ -267,15 +286,16 @@ public class ElementFactory {
     public List<Aenderung> createaenderungList(String[] args) {
         List<Aenderung> aenderungList = new ArrayList<Aenderung>();
         for (String aenderung : args) {
-            aenderungList.add(createAenderung(aenderung));
+            aenderungList.add(createAenderung(aenderung.split("-")));
         }
         return aenderungList;
     }
 
-    public Aenderung createAenderung(String arg) {
+    public Aenderung createAenderung(String[] arg) {
 
         try {
-            Aenderung aenderung = new Aenderung(Statics.dateFormat.parse(arg));
+            Aenderung aenderung = new Aenderung(Statics.dateFormat.parse(arg[0]), (Angestellter)adapter.getElement(Classtype.ANGESTELLTER, arg[1]));
+            ((Angestellter)adapter.getElement(Classtype.ANGESTELLTER, arg[1])).addAenderung(aenderung);
             return aenderung;
         } catch (ParseException e) {
             e.printStackTrace();
@@ -300,13 +320,17 @@ public class ElementFactory {
 
     public ExponatsFoerderung createExponatFoerderung(String[] args) {
 
-        return null;
+        ExponatsFoerderung foerderung = new ExponatsFoerderung(args[0], Double.parseDouble(args[1]));
+        ((Exponat)adapter.getElement(Classtype.EXPONAT, args[2])).addFoerderung(foerderung);
+        foerderung.setExponat((Exponat)adapter.getElement(Classtype.EXPONAT, args[2]));
+
+        return foerderung;
 
     }
 
     public MuseumsFoerderung createMuseumsFoerderung(String[] args) {
 
-        return null;
+        return new MuseumsFoerderung(args[0], Double.parseDouble(args[1]));
 
     }
 

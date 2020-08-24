@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Raum {
@@ -24,6 +25,9 @@ public class Raum {
         this.nummer = nummer;
         this.groesse = groesse;
         this.exponatszahl = exponatszahl;
+
+        exponatList = new ArrayList<>();
+        bildList = new ArrayList<>();
 
     }
 
@@ -67,8 +71,16 @@ public class Raum {
         return exponatList;
     }
 
+    public void addExponat(Exponat exponat) {
+        exponatList.add(exponat);
+    }
+
     public void setExponatList(List<Exponat> exponatList) {
         this.exponatList = exponatList;
+    }
+
+    public void addBild(Bild bild) {
+        bildList.add(bild);
     }
 
     public List<Bild> getBildList() {
@@ -78,4 +90,5 @@ public class Raum {
     public void setBildList(List<Bild> bildList) {
         this.bildList = bildList;
     }
+
 }

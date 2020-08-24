@@ -16,8 +16,9 @@ public class Aenderung {
         this.aenderungsDatum = aenderungsDatumm;
     }
 
-    public Aenderung(Date aenderungsDatumm) {
+    public Aenderung(Date aenderungsDatumm, Angestellter angestellter) {
         this.aenderungsDatum = aenderungsDatumm;
+        this.angestellter = angestellter;
     }
 
     public Angestellter getAngestellter() {

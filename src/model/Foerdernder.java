@@ -1,22 +1,32 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Foerdernder extends JuristischePerson {
 
-    private Foerderung[] foerderungArray;
+    private List<Foerderung> foerderungList;
 
     public Foerdernder(String persNr, String name, String email, String adresse, String telefon) {
         super(persNr, name, email, adresse, telefon);
+
+        foerderungList = new ArrayList<>();
+
     }
 
-    public Exponat[] getExponate() {
+    public List<Exponat> getExponate() {
         return null; //Todo: add logic
     }
 
-    public Foerderung[] getFoerderungArray() {
-        return foerderungArray;
+    public void addFoerderung(Foerderung foerderung) {
+        foerderungList.add(foerderung);
     }
 
-    public void setFoerderungArray(Foerderung[] foerderungArray) {
-        this.foerderungArray = foerderungArray;
+    public List<Foerderung> getFoerderungList() {
+        return foerderungList;
+    }
+
+    public void setFoerderungList(List<Foerderung> foerderungList) {
+        this.foerderungList = foerderungList;
     }
 }

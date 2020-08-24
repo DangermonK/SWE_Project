@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Angestellter extends Person {
@@ -14,6 +15,9 @@ public class Angestellter extends Person {
     public Angestellter(String persNr, String name, String domaenenName) {
         super(persNr, name);
         this.domaenenName = domaenenName;
+
+        anlageList = new ArrayList<>();
+        aenderungsList = new ArrayList<>();
 
     }
 
@@ -33,12 +37,20 @@ public class Angestellter extends Person {
         this.domaenenName = domaenenName;
     }
 
+    public void addAnlage(Anlage anlage) {
+        anlageList.add(anlage);
+    }
+
     public List<Anlage> getAnlageList() {
         return anlageList;
     }
 
     public void setAnlageList(List<Anlage> anlageList) {
         this.anlageList = anlageList;
+    }
+
+    public void addAenderung(Aenderung aenderung) {
+        aenderungsList.add(aenderung);
     }
 
     public List<Aenderung> getAenderungsList() {

@@ -8,7 +8,7 @@ public abstract class Person {
     private String name;
     private String persNr;
 
-    private List<Bild> bildArray;
+    private List<Bild> bildList;
 
     public Person(String persNr, String name) {
         this.name = name;
@@ -25,11 +25,11 @@ public abstract class Person {
         return name;
     }
 
-    public List<Bild> getBildArray() {
-        return bildArray;
+    public List<Bild> getBildList() {
+        return bildList;
     }
 
-    public void setBildArray(List<Bild> bildArray) {
-        this.bildArray = bildArray;
+    public void setBildList(List<Bild> bildList) {
+        this.bildList = bildList;
     }
 }
