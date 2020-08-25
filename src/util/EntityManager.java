@@ -4,24 +4,29 @@ import java.util.HashMap;
 
 public class EntityManager <T> {
 
-    private HashMap<Integer, T> entityMap;
+    private HashMap<Object, T> entityMap;
 
     public EntityManager() {
-        entityMap = new HashMap<Integer, T>();
+        entityMap = new HashMap<Object, T>();
     }
 
-    public void persist(T entity) {
+    public void persist(Object key, T entity) {
         if(!contains(entity)) {
-            entityMap.put(entity.hashCode(), entity);
+            entityMap.put(key, entity);
         }
     }
 
-    public T find() {
-        return null; //TODO: logic
+    public T find(Object key) {
+        if(contains(entityMap.get(key))) {
+            return entityMap.get(key);
+        }
+        return null;
     }
 
-    public void remove(T entity) {
-        entityMap.remove(entity.hashCode());
+    public void remove(Object key) {
+        if(contains(entityMap.get(key))) {
+            entityMap.remove(key);
+        }
     }
 
     public boolean contains(T entity) {
