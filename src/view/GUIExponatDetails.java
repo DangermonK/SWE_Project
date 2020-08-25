@@ -1,5 +1,7 @@
 package view;
 
+import de.dhbwka.swe.utils.event.GUIEvent;
+import de.dhbwka.swe.utils.event.IGUIEventListener;
 import de.dhbwka.swe.utils.gui.*;
 import de.dhbwka.swe.utils.model.IListElement;
 import de.dhbwka.swe.utils.model.ImageElement;
@@ -11,7 +13,7 @@ import java.awt.*;
 import de.dhbwka.swe.utils.gui.TextComponent;
 import java.util.ArrayList;
 
-public class GUIExponatDetails extends ObservableComponent {
+public class GUIExponatDetails {
 
 
     public GUIExponatDetails() {
@@ -19,8 +21,6 @@ public class GUIExponatDetails extends ObservableComponent {
         JFrame detailFrame = new JFrame("");
         detailFrame.setLayout(new GridLayout(3,1));
         //GridBagConstraints f = new GridBagConstraints();
-
-
 
         //JPanel imagePanel = new JPanel();
 
@@ -165,19 +165,25 @@ public class GUIExponatDetails extends ObservableComponent {
         c.insets =new Insets(0,5,0,0);
         attributePanel.add(tc,c);
 
-        JPanel checkBoxes = new JPanel(new GridLayout(2,1));
-        JCheckBox cbInMuseum = new JCheckBox("Ist im Museum:");
+        JPanel checkBoxes = new JPanel(new GridLayout(2,2));
+        JLabel labelInMuseum = new JLabel("Ist im Museum:");
+        JCheckBox cbInMuseum = new JCheckBox();
         cbInMuseum.setHorizontalTextPosition(SwingConstants.LEFT);
         cbInMuseum.setEnabled(false);
-        JCheckBox cbInWeb = new JCheckBox("Im Web anzeigen:");
+        JLabel labelInWeb = new JLabel("Im Web anzeigen:");
+        JCheckBox cbInWeb = new JCheckBox();
         cbInWeb.setEnabled(false);
 
         cbInWeb.setHorizontalTextPosition(SwingConstants.LEFT);
+        checkBoxes.add(labelInMuseum);
         checkBoxes.add(cbInMuseum);
+        checkBoxes.add(labelInWeb);
         checkBoxes.add(cbInWeb);
 
         c.gridx =1;
         c.gridy =1;
+
+
         c.insets = new Insets(0,50,0,0);
         attributePanel.add(checkBoxes,c);
 
@@ -281,5 +287,6 @@ public class GUIExponatDetails extends ObservableComponent {
         detailFrame.setVisible(true);
 
     }
+
 
 }
