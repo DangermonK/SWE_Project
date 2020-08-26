@@ -15,72 +15,63 @@ import java.awt.*;
 
 public class GUIExponatÜbersicht implements IGUIEventListener {
 
-    JPanel uebersichtFrame;
-    JPanel toppanel;
-    public void processGUIEvent(GUIEvent guiEvent) {
-
-    }
-
-    public GUIExponatÜbersicht(){
-
-        uebersichtFrame = new JPanel();
-        uebersichtFrame.setLayout(new GridLayout(2,1));
+    JPanel uebersichtPanel;
+    JPanel topPanel;
+    GUIExponatSuchComponent suchGUI;
 
 
+    public GUIExponatÜbersicht(String[] bildPfade, String[] suchAttribute){
 
-        toppanel = new JPanel();
-        toppanel.setLayout(new GridBagLayout());
+        uebersichtPanel = new JPanel();
+        uebersichtPanel.setLayout(new GridLayout(2,1));
+
+        topPanel = new JPanel();
+        topPanel.setLayout(new GridBagLayout());
         GridBagConstraints top = new GridBagConstraints();
         top.weightx=1.0;
         top.weighty=1.0;
         top.gridx=0;
         top.gridy =0;
-
         top.fill= GridBagConstraints.HORIZONTAL;
 
         JPanel leftPanel = new JPanel(new GridLayout(1,1));
         JPanel rightPanel = new JPanel();
 
-        //Border blackline = BorderFactory.createEtchedBorder();
-        Border leftBorder = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5,5,5,5),BorderFactory.createEtchedBorder());
-        rightPanel.setBorder(leftBorder);
-        leftPanel.setBorder(leftBorder);
+        Border panelBorder = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5,5,5,5),BorderFactory.createEtchedBorder());
+        rightPanel.setBorder(panelBorder);
+        leftPanel.setBorder(panelBorder);
+
 
         ImageElement[] loadedImageElements = null;
         try{
-            loadedImageElements = ImageLoader.loadImageElements("C:\\users\\master\\desktop" );
+            loadedImageElements = ImageLoader.loadImageElements(bildPfade);
+
         }
         catch( Exception e ){
             e.printStackTrace();
         }
 
-        SlideshowComponent slideshow =   SlideshowComponent.builder("SSC").imageElements(loadedImageElements).smallImageSize(new Dimension(40, 40)).build();
+        SlideshowComponent slideshow =   SlideshowComponent.builder("SSC").imageElements(loadedImageElements)
+                .smallImageSize(new Dimension(40, 40)).build();
 
         leftPanel.add(slideshow);
-        toppanel.add(leftPanel,top);
+        topPanel.add(leftPanel,top);
 
-
-
-        ButtonElement[] btns = new ButtonElement[]{
+        ButtonElement[] buttons = new ButtonElement[]{
                 ButtonElement.builder("addPic").buttonText("Bild hinzufügen").type(ButtonElement.Type.BUTTON).build(),
                 ButtonElement.builder("removePic").buttonText("Bild entfernen").type(ButtonElement.Type.BUTTON).build(),
                 ButtonElement.builder("save").buttonText("speichern").type(ButtonElement.Type.BUTTON).build(),
                 ButtonElement.builder("cancel").buttonText("abbrechen").type(ButtonElement.Type.BUTTON).build(),
         };
 
-        ButtonComponent buttonComp = ButtonComponent.builder("BC").buttonElements(btns)
+        ButtonComponent buttonComp = ButtonComponent.builder("BC").buttonElements(buttons)
                 .position(ButtonComponent.Position.EAST)
-
-                //.stretchButtons()
-                //.title("test")
-
                 .buttonColors(new Color[]{Color.cyan, null, Color.red, Color.yellow, null})
                 .buttonTextColors(new Color[]{null, Color.cyan, null, null, Color.magenta})
-                //.buttonFonts(new Font[]{null, this.testFont1, this.testFont2, this.testFont3, this.testFont3})
-                //.buttonSize(new Dimension(100, 40))
                 .build();
         //buttonComp.addObserver(this);
 
+        rightPanel.add(buttonComp);
 
         top.weightx=0.0;
         top.gridx=1;
@@ -88,23 +79,25 @@ public class GUIExponatÜbersicht implements IGUIEventListener {
         top.anchor = GridBagConstraints.NORTH;
         top.fill = GridBagConstraints.VERTICAL;
 
+        topPanel.add(rightPanel,top);
+        uebersichtPanel.add((topPanel));
 
-        //top.insets = new Insets(0,5,0,5);
+        suchGUI = new GUIExponatSuchComponent(suchAttribute);
+        uebersichtPanel.add(suchGUI.getPane());
 
-        //Border blackline = BorderFactory.createLineBorder(Color.BLACK);
-        //buttonComp.setBorder(blackline);
-        rightPanel.add(buttonComp);
-        toppanel.add(rightPanel,top);
-        uebersichtFrame.add((toppanel));
-
-        GUIExponatSuchComponent suchGUI = new GUIExponatSuchComponent();
-        uebersichtFrame.add(suchGUI.getPane());
-
-        uebersichtFrame.setSize(400,400);
-        uebersichtFrame.setVisible(true);
+        //uebersichtPanel.setSize(400,400);
+        //uebersichtPanel.setVisible(true);
     }
 
-    public JPanel getContentPane(){
-        return uebersichtFrame;
+    public JPanel getPane(){
+        return uebersichtPanel;
+    }
+
+    public void setSuchComponentErgebnisse(Object[][] tabellenDaten){
+        suchGUI.setTabellenErgebnisse(tabellenDaten);
+    }
+
+    public void processGUIEvent(GUIEvent guiEvent) {
+
     }
 }

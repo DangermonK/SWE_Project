@@ -4,19 +4,15 @@ import javax.swing.*;
 
 public class MainGUI {
 
-    public MainGUI(){
+    public MainGUI(String[] bildPfade, String[] suchAttribute, Object[][] tabellenDaten){
         JFrame mainFrame = new JFrame();
 
-        //JPanel rootPanel = new JPanel();
-        //rootPanel.setLayout(new BoxLayout(rootPanel, BoxLayout.Y_AXIS));
-
-        GUIExponatÜbersicht test = new GUIExponatÜbersicht();
+        GUIExponatÜbersicht uebersicht = new GUIExponatÜbersicht(bildPfade,suchAttribute);
+        uebersicht.setSuchComponentErgebnisse(tabellenDaten);
         JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.addTab("Exponat", test.getContentPane());
-
+        tabbedPane.addTab("Exponat", uebersicht.getPane());
 
         mainFrame.add(tabbedPane);
-
         mainFrame.setSize(400,400);
         mainFrame.setVisible(true);
     }
