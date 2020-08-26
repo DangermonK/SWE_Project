@@ -1,15 +1,14 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Exponat {
 
-    private static int invZaehler = 0;
-
     private String name;
     private String inventarnummer;
-    private List<Exponattyp> expTypArray;
-    private Besitzer[] besitzerArray;
+    private List<Exponattyp> expTypList;
+    private List<Besitzer> besitzerList;
 
     private Historie historie;
     private Raum raum;
@@ -24,8 +23,8 @@ public class Exponat {
 
     private Kuenstler kuenstler;
 
-    private ExponatsFoerderung[] foerderungArray;
-    private List<Bild> bildArray;
+    private List<ExponatsFoerderung> foerderungList;
+    private List<Bild> bildList;
 
     public Exponat(String inventarnummer, String name) {
 
@@ -33,9 +32,14 @@ public class Exponat {
 
         this.name = name;
 
+        expTypList = new ArrayList<>();
+        besitzerList = new ArrayList<>();
+        foerderungList = new ArrayList<>();
+        bildList = new ArrayList<>();
+
     }
 
-    public Foerdernder[] getFoerdernde() {
+    public List<Foerdernder> getFoerdernde() {
         return null; //TODO: implement Logic
     }
 
@@ -119,20 +123,20 @@ public class Exponat {
         this.raum = raum;
     }
 
-    public List<Bild> getBildArray() {
-        return bildArray;
+    public List<Bild> getBildList() {
+        return bildList;
     }
 
-    public void setBildArray(List<Bild> bildArray) {
-        this.bildArray = bildArray;
+    public void setBildList(List<Bild> bildList) {
+        this.bildList = bildList;
     }
 
-    public List<Exponattyp> getExpTypArray() {
-        return expTypArray;
+    public List<Exponattyp> getExpTypList() {
+        return expTypList;
     }
 
-    public void setExpTypArray(List<Exponattyp> expTypArray) {
-        this.expTypArray = expTypArray;
+    public void setExpTypList(List<Exponattyp> expTypList) {
+        this.expTypList = expTypList;
     }
 
     public String getName() {
@@ -141,5 +145,29 @@ public class Exponat {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void addBesitzer(Besitzer besitzer) {
+        besitzerList.add(besitzer);
+    }
+
+    public List<Besitzer> getBesitzerList() {
+        return besitzerList;
+    }
+
+    public void setBesitzerList(List<Besitzer> besitzerList) {
+        this.besitzerList = besitzerList;
+    }
+
+    public void addFoerderung(ExponatsFoerderung foerderung) {
+        foerderungList.add(foerderung);
+    }
+
+    public List<ExponatsFoerderung> getFoerderungList() {
+        return foerderungList;
+    }
+
+    public void setFoerderungList(List<ExponatsFoerderung> foerderungList) {
+        this.foerderungList = foerderungList;
     }
 }

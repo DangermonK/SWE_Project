@@ -1,18 +1,23 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Angestellter extends Person {
 
     private Rolle rolle;
 
     private String domaenenName;
 
-    private Anlage[] anlageArray;
-    private Aenderung[] aenderungsarray;
+    private List<Anlage> anlageList;
+    private List<Aenderung> aenderungsList;
 
     public Angestellter(String persNr, String name, String domaenenName) {
         super(persNr, name);
-
         this.domaenenName = domaenenName;
+
+        anlageList = new ArrayList<>();
+        aenderungsList = new ArrayList<>();
 
     }
 
@@ -24,27 +29,35 @@ public class Angestellter extends Person {
         this.rolle = rolle;
     }
 
-    public Anlage[] getAnlageArray() {
-        return anlageArray;
-    }
-
-    public void setAnlageArray(Anlage[] anlageArray) {
-        this.anlageArray = anlageArray;
-    }
-
-    public Aenderung[] getAenderungsarray() {
-        return aenderungsarray;
-    }
-
-    public void setAenderungsarray(Aenderung[] aenderungsarray) {
-        this.aenderungsarray = aenderungsarray;
-    }
-
     public String getDomaenenName() {
         return domaenenName;
     }
 
     public void setDomaenenName(String domaenenName) {
         this.domaenenName = domaenenName;
+    }
+
+    public void addAnlage(Anlage anlage) {
+        anlageList.add(anlage);
+    }
+
+    public List<Anlage> getAnlageList() {
+        return anlageList;
+    }
+
+    public void setAnlageList(List<Anlage> anlageList) {
+        this.anlageList = anlageList;
+    }
+
+    public void addAenderung(Aenderung aenderung) {
+        aenderungsList.add(aenderung);
+    }
+
+    public List<Aenderung> getAenderungsList() {
+        return aenderungsList;
+    }
+
+    public void setAenderungsList(List<Aenderung> aenderungsList) {
+        this.aenderungsList = aenderungsList;
     }
 }

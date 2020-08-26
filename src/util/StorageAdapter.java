@@ -1,35 +1,40 @@
 package util;
 
 import datentypen.Dateiformat;
+import de.dhbwka.swe.utils.util.CSVReader;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StorageAdapter {
 
+    public List<String[]> importData(String path, Dateiformat format) {
 
+        List<String[]> data = new ArrayList<>();
+        switch(format) {
+            case CSV:
+                CSVReader reader = new CSVReader(path);
+                try {
+                    data = reader.readData();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                data.removeIf(element -> element.length == 0 || element[0].matches("KOMMENTAR"));
+                break;
+            case JSON:
 
-    public String[] importData(String path, Dateiformat format) {
-        return null;
+                break;
+        }
+
+        return data;
     }
 
-    public void exportData(String path) {
-
-    }
+    public void exportData(String path) {}
 
     public void savedata() {}
     public void loadalldata() {}
     public void loadProperties() {}
     public void saveProperties() {}
-
-    public String loadTestData() {
-
-        String exponatData[] = {
-                "E8593; ; ; ; ; ; ; . ; . ",
-                "E1034;Der Schrei;Eine Menschliche Figur unter rotem Himmel, die ihre Hände gegen den Kopf presst, während sie Mund und Augen angstvoll aufreißt;Expressionismus;1910;200.0;Öl, Tempera und Pastell auf Pappe;false; . ; . ",
-                "E2839;Martin-Luther;Portrait von Martin Luther;Expressionismus;1730;90000.0;Acryl;true; . ; . "
-        };
-
-        return exponatData[0];
-
-
-    }
 
 }

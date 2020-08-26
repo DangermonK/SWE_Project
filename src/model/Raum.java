@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Raum {
@@ -10,9 +11,9 @@ public class Raum {
     private String kategorie;
     private String beschreibung;
 
-    private Exponat[] exponatArray;
+    private List<Exponat> exponatList;
 
-    private List<Bild> bildArray;
+    private List<Bild> bildList;
 
     @Override
     public int hashCode() {
@@ -25,18 +26,13 @@ public class Raum {
         this.groesse = groesse;
         this.exponatszahl = exponatszahl;
 
+        exponatList = new ArrayList<>();
+        bildList = new ArrayList<>();
+
     }
 
     public int getNummer() {
         return this.nummer;
-    }
-
-    public List<Bild> getBildArray() {
-        return bildArray;
-    }
-
-    public void setBildArray(List<Bild> bildArray) {
-        this.bildArray = bildArray;
     }
 
     public String getBeschreibung() {
@@ -70,4 +66,29 @@ public class Raum {
     public void setGroesse(int groesse) {
         this.groesse = groesse;
     }
+
+    public List<Exponat> getExponatList() {
+        return exponatList;
+    }
+
+    public void addExponat(Exponat exponat) {
+        exponatList.add(exponat);
+    }
+
+    public void setExponatList(List<Exponat> exponatList) {
+        this.exponatList = exponatList;
+    }
+
+    public void addBild(Bild bild) {
+        bildList.add(bild);
+    }
+
+    public List<Bild> getBildList() {
+        return bildList;
+    }
+
+    public void setBildList(List<Bild> bildList) {
+        this.bildList = bildList;
+    }
+
 }
