@@ -33,7 +33,7 @@ public class MuseumsController {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 400);
 
-        Exponat exp = (Exponat)controller.entityAdapter.getElement(Classtype.EXPONAT, data.get(0)[0]);
+        Exponat exp = (Exponat)controller.entityAdapter.getElement(Classtype.EXPONAT, "E2103");
 
         String exp1Info = TestAusgabe(exp.getInventarnummer(), exp.getName(), exp.getBeschreibung(), exp.getKategorie(), exp.getErstellungsJahr(),
                 exp.getSchaetzWert(), exp.getMaterial(), exp.isInWeb(), exp.getKuenstler(), exp.getHistorie());
