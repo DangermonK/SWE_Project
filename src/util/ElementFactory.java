@@ -40,21 +40,22 @@ public class ElementFactory {
         exponat.setInWeb(Boolean.parseBoolean(args[7]));
         exponat.setKuenstler(createKuenstler(args[8].split(",")));
 
-        // TODO: Check if regexes can be used like this.
-        exponat.setBildList(createBildList(args[9].split(",")));
+        exponat.setBildList(createBildList(args[9].split(":")));
 
-        exponat.setExpTypList(createExponattypList(args[10].split(",")));
+        exponat.setExpTypList(createExponattypList(args[10].split(":")));
 
         Historie historie = createHistorie(args[11].split(":"));
         historie.setExponat(exponat);
         exponat.setHistorie(historie);
 
-        // TODO: implement Foerderungs array solve historie references
         String[] besitzerArray = args[12].split(",");
         for(String ref : besitzerArray) {
             ((Besitzer)adapter.getElement(Classtype.BESITZER, ref)).addExponat(exponat);
             exponat.addBesitzer((Besitzer)adapter.getElement(Classtype.BESITZER, ref));
         }
+
+        ((Raum) adapter.getElement(Classtype.RAUM, Integer.valueOf(args[13]))).addExponat(exponat);
+        exponat.setRaum((Raum) adapter.getElement(Classtype.RAUM, Integer.valueOf(args[13])));
 
         return exponat;
 
@@ -65,9 +66,7 @@ public class ElementFactory {
         Angestellter angestellter = new Angestellter(args[0], args[1], args[2]);
         angestellter.setRolle(Rolle.valueOf(args[3]));
 
-        angestellter.setBildList(createBildList(args[4].split(",")));
-
-        // TODO: implement Anlage and Aenderung array
+        angestellter.setBildList(createBildList(args[4].split(":")));
 
         return angestellter;
 
@@ -77,9 +76,7 @@ public class ElementFactory {
 
         Besitzer besitzer = new Besitzer(args[0], args[1], args[2], args[3], args[4]);
 
-        besitzer.setBildList(createBildList(args[5].split(",")));
-
-        // TODO: implement Exponat array
+        besitzer.setBildList(createBildList(args[5].split(":")));
 
         return besitzer;
 
@@ -89,9 +86,7 @@ public class ElementFactory {
 
         Foerdernder foerdernder = new Foerdernder(args[0], args[1], args[2], args[3], args[4]);
 
-        foerdernder.setBildList(createBildList(args[5].split(",")));
-
-        // TODO: implement Exponat array
+        foerdernder.setBildList(createBildList(args[5].split(":")));
 
         String[] exponatFoerderungArray = args[6].split(",");
         for(String exponatFoerderung : exponatFoerderungArray) {
@@ -118,27 +113,16 @@ public class ElementFactory {
         raum.setBeschreibung(args[3]);
         raum.setKategorie(args[4]);
 
-        raum.setBildList(createBildList(args[5].split(",")));
-
-        // TODO: implement Exponat array
-        // This is a temporary test
-        // ----------------------------
-        String[] expRefArray = args[6].split(",");
-        for(String ref: expRefArray) {
-            ((Exponat)adapter.getElement(Classtype.EXPONAT, ref)).setRaum(raum);
-            raum.addExponat((Exponat)adapter.getElement(Classtype.EXPONAT, ref));
-        }
-        // ----------------------------
+        raum.setBildList(createBildList(args[5].split(":")));
 
         return raum;
 
     }
 
     private List<Bild> createBildList(String[] args) {
-        // TODO: Check if regexes can be used like this.
         List<Bild> bildList = new ArrayList<>();
         for (String bild : args) {
-            String[] bildArgs = bild.split("\\.");
+            String[] bildArgs = bild.split(",");
             bildList.add(createBild(bildArgs));
         }
         return bildList;
@@ -308,7 +292,7 @@ public class ElementFactory {
     private List<Exponattyp> createExponattypList(String[] args) {
         List<Exponattyp> exponatTypArr = new ArrayList<Exponattyp>();
         for (String exponatTyp : args) {
-            String[] exponatTypArg = exponatTyp.split("\\.");
+            String[] exponatTypArg = exponatTyp.split(",");
             exponatTypArr.add(createExponattyp(exponatTypArg));
         }
         return exponatTypArr;

@@ -1,6 +1,8 @@
 package util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class EntityManager <T> {
 
@@ -14,6 +16,10 @@ public class EntityManager <T> {
         if(!contains(entity)) {
             entityMap.put(key, entity);
         }
+    }
+
+    public List<T> getAsList() {
+        return new ArrayList<>(entityMap.values());
     }
 
     public T find(Object key)  {
