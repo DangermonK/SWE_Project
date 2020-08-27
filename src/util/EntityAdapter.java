@@ -154,12 +154,13 @@ public class EntityAdapter {
             exponat.put("schaetzwert", exp.getSchaetzWert());
             exponat.put("material", exp.getMaterial());
             exponat.put("in web", exp.isInWeb());
+            exponat.put("raum", exp.getRaum().getNummer());
 
             JSONObject kuenstler = new JSONObject();
             kuenstler.put("name", exp.getKuenstler().getName());
             kuenstler.put("geburt", Statics.dateFormat.format(exp.getKuenstler().getGeburtsdatum()));
             kuenstler.put("tod", Statics.dateFormat.format(exp.getKuenstler().getTodesdatum()));
-            kuenstler.put("nationalität", exp.getKuenstler().getNationalitaet());
+            kuenstler.put("nationalitaet", exp.getKuenstler().getNationalitaet());
             exponat.put("kuenstler", kuenstler);
 
             exponat.put("bilder", createBildArray(exp.getBildList()));

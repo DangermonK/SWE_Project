@@ -24,7 +24,7 @@ public class MuseumsController {
         entityAdapter = new EntityAdapter();
         storageAdapter = new StorageAdapter();
 
-        List<String[]> data = storageAdapter.importData("src/assets/database/TestData.csv", Dateiformat.CSV);
+        List<String[]> data = storageAdapter.importData("src/assets/database/data.json", Dateiformat.JSON);
         entityAdapter.createAll(data);
 
         Object[][] tabellenArr = new Object[entityAdapter.getExponatList().size()][6];
@@ -56,7 +56,7 @@ public class MuseumsController {
 
         MuseumsController controller = new MuseumsController();
 
-       // controller.storageAdapter.exportData(controller.entityAdapter.getAllData(), "src/assets/database/data.json");
+        controller.storageAdapter.exportData(controller.entityAdapter.getAllData(), "src/assets/database/data.json");
 
     }
 

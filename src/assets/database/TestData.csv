@@ -7,7 +7,7 @@ ANGESTELLTER;P101;Robin Hefter;RH_User;ADMINISTRATOR;Schrei,src/assets/images/Sc
 ;;;;;;;;;;;;;;
 FOERDERNDER;P103;Justus Aurelius;justus@aurelius.com;Richkidstra�e 10 123456 Goldhausen;0178 1;Schrei.src/assets/images/,Schrei1.src/assets/images/;Geld-100.0-E2103,Geld-500.0-E2129;Sponsor-400.0;;;;;;
 ;;;;;;;;;;;;;;
-KOMMENTAR;;Besitzer;;;;;;;;;;;;
+KOMMENTAR;;Besitzer;;;;;;;;;;;;roll
 ;;;;;;;;;;;;;;
 BESITZER;P102;Hermann M�ller;hermann.mueller@gmx.de;Weinstra�e 8 73678 Gro�stadt;0179 69348209;Schrei,src/assets/images/Schrei.jpg,Schrei1.src/assets/images/Schrei1.jpg;;;;;;;;
 ;;;;;;;;;;;;;;
