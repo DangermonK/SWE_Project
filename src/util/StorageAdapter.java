@@ -42,27 +42,27 @@ public class StorageAdapter {
 
                     JSONArray exponatArr = (JSONArray) obj.get("exponate");
                     for(Object exponat: exponatArr) {
-                        data.add(buildExponat((JSONObject) exponat));
+                        data.add(getExponatData((JSONObject) exponat));
                     }
 
                     JSONArray raumArr = (JSONArray) obj.get("raeume");
                     for(Object raum: raumArr) {
-                        data.add(buildRaum((JSONObject) raum));
+                        data.add(getRaumData((JSONObject) raum));
                     }
 
                     JSONArray besitzerArr = (JSONArray) obj.get("besitzer");
                     for(Object besitzer: besitzerArr) {
-                        data.add(buildBesitzer((JSONObject) besitzer));
+                        data.add(getBesitzerData((JSONObject) besitzer));
                     }
 
                     JSONArray angestellterArr = (JSONArray) obj.get("angestellte");
                     for(Object angestellter: angestellterArr) {
-                        data.add(buildAngestellter((JSONObject) angestellter));
+                        data.add(getAngestellterData((JSONObject) angestellter));
                     }
 
                     JSONArray foerdernderArr = (JSONArray) obj.get("foerdernde");
                     for(Object foerdernder: foerdernderArr) {
-                        data.add(buildFoerderner((JSONObject) foerdernder));
+                        data.add(getFoerdernderData((JSONObject) foerdernder));
                     }
 
                 } catch (FileNotFoundException e) {
@@ -79,7 +79,7 @@ public class StorageAdapter {
         return data;
     }
 
-    private String[] buildFoerderner(JSONObject object) {
+    private String[] getFoerdernderData(JSONObject object) {
         String[] attributes = new String[9];
         attributes[0] = Classtype.FOERDERNDER.toString();
         attributes[1] = (String) object.get("persNr");
@@ -103,7 +103,7 @@ public class StorageAdapter {
 
     }
 
-    private String[] buildBesitzer(JSONObject object) {
+    private String[] getBesitzerData(JSONObject object) {
 
         String[] attributes = new String[7];
         attributes[0] = Classtype.BESITZER.toString();
@@ -119,7 +119,7 @@ public class StorageAdapter {
         return attributes;
     }
 
-    private String[] buildAngestellter(JSONObject object) {
+    private String[] getAngestellterData(JSONObject object) {
         String[] attributes = new String[6];
         attributes[0] = Classtype.ANGESTELLTER.toString();
         attributes[1] = (String) object.get("persNr");
@@ -133,7 +133,7 @@ public class StorageAdapter {
         return attributes;
     }
 
-    private String[] buildRaum(JSONObject object) {
+    private String[] getRaumData(JSONObject object) {
         String[] attributes = new String[7];
         attributes[0] = Classtype.RAUM.toString();
         attributes[1] = String.valueOf(object.get("nummer"));
@@ -147,7 +147,7 @@ public class StorageAdapter {
         return attributes;
     }
 
-    private String[] buildExponat(JSONObject object) {
+    private String[] getExponatData(JSONObject object) {
 
         String[] attributes = new String[15];
         attributes[0] = Classtype.EXPONAT.toString();

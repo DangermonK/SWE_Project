@@ -1,5 +1,7 @@
 package model;
 
+import datentypen.Rolle;
+
 import java.util.ArrayList;
 import java.util.List;
 
