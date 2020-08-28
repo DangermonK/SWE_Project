@@ -1,5 +1,6 @@
 import datentypen.Classtype;
 import datentypen.Dateiformat;
+import datentypen.SuchkriteriumExponat;
 import de.dhbwka.swe.utils.gui.TextComponent;
 import model.Exponat;
 import model.Historie;
@@ -7,6 +8,8 @@ import model.Kuenstler;
 import util.EntityAdapter;
 import util.Statics;
 import util.StorageAdapter;
+import view.MainGUI;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
@@ -20,39 +23,42 @@ public class MuseumsController {
     public MuseumsController() {
         entityAdapter = new EntityAdapter();
         storageAdapter = new StorageAdapter();
+
+        List<String[]> data = storageAdapter.importData("src/assets/database/data.json", Dateiformat.JSON);
+        entityAdapter.createAll(data);
+
+        Object[][] tabellenArr = new Object[entityAdapter.getExponatList().size()][6];
+        for(int i = 0; i < tabellenArr.length; i++) {
+            tabellenArr[i][0] = entityAdapter.getExponatList().get(i).getInventarnummer();
+            tabellenArr[i][1] = entityAdapter.getExponatList().get(i).getName();
+            tabellenArr[i][2] = entityAdapter.getExponatList().get(i).getRaum().getNummer();
+            tabellenArr[i][3] = entityAdapter.getExponatList().get(i).getKuenstler().getName();
+            tabellenArr[i][4] = entityAdapter.getExponatList().get(i).getKategorie();
+            Aenderung date = entityAdapter.getExponatList().get(i).getHistorie().getLetzteAenderung();
+            tabellenArr[i][5] = (date != null ? Statics.dateFormat.format(date.getAenderungsDatum()) : null);
+        }
+
+        String[] pathsArr = new String[((Exponat)entityAdapter.getElement(Classtype.EXPONAT, tabellenArr[0][0])).getBildList().size()];
+        for(int i = 0; i < pathsArr.length; i++) {
+            pathsArr[i] = ((Exponat)entityAdapter.getElement(Classtype.EXPONAT,  tabellenArr[0][0])).getBildList().get(i).getPfad();
+        }
+
+        new MainGUI(pathsArr, new String[] {
+                SuchkriteriumExponat.RAUM.toString(),
+                SuchkriteriumExponat.NAME.toString(),
+                SuchkriteriumExponat.KUENSTLERNAME.toString(),
+                SuchkriteriumExponat.KATEGORIE.toString(),
+                SuchkriteriumExponat.INVENTARNUMMER.toString(),
+                SuchkriteriumExponat.AENDERUNGSDATUM.toString()
+        }, tabellenArr);
     }
 
     public static void main(String[] args) {
 
         MuseumsController controller = new MuseumsController();
 
-        List<String[]> data = controller.storageAdapter.importData("src/assets/database/TestData.csv", Dateiformat.CSV);
-        controller.entityAdapter.createAll(data);
+        controller.storageAdapter.exportData(controller.entityAdapter.getAllData(), "src/assets/database/data.json");
 
-        JFrame frame = new JFrame("test");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(600, 400);
-
-        Exponat exp = (Exponat)controller.entityAdapter.getElement(Classtype.EXPONAT, "E2103");
-
-        String exp1Info = TestAusgabe(exp.getInventarnummer(), exp.getName(), exp.getBeschreibung(), exp.getKategorie(), exp.getErstellungsJahr(),
-                exp.getSchaetzWert(), exp.getMaterial(), exp.isInWeb(), exp.getKuenstler(), exp.getHistorie());
-
-        TextComponent text = TextComponent.builder("text").editable(false).notEditableColor(Color.BLACK).initialText(exp1Info).title("Testbox").build();
-
-        frame.add(text);
-
-        frame.setVisible(true);
-
-    }
-
-    private static String TestAusgabe(String invNr, String name, String beschreibung, String kategorie, int erstellungsjahr, double schaetzwert, String material,
-                                      boolean webanzeige, Kuenstler k, Historie h) {
-        return "Inventarnummer: " + invNr + "\nName: " + name + "\nbeschreibung: " + beschreibung + "\nkategorie: " + kategorie + "\nErstellungsjahr: " + erstellungsjahr +
-                "\nSchätzwert: " + schaetzwert + "\nMaterial: " + material + "\nWird im web angezeigt: " + (webanzeige ? "Ja" : "Nein") + "\nKünstler: " + k.getName() +
-                "\n* " + Statics.dateFormat.format(k.getGeburtsdatum()) + "  † " + Statics.dateFormat.format(k.getTodesdatum()) + "\n" +
-                "Historie: Das exponat wurde am " + Statics.dateFormat.format(h.getAnlage().getAnlageDatum()) + " angelegt. Gekauft wurde es am " +
-                Statics.dateFormat.format(h.getKaufList().get(0).getErwerbsDatum()) + " für " + h.getKaufList().get(0).getKaufwert() + " €.";
     }
 
 }

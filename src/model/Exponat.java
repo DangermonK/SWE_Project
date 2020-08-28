@@ -40,7 +40,11 @@ public class Exponat {
     }
 
     public List<Foerdernder> getFoerdernde() {
-        return null; //TODO: implement Logic
+        List<Foerdernder> foerdernderList = new ArrayList<>();
+        foerderungList.forEach(foerderung -> {
+            foerdernderList.add(foerderung.getFoerdernder());
+        });
+        return foerdernderList;
     }
 
     public boolean isInMuseum() {

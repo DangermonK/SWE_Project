@@ -1,24 +1,34 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Historie {
 
     private Anlage anlage;
-    private List<Aenderung> aenderungArray;
-    private List<Verkauf> verkaufArray;
-    private List<Verleih> verleihArray;
-    private List<Kauf> kaufArray;
-    private List<Ausleihe> ausleiheArray;
+    private List<Aenderung> aenderungList;
+    private List<Verkauf> verkaufList;
+    private List<Verleih> verleihList;
+    private List<Kauf> kaufList;
+    private List<Ausleihe> ausleiheList;
 
     private Exponat exponat;
 
     public Historie() {
 
+        aenderungList = new ArrayList<>();
+        kaufList = new ArrayList<>();
+        verkaufList = new ArrayList<>();
+        verleihList = new ArrayList<>();
+        ausleiheList = new ArrayList<>();
+
     }
 
     public Aenderung getLetzteAenderung() {
-        return null; //TODO: logic
+        if(aenderungList.size() > 0) {
+            return aenderungList.get(0);
+        }
+        return null;
     }
 
     public Anlage getAnlage() {
@@ -30,43 +40,43 @@ public class Historie {
     }
 
     public List<Aenderung> getAenderungList() {
-        return aenderungArray;
+        return aenderungList;
     }
 
-    public void setAenderungList(List<Aenderung> aenderungArray) {
-        this.aenderungArray = aenderungArray;
+    public void setAenderungList(List<Aenderung> aenderungList) {
+        this.aenderungList = aenderungList;
     }
 
     public List<Verkauf> getVerkaufList() {
-        return verkaufArray;
+        return verkaufList;
     }
 
-    public void setVerkaufList(List<Verkauf> verkaufArray) {
-        this.verkaufArray = verkaufArray;
+    public void setVerkaufList(List<Verkauf> verkaufList) {
+        this.verkaufList = verkaufList;
     }
 
     public List<Verleih> getVerleihList() {
-        return verleihArray;
+        return verleihList;
     }
 
-    public void setVerleihList(List<Verleih> verleihArray) {
-        this.verleihArray = verleihArray;
+    public void setVerleihList(List<Verleih> verleihList) {
+        this.verleihList = verleihList;
     }
 
     public List<Kauf> getKaufList() {
-        return kaufArray;
+        return kaufList;
     }
 
-    public void setKaufList(List<Kauf> kaufArray) {
-        this.kaufArray = kaufArray;
+    public void setKaufList(List<Kauf> kaufList) {
+        this.kaufList = kaufList;
     }
 
     public List<Ausleihe> getAusleiheList() {
-        return ausleiheArray;
+        return ausleiheList;
     }
 
-    public void setAusleiheList(List<Ausleihe> ausleiheArray) {
-        this.ausleiheArray = ausleiheArray;
+    public void setAusleiheList(List<Ausleihe> ausleiheList) {
+        this.ausleiheList = ausleiheList;
     }
 
     public Exponat getExponat() {

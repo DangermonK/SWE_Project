@@ -15,7 +15,13 @@ public class Foerdernder extends JuristischePerson {
     }
 
     public List<Exponat> getExponate() {
-        return null; //Todo: add logic
+        List<Exponat> exponatList = new ArrayList<>();
+        foerderungList.forEach(foerderung -> {
+            if(foerderung instanceof ExponatsFoerderung) {
+                exponatList.add(((ExponatsFoerderung) foerderung).getExponat());
+            }
+        });
+        return exponatList;
     }
 
     public void addFoerderung(Foerderung foerderung) {
