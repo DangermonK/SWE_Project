@@ -58,10 +58,10 @@ public class GUIExponatÜbersicht implements IGUIEventListener {
         topPanel.add(leftPanel,top);
 
         ButtonElement[] buttons = new ButtonElement[]{
-                ButtonElement.builder("addPic").buttonText("Bild hinzufügen").type(ButtonElement.Type.BUTTON).build(),
-                ButtonElement.builder("removePic").buttonText("Bild entfernen").type(ButtonElement.Type.BUTTON).build(),
-                ButtonElement.builder("save").buttonText("speichern").type(ButtonElement.Type.BUTTON).build(),
-                ButtonElement.builder("cancel").buttonText("abbrechen").type(ButtonElement.Type.BUTTON).build(),
+                ButtonElement.builder("anlegen").buttonText("anlegen").type(ButtonElement.Type.BUTTON).build(),
+                ButtonElement.builder("bearbeiten").buttonText("bearbeiten").type(ButtonElement.Type.BUTTON).build(),
+                ButtonElement.builder("loeschen").buttonText("löschen").type(ButtonElement.Type.BUTTON).build(),
+                ButtonElement.builder("details").buttonText("mehr Details").type(ButtonElement.Type.BUTTON).build(),
         };
 
         ButtonComponent buttonComp = ButtonComponent.builder("BC").buttonElements(buttons)

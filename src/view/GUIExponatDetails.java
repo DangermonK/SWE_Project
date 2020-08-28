@@ -1,90 +1,95 @@
 package view;
 
-import de.dhbwka.swe.utils.event.GUIEvent;
-import de.dhbwka.swe.utils.event.IGUIEventListener;
 import de.dhbwka.swe.utils.gui.*;
 import de.dhbwka.swe.utils.model.IListElement;
 import de.dhbwka.swe.utils.model.ImageElement;
-import de.dhbwka.swe.utils.model.Person;
 import de.dhbwka.swe.utils.util.ImageLoader;
-
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import de.dhbwka.swe.utils.gui.TextComponent;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class GUIExponatDetails {
 
+    SimpleListComponent kuenstlerListComp;
+    SimpleListComponent besitzerListComp;
+    SimpleListComponent foerderungListComp;
+    SimpleListComponent exponattypListComp;
+    SimpleListComponent historyListComp;
 
-    public GUIExponatDetails() {
+    public GUIExponatDetails(String []bildPfade , Map<String,String> attribute, String beschreibung, Boolean showWeb, Boolean inMuseuem) {
 
         JFrame detailFrame = new JFrame("");
-        detailFrame.setLayout(new GridLayout(3,1));
-        //GridBagConstraints f = new GridBagConstraints();
+        detailFrame.setLayout(new GridBagLayout());
+        GridBagConstraints main = new GridBagConstraints();
 
-        //JPanel imagePanel = new JPanel();
+        main.gridx=0;
+        main.weightx=1;
+        main.weighty=0.2;
+        main.gridwidth=1;
+        main.gridy = 0;
+        main.gridheight =1;
+        main.fill = GridBagConstraints.HORIZONTAL;
+
+
+        //JPanel slidePanel = new JPanel(new GridLayout(1,1));
+        JPanel slidePanel = new JPanel();
+        slidePanel.setLayout(new BorderLayout());
 
         ImageElement[] loadedImageElements = null;
         try{
-            loadedImageElements = ImageLoader.loadImageElements("C:\\users\\master\\desktop" );
+            loadedImageElements = ImageLoader.loadImageElements(bildPfade);
         }
         catch( Exception e ){
             e.printStackTrace();
         }
 
+        SlideshowComponent slideshow =   SlideshowComponent.builder("SSC")
+                .imageElements(loadedImageElements).smallImageSize(new Dimension(40, 40)).build();
+        slideshow.setPreferredSize(new Dimension(500,250));
 
-        SlideshowComponent slideshow =   SlideshowComponent.builder("SSC").imageElements(loadedImageElements).smallImageSize(new Dimension(40, 40)).build();
+        slidePanel.add(slideshow, BorderLayout.PAGE_START);
+        Border panelBorder = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5,5,5,5),BorderFactory.createEtchedBorder());
+        slidePanel.setBorder(panelBorder);
+        detailFrame.add(slidePanel,main);
 
-       /* f.gridx = 0;
-        f.gridy = 0;
-        f.weighty = 0.0;
-        f.weightx =1.0;
-        f.fill = GridBagConstraints.BOTH;
-        f.anchor = GridBagConstraints.NORTH;*/
-        detailFrame.add(slideshow);
-
-
-        //detailFrame.add(imagePanel);
-
-        //JPanel attributePanel = new JPanel(new GridLayout(1,2,50,100));
+        main.fill = GridBagConstraints.HORIZONTAL;
 
         JPanel attributePanel = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        c.weightx = 1;
-        c.weighty = 0.0;
+
+        c.gridx=0;
+        c.weightx=0.5;
+        c.gridwidth=1;
+        c.gridy = 0;
+        c.gridheight =1;
         c.fill = GridBagConstraints.HORIZONTAL;
 
 
-        String[] comboboxDataFutter = new String[]{"Gras", "Moehren", "Fleisch", "Mäuse"};
-        String[] comboboxDataKatzen = new String[]{"Maunz", "Tommy", "Mieze"};
         AttributeElement[] attElemsLeft = new AttributeElement[]{
                 AttributeElement.builder("Inv-Nr.")
                         .labelName("Inv-Nr.")
                         .labelSize(new Dimension(100,5))
                         .actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
                         .mandatory(false).maxLength(10)
-                        .value("ebbes")
+                        .value(attribute.get("Inv-Nr."))
                         .build(),
 
                 AttributeElement.builder("Schaetzwert")
                         .labelName("Schätzwert €")
                         .labelSize(new Dimension(100,5))
                         .actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
-                        .mandatory(false).maxLength(10).value("ebbes").build(),
-                //AttributeElement.builder("Futter").labelName("Futter").value(comboboxDataFutter[0]).actionType(AttributeElement.ActionType.COMBOBOX).build()};
+                        .mandatory(false).maxLength(10).value(attribute.get("Schaetzwert")).build(),
 
                 AttributeElement.builder("Material")
                         .labelName("Material")
                         .labelSize(new Dimension(100,5))
                         .actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
-                        .mandatory(false).maxLength(10).value("ebbes").build(),
-
-                /*AttributeElement.builder("Beschreibung")
-                        .labelName("Beschreibung")
-                        .labelSize(new Dimension(100,5))
-                        .actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
-                        .mandatory(false).maxLength(10).value("ebbes").build(),*/
+                        .mandatory(false).maxLength(10).value(attribute.get("Material")).build(),
                 };
+
         AttributeComponent attComp = null;
 
         AttributeElement[] attElemsRight = new AttributeElement[]{
@@ -92,48 +97,35 @@ public class GUIExponatDetails {
                         .labelName("Name")
                         .labelSize(new Dimension(100,5))
                         .actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
-                        .mandatory(false).maxLength(10).value("ebbes").build(),
+                        .mandatory(false).maxLength(10).value(attribute.get("Name")).build(),
 
                 AttributeElement.builder("Erstellungsjahr")
                         .labelName("Erstellungsjahr")
                         .labelSize(new Dimension(100,5))
                         .actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
-                        .mandatory(false).maxLength(10).value("ebbes").build(),
-                //AttributeElement.builder("Futter").labelName("Futter").value(comboboxDataFutter[0]).actionType(AttributeElement.ActionType.COMBOBOX).build()};
+                        .mandatory(false).maxLength(10).value(attribute.get("Erstellungsjahr")).build(),
 
                 AttributeElement.builder("Raum")
                         .labelName("Raum")
                         .labelSize(new Dimension(100,5))
                         .actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
-                        .mandatory(false).maxLength(10).value("ebbes").build(),
+                        .mandatory(false).maxLength(10).value(attribute.get("Raum")).build(),
 
                 AttributeElement.builder("Kategorie")
                         .labelName("Kategorie")
                         .labelSize(new Dimension(100,5))
                         .actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
-                        .mandatory(false).maxLength(10).value("ebbes").build(),
-
-               /* AttributeElement.builder("isInMuseum")
-                        .labelName("Ist im Museum")
-                        .actionType(AttributeElement.ActionType.BUTTON)
-                        .labelSize(new Dimension(100,5))
-                        //.actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
-                        .mandatory(false).maxLength(10).build(),
-
-                AttributeElement.builder("ShowInWeb")
-                        .labelName("Im Web anzeigen")
-                        .actionType(AttributeElement.ActionType.BUTTON)
-                        .labelSize(new Dimension(100,5))
-                        //.actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
-                        .mandatory(false).maxLength(10).build(),*/
+                        .mandatory(false).maxLength(10).value(attribute.get("Kategorie")).build(),
         };
         AttributeComponent attComp2 = null;
 
+        //Bearbeitung der Attributfelder deaktivieren
         for (AttributeElement ae: attElemsLeft) {
             ((JTextField)((AttributeElement) ae).getComponent(1)).setEditable(false);
         }
+
         for (AttributeElement ae: attElemsRight) {
-            //((JTextField)((AttributeElement) ae).getComponent(1)).setEditable(false);
+            ((JTextField)((AttributeElement) ae).getComponent(1)).setEditable(false);
         }
 
         try {
@@ -146,123 +138,125 @@ public class GUIExponatDetails {
 
         attComp2.setEnabled(true);
 
-        c.gridx = 0;
-        c.gridwidth = 1;
-        c.gridy = 0;
-        c.insets = new Insets(0,5,0,0);
+
+        //AttributComponent links hinzufügen
+        c.insets = new Insets(0,0,0,30);
         attributePanel.add(attComp,c);
 
-
-        c.gridx = 1;
-        c.gridwidth = 1;
-        c.gridy = 0;
-        c.insets = new Insets(0,50,0,0);
+        //AttributComponent rechts hinzufügen
+        c.gridx=1;
+        c.weightx=0.5;
+        c.insets = new Insets(0,0,0,0);
         attributePanel.add(attComp2,c);
 
-        TextComponent tc = TextComponent.builder("textFeld").title("Beschreibung").build();
-        c.gridx = 0;
-        c.gridy = 1;
-        c.insets =new Insets(0,5,0,0);
+        TextComponent tc = TextComponent.builder("textFeld").title("Beschreibung").initialText(beschreibung).build();
+        c.gridx=0;
+        c.gridy=1;
+        c.insets = new Insets(0,0,0,30);
         attributePanel.add(tc,c);
 
-        JPanel checkBoxes = new JPanel(new GridLayout(2,2));
+
+        JPanel checkBoxes = new JPanel(new GridBagLayout());
+        GridBagConstraints d = new GridBagConstraints();
+        d.gridx=0;
+        d.weightx=0.5;
+        d.gridwidth=1;
+        d.gridy = 0;
+        d.gridheight =1;
+        d.fill = GridBagConstraints.HORIZONTAL;
+        d.insets = new Insets(0,0,0,0);
+
         JLabel labelInMuseum = new JLabel("Ist im Museum:");
         JCheckBox cbInMuseum = new JCheckBox();
         cbInMuseum.setHorizontalTextPosition(SwingConstants.LEFT);
         cbInMuseum.setEnabled(false);
+        cbInMuseum.setSelected(inMuseuem);
         JLabel labelInWeb = new JLabel("Im Web anzeigen:");
         JCheckBox cbInWeb = new JCheckBox();
         cbInWeb.setEnabled(false);
-
+        cbInWeb.setSelected(showWeb);
         cbInWeb.setHorizontalTextPosition(SwingConstants.LEFT);
-        checkBoxes.add(labelInMuseum);
-        checkBoxes.add(cbInMuseum);
-        checkBoxes.add(labelInWeb);
-        checkBoxes.add(cbInWeb);
+        checkBoxes.add(labelInMuseum,d);
 
-        c.gridx =1;
-        c.gridy =1;
+        d.gridx=1;
+        d.insets = new Insets(0,0,0,0);
+        checkBoxes.add(cbInMuseum,d);
+
+        d.insets = new Insets(0,0,0,0);
+        d.gridx=0;
+        d.gridy=1;
+        d.weightx=0.5;
+        checkBoxes.add(labelInWeb,d);
+
+        d.insets = new Insets(0,0,0,0);
+        d.gridx=1;
+        d.gridy=1;
+        checkBoxes.add(cbInWeb,d);
+
+        cbInMuseum.setHorizontalAlignment(SwingConstants.RIGHT);
+        cbInWeb.setHorizontalAlignment(SwingConstants.RIGHT);
 
 
-        c.insets = new Insets(0,50,0,0);
+        c.insets = new Insets(0,0,0,0);
+        c.gridx=1;
         attributePanel.add(checkBoxes,c);
 
+        attributePanel.setBorder(panelBorder);
+        main.weighty=0.3;
+        main.gridy = 1;
+       // main.fill = GridBagConstraints.BOTH;
+        detailFrame.add(attributePanel,main);
 
-
-
-
-       /* f.gridx = 0;
-        f.gridy = 1;
-        f.weightx =1.0;
-        f.weighty =1.0;
-        f.fill = GridBagConstraints.BOTH;*/
-        detailFrame.add(attributePanel);
-
-
-        ArrayList<IListElement> historyElements = new ArrayList<IListElement>();
-        historyElements.add((new Person("Willi", "test")));
-
-        ArrayList<IListElement> foerderungElements = new ArrayList<IListElement>();
-        foerderungElements.add((new Person("cro", "test")));
-
-        ArrayList<IListElement> besitzerElements = new ArrayList<IListElement>();
-        foerderungElements.add((new Person("cro", "test")));
-
-        ArrayList<IListElement> exponattypElements = new ArrayList<IListElement>();
-        foerderungElements.add((new Person("cro", "test")));
-
-        ArrayList<IListElement> kuenstlerElements = new ArrayList<IListElement>();
-        foerderungElements.add((new Person("cro", "test")));
-
-
-
-        SimpleListComponent historyListComp =
+        //ListComponents initalisieruen
+         historyListComp =
                 SimpleListComponent.builder("historyList" )
                         .font( new Font( "SansSerif",Font.ITALIC,10) )
                         .selectionMode( ListSelectionModel.SINGLE_SELECTION )
                         .title("History")
                         .build();
-        historyListComp.setListElements( historyElements );
+        //historyListComp.setListElements( historyElements );
         historyListComp.setCellRenderer( new ListComponentCellRenderer() ); //optional
+
         //historyListComp.addObserver( ... );
 
-        SimpleListComponent foerderungListComp =
+         foerderungListComp =
                 SimpleListComponent.builder("historyList" )
                         .font( new Font( "SansSerif",Font.ITALIC,10) )
                         .title("Förderung")
                         .selectionMode( ListSelectionModel.SINGLE_SELECTION )
                         .build();
-        foerderungListComp.setListElements( historyElements );
+       // foerderungListComp.setListElements( historyElements );
         foerderungListComp.setCellRenderer( new ListComponentCellRenderer() ); //optional
         //foerderungListComp.addObserver( ... );
 
-        SimpleListComponent besitzerListComp =
+        besitzerListComp =
                 SimpleListComponent.builder("historyList" )
                         .font( new Font( "SansSerif",Font.ITALIC,10) )
                         .selectionMode( ListSelectionModel.SINGLE_SELECTION )
                         .title("Besitzer")
                         .build();
-        besitzerListComp.setListElements( historyElements );
+        //besitzerListComp.setListElements( historyElements );
+        //besitzerListComp.set
         besitzerListComp.setCellRenderer( new ListComponentCellRenderer() ); //optional
         //besitzerListComp.addObserver( ... );
 
-        SimpleListComponent exponattypListComp =
+         exponattypListComp =
                 SimpleListComponent.builder("historyList" )
                         .font( new Font( "SansSerif",Font.ITALIC,10) )
                         .title("Exponattyp")
                         .selectionMode( ListSelectionModel.SINGLE_SELECTION )
                         .build();
-        exponattypListComp.setListElements( historyElements );
+        //exponattypListComp.setListElements( historyElements );
         exponattypListComp.setCellRenderer( new ListComponentCellRenderer() ); //optional
         //exponattypListComp.addObserver( ... );
 
-        SimpleListComponent kuenstlerListComp =
+         kuenstlerListComp =
                 SimpleListComponent.builder("historyList" )
                         .font( new Font( "SansSerif",Font.ITALIC,10) )
                         .title("Künstler")
                         .selectionMode( ListSelectionModel.SINGLE_SELECTION )
                         .build();
-        kuenstlerListComp.setListElements( historyElements );
+       // kuenstlerListComp.setListElements( historyElements );
         kuenstlerListComp.setCellRenderer( new ListComponentCellRenderer() ); //optional
         //kuenstlerListComp.addObserver( ... );
 
@@ -274,19 +268,34 @@ public class GUIExponatDetails {
         listPanel.add(exponattypListComp);
         listPanel.add(kuenstlerListComp);
 
-        /*f.gridx = 0;
-        f.gridy = 3;
-        f.weighty = 1.0;
-        f.weightx =1.0;
-        f.fill = GridBagConstraints.BOTH;*/
-        detailFrame.add(listPanel);
+        listPanel.setBorder(panelBorder);
+        main.gridy = 2;
+        main.weighty=0.45;
+       // main.fill = GridBagConstraints.HORIZONTAL;
+        detailFrame.add(listPanel,main);
 
-
-
-        detailFrame.setSize(400,400);
+        detailFrame.setSize(500,700);
         detailFrame.setVisible(true);
-
     }
 
+    public void setKuenstler(ArrayList<IListElement> kuenstler){
+        kuenstlerListComp.setListElements(kuenstler);
+    }
+
+    public void setFoerderungen(ArrayList<IListElement> foerderungen){
+        foerderungListComp.setListElements(foerderungen);
+    }
+
+    public void setHistorie(ArrayList<IListElement> historie){
+        historyListComp.setListElements(historie);
+    }
+
+    public void setExponattyp(ArrayList<IListElement> exponattyp){
+        exponattypListComp.setListElements(exponattyp);
+    }
+
+    public void setBesitzer(ArrayList<IListElement> besitzer){
+        besitzerListComp.setListElements(besitzer);
+    }
 
 }

@@ -8,65 +8,82 @@ import de.dhbwka.swe.utils.model.ImageElement;
 import de.dhbwka.swe.utils.util.ImageLoader;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 
 public class GUIExponatBearbeiten implements IGUIEventListener {
 
-    public GUIExponatBearbeiten(){
+
+    JCheckBox inWebBox;
+    AttributeElement[] attElemsLeft;
+
+    public GUIExponatBearbeiten(String[] bildPfade, String[] comboboxDataExponattyp, String[] comboboxDataKategorie, String[] comboboxDataMaterial,
+                                String name, String erstellungsjahr, String schaetzwert, Boolean showWeb, String beschreibung){
         JFrame bearbeitenFrame = new JFrame();
+
         bearbeitenFrame.setLayout(new GridLayout(3,1,20,20));
 
+        Border panelBorder = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(7,7,7,7),BorderFactory.createEtchedBorder());
+
         JPanel toppanel = new JPanel();
+
         toppanel.setLayout(new GridBagLayout());
         GridBagConstraints top = new GridBagConstraints();
         top.weightx=0.6;
         top.weighty=1.0;
         top.gridx=0;
         top.gridy =0;
-
         top.fill= GridBagConstraints.HORIZONTAL;
+
+
+        //Fallback bild für Anlegen
+        if(bildPfade.length==0 || bildPfade[0].isEmpty()){
+            bildPfade = new String[]{"C:\\_Workspace_\\IdeaProjects\\SWE_Project\\src\\assets\\images\\Schrei.jpg"};
+            System.out.println("test");
+        }
 
         ImageElement[] loadedImageElements = null;
         try{
-            loadedImageElements = ImageLoader.loadImageElements("C:\\users\\master\\desktop" );
+            loadedImageElements = ImageLoader.loadImageElements(bildPfade);
         }
         catch( Exception e ){
             e.printStackTrace();
         }
 
-        SlideshowComponent slideshow =   SlideshowComponent.builder("SSC").imageElements(loadedImageElements).smallImageSize(new Dimension(40, 40)).build();
+        SlideshowComponent slideshow =   SlideshowComponent.builder("SSC").imageElements(loadedImageElements)
+                .smallImageSize(new Dimension(40, 40)).build();
 
+        slideshow.setBorder(panelBorder);
         toppanel.add(slideshow,top);
-
-
 
         ButtonElement[] btns = new ButtonElement[]{
                 ButtonElement.builder("addPic").buttonText("Bild hinzufügen").type(ButtonElement.Type.BUTTON).build(),
                 ButtonElement.builder("removePic").buttonText("Bild entfernen").type(ButtonElement.Type.BUTTON).build(),
+                ButtonElement.builder("leer").buttonText(" ").type(ButtonElement.Type.BUTTON).backgroundColor(Color.WHITE).enableAtStartup(false).build(),
                 ButtonElement.builder("save").buttonText("speichern").type(ButtonElement.Type.BUTTON).build(),
                 ButtonElement.builder("cancel").buttonText("abbrechen").type(ButtonElement.Type.BUTTON).build(),
         };
 
+
+
         ButtonComponent buttonComp = ButtonComponent.builder("BC").buttonElements(btns)
                 .position(ButtonComponent.Position.EAST)
                 .stretchButtons()
-                .title("test")
-
-                .buttonColors(new Color[]{Color.cyan, null, Color.red, Color.yellow, null})
-                .buttonTextColors(new Color[]{null, Color.cyan, null, null, Color.magenta})
-                //.buttonFonts(new Font[]{null, this.testFont1, this.testFont2, this.testFont3, this.testFont3})
-                //.buttonSize(new Dimension(100, 40))
                 .build();
         //buttonComp.addObserver(this);
 
-        top.weightx=0.4;
+        top.weightx=0.0;
         top.gridx=1;
         top.gridy =0;
+        top.anchor = GridBagConstraints.NORTH;
+        top.fill = GridBagConstraints.VERTICAL;
 
-
+        buttonComp.setBorder(panelBorder);
         toppanel.add(buttonComp,top);
 
         JPanel attributePanel = new JPanel(new GridBagLayout());
+       // attributePanel.setBackground(Color.white);
+        attributePanel.setBorder(panelBorder);
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1;
         c.weighty = 0.35;
@@ -75,56 +92,53 @@ public class GUIExponatBearbeiten implements IGUIEventListener {
         c.fill = GridBagConstraints.HORIZONTAL;
 
 
-        String[] comboboxDataFutter = new String[]{"Gras", "Moehren", "Fleisch", "Mäuse"};
-        String[] comboboxDataKatzen = new String[]{"Maunz", "Tommy", "Mieze"};
-        AttributeElement[] attElemsLeft = new AttributeElement[]{
+        attElemsLeft = new AttributeElement[]{
                 AttributeElement.builder("Name")
                         .labelName("Name")
                         .labelSize(new Dimension(100,5))
                         .actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
                         .mandatory(false).maxLength(10)
-                        .value("ebbes")
+                        .value(name)
                         .build(),
 
                 AttributeElement.builder("Erstellungsjahr")
                         .labelName("Erstellungsjahr")
                         .labelSize(new Dimension(100,5))
                         .actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
-                        .mandatory(false).maxLength(10).value("ebbes").build(),
+                        .mandatory(false).maxLength(10).value(erstellungsjahr).build(),
 
                 AttributeElement.builder("Schaetzwert")
                         .labelName("Schätzwert €")
                         .labelSize(new Dimension(100,5))
                         .actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
-                        .mandatory(false).maxLength(10).value("ebbes").build(),
+                        .mandatory(false).maxLength(10).value(schaetzwert).build(),
                 //AttributeElement.builder("Futter").labelName("Futter").value(comboboxDataFutter[0]).actionType(AttributeElement.ActionType.COMBOBOX).build()};
 
 
 
                 AttributeElement.builder("Kategorie")
-                        .labelName("Kategorie").value(comboboxDataFutter[0])
+                        .labelName("Kategorie")
                         .labelSize(new Dimension(100,5))
-                        .value(comboboxDataFutter[0])
-                        .data(comboboxDataFutter)
+                        .value(comboboxDataKategorie[0])
+                        .data(comboboxDataKategorie)
                         .actionType(AttributeElement.ActionType.EDITABLE_COMBOBOX).build(),
 
                 AttributeElement.builder("Material")
-                        .labelName("Material").value(comboboxDataFutter[0])
+                        .labelName("Material")
                         .labelSize(new Dimension(100,5))
-                        .value(comboboxDataFutter[0])
-                        .data(comboboxDataFutter)
+                        .value(comboboxDataMaterial[0])
+                        .data(comboboxDataMaterial)
                         .actionType(AttributeElement.ActionType.EDITABLE_COMBOBOX).build(),
 
                 AttributeElement.builder("Exponattyp")
-                        .labelName("Exponattyp").value(comboboxDataFutter[0])
+                        .labelName("Exponattyp")
                         .labelSize(new Dimension(100,5))
-                        .value(comboboxDataFutter[0])
-                        .data(comboboxDataFutter)
+                        .value(comboboxDataExponattyp[0])
+                        .data(comboboxDataExponattyp)
                         .actionType(AttributeElement.ActionType.EDITABLE_COMBOBOX).build()
         };
 
         AttributeComponent attComp = null;
-
 
 
         try {
@@ -135,6 +149,8 @@ public class GUIExponatBearbeiten implements IGUIEventListener {
         }
         attComp.setEnabled(true);
 
+        //attElemsLeft[5].setLabelBGColor(Color.RED);
+
 
         c.gridx = 0;
         c.gridwidth = 1;
@@ -142,6 +158,7 @@ public class GUIExponatBearbeiten implements IGUIEventListener {
         c.weighty=0.5;
         c.insets = new Insets(0,5,0,0);
         attributePanel.add(attComp,c);
+
 
         JPanel choosePanel = new JPanel(new GridLayout(6,2));
 
@@ -158,7 +175,8 @@ public class GUIExponatBearbeiten implements IGUIEventListener {
         JButton besitzerButton = new JButton("auswählen");
         JButton historieButton = new JButton("bearbeiten");
 
-        JCheckBox inWebBox = new JCheckBox();
+        inWebBox = new JCheckBox();
+        inWebBox.setSelected(showWeb);
         inWebBox.setHorizontalAlignment(SwingConstants.RIGHT);
 
         choosePanel.add(raumLabel);
@@ -179,7 +197,6 @@ public class GUIExponatBearbeiten implements IGUIEventListener {
         choosePanel.add(inWebLabel);
         choosePanel.add(inWebBox);
 
-
         c.gridx = 1;
         c.gridwidth = 1;
         c.gridy = 0;
@@ -189,24 +206,38 @@ public class GUIExponatBearbeiten implements IGUIEventListener {
         attributePanel.add(choosePanel,c);
 
         JPanel textFieldPanel = new JPanel();
-        TextComponent tc = TextComponent.builder("textFeld").title("Beschreibung").build();
-        //tc.setAlignmentX(SwingConstants.CENTER);
-
-
-        //attributePanel.add(tc);
+        TextComponent tc = TextComponent.builder("textFeld").title("Beschreibung").initialText(beschreibung).build();
         textFieldPanel.add(tc);
 
-        c.weighty=0.35;
-        bearbeitenFrame.add(toppanel,c);
-        bearbeitenFrame.add(attributePanel,c);
-        bearbeitenFrame.add(tc);
 
-        bearbeitenFrame.setSize(400,400);
+
+        bearbeitenFrame.add(toppanel);
+        bearbeitenFrame.add(attributePanel);
+        bearbeitenFrame.add(tc);
+        bearbeitenFrame.setSize(500,700);
         bearbeitenFrame.setVisible(true);
+
+    }
+
+    public Boolean getInWebBox() {
+        return inWebBox.isSelected();
+    }
+
+    public String getAttElementValue (String id) {
+
+        for(int i =0; i<attElemsLeft.length; i++){
+            if(attElemsLeft[i].getID().equals(id)){
+                return attElemsLeft[i].getValue();
+            }
+
+        }
+        return "";
 
     }
 
     public void processGUIEvent(GUIEvent guiEvent) {
 
     }
+
+
 }
