@@ -3,7 +3,6 @@ package util;
 import datentypen.Classtype;
 import datentypen.Dateiformat;
 import de.dhbwka.swe.utils.util.CSVReader;
-import model.Angestellter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -161,11 +160,15 @@ public class StorageAdapter {
         attributes[8] = String.valueOf(object.get("in web"));
 
         JSONObject kuenstler = (JSONObject) object.get("kuenstler");
-        attributes[9] = kuenstler.get("name") + "," + kuenstler.get("geburt") + "," + kuenstler.get("tod") + "," + kuenstler.get("nationalitaet");
+        attributes[9] = "";
+        if(kuenstler != null)
+            attributes[9] = kuenstler.get("name") + "," + kuenstler.get("geburt") + "," + kuenstler.get("tod") + "," + kuenstler.get("nationalitaet");
 
+        // Todo: check all necessary elements for null pointers
         attributes[10] = "";
         JSONArray bilder = (JSONArray) object.get("bilder");
-        bilder.forEach(bild -> attributes[10] += ((JSONObject)bild).get("titel") + "," + ((JSONObject)bild).get("pfad") + ":");
+        if(bilder != null)
+            bilder.forEach(bild -> attributes[10] += ((JSONObject)bild).get("titel") + "," + ((JSONObject)bild).get("pfad") + ":");
 
         attributes[11] = "";
         JSONArray exptypArr = (JSONArray) object.get("exponattypen");

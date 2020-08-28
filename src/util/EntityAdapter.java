@@ -158,8 +158,8 @@ public class EntityAdapter {
 
             JSONObject kuenstler = new JSONObject();
             kuenstler.put("name", exp.getKuenstler().getName());
-            kuenstler.put("geburt", Statics.dateFormat.format(exp.getKuenstler().getGeburtsdatum()));
-            kuenstler.put("tod", Statics.dateFormat.format(exp.getKuenstler().getTodesdatum()));
+            kuenstler.put("geburt", (exp.getKuenstler().getGeburtsdatum()!= null ? Statics.dateFormat.format(exp.getKuenstler().getGeburtsdatum()) : null));
+            kuenstler.put("tod", (exp.getKuenstler().getTodesdatum()!= null ? Statics.dateFormat.format(exp.getKuenstler().getTodesdatum()) : null));
             kuenstler.put("nationalitaet", exp.getKuenstler().getNationalitaet());
             exponat.put("kuenstler", kuenstler);
 

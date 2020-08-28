@@ -1,6 +1,7 @@
 package util;
 
 import datentypen.Classtype;
+import datentypen.Rolle;
 import model.*;
 
 import java.text.ParseException;
@@ -122,8 +123,12 @@ public class ElementFactory {
     private List<Bild> createBildList(String[] args) {
         List<Bild> bildList = new ArrayList<>();
         for (String bild : args) {
-            String[] bildArgs = bild.split(",");
-            bildList.add(createBild(bildArgs));
+            if(!bild.isEmpty()) {
+                String[] bildArgs = bild.split(",");
+                if(bildArgs.length == 2) {
+                    bildList.add(createBild(bildArgs));
+                }
+            }
         }
         return bildList;
     }
@@ -320,8 +325,8 @@ public class ElementFactory {
 
     public Kuenstler createKuenstler(String[] args) {
         try {
-            Date geburt = Statics.dateFormat.parse(args[1]);
-            Date tod = Statics.dateFormat.parse(args[2]);
+            Date geburt = (!args[1].isEmpty() && !args[1].equals("null")  ? Statics.dateFormat.parse(args[1]) : null);
+            Date tod =  (!args[2].isEmpty() && !args[2].equals("null") ? Statics.dateFormat.parse(args[2]) : null);
             return new Kuenstler(args[0], geburt, tod, args[3]);
         } catch (ParseException e) {
             e.printStackTrace();
