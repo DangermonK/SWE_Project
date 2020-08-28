@@ -215,8 +215,8 @@ public class EntityAdapter {
 
             JSONObject anlage = new JSONObject();
             Anlage a = exp.getHistorie().getAnlage();
-            anlage.put("anlagedatum", Statics.dateFormat.format(a.getAnlageDatum()));
-            anlage.put("angestellter", a.getAngestellter().getPersNr());
+            anlage.put("anlagedatum", (a != null ? Statics.dateFormat.format(a.getAnlageDatum()) : null));
+            anlage.put("angestellter", (a != null ? a.getAngestellter().getPersNr() : null));
             historie.put("anlage", anlage);
 
             JSONArray aenderungArr = new JSONArray();

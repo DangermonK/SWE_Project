@@ -19,7 +19,7 @@ public class ElementFactory {
     }
 
     public static ElementFactory getInstance(EntityAdapter adapter) {
-        if(instance == null) {
+        if (instance == null) {
             instance = new ElementFactory(adapter);
         }
         return instance;
@@ -32,9 +32,9 @@ public class ElementFactory {
         exponat.setBeschreibung(args[2]);
         exponat.setKategorie(args[3]);
 
-        if(args[4].matches("[0-9]*"))
+        if (args[4].matches("[0-9]*"))
             exponat.setErstellungsJahr(Integer.valueOf(args[4]));
-        if(args[5].matches("[0-9]+\\.[0-9]*"))
+        if (args[5].matches("[0-9]+\\.[0-9]*"))
             exponat.setSchaetzWert(Double.valueOf(args[5]));
 
         exponat.setMaterial(args[6]);
@@ -50,9 +50,9 @@ public class ElementFactory {
         exponat.setHistorie(historie);
 
         String[] besitzerArray = args[12].split(",");
-        for(String ref : besitzerArray) {
-            ((Besitzer)adapter.getElement(Classtype.BESITZER, ref)).addExponat(exponat);
-            exponat.addBesitzer((Besitzer)adapter.getElement(Classtype.BESITZER, ref));
+        for (String ref : besitzerArray) {
+            ((Besitzer) adapter.getElement(Classtype.BESITZER, ref)).addExponat(exponat);
+            exponat.addBesitzer((Besitzer) adapter.getElement(Classtype.BESITZER, ref));
         }
 
         ((Raum) adapter.getElement(Classtype.RAUM, Integer.valueOf(args[13]))).addExponat(exponat);
@@ -90,14 +90,14 @@ public class ElementFactory {
         foerdernder.setBildList(createBildList(args[5].split(":")));
 
         String[] exponatFoerderungArray = args[6].split(",");
-        for(String exponatFoerderung : exponatFoerderungArray) {
+        for (String exponatFoerderung : exponatFoerderungArray) {
             ExponatsFoerderung foerderung = createExponatFoerderung(exponatFoerderung.split("-"));
             foerderung.setFoerdernder(foerdernder);
             foerdernder.addFoerderung(foerderung);
         }
 
         String[] museumFoerderungArray = args[7].split(",");
-        for(String museumFoerderung : museumFoerderungArray) {
+        for (String museumFoerderung : museumFoerderungArray) {
             MuseumsFoerderung foerderung = createMuseumsFoerderung(museumFoerderung.split("-"));
             foerderung.setFoerdernder(foerdernder);
             foerdernder.addFoerderung(foerderung);
@@ -123,9 +123,9 @@ public class ElementFactory {
     private List<Bild> createBildList(String[] args) {
         List<Bild> bildList = new ArrayList<>();
         for (String bild : args) {
-            if(!bild.isEmpty()) {
+            if (!bild.isEmpty()) {
                 String[] bildArgs = bild.split(",");
-                if(bildArgs.length == 2) {
+                if (bildArgs.length == 2) {
                     bildList.add(createBild(bildArgs));
                 }
             }
@@ -141,29 +141,53 @@ public class ElementFactory {
 
         Historie historie = new Historie();
 
-        List<Verleih> verleihList = createVerleihList(args[0].split(","));
-        verleihList.forEach((verleih) -> {verleih.setHistorie(historie);});
-        historie.setVerleihList(verleihList);
+        if (!args[0].equals("null") && !args[0].isEmpty()) {
+            List<Verleih> verleihList = createVerleihList(args[0].split(","));
+            verleihList.forEach((verleih) -> {
+                verleih.setHistorie(historie);
+            });
+            historie.setVerleihList(verleihList);
+        }
 
-        List<Ausleihe> ausleiheList = createAusleiheList(args[1].split(","));
-        ausleiheList.forEach((ausleihe -> {ausleihe.setHistorie(historie);}));
-        historie.setAusleiheList(ausleiheList);
+        if (!args[1].equals("null") && !args[1].isEmpty()) {
+            List<Ausleihe> ausleiheList = createAusleiheList(args[1].split(","));
+            ausleiheList.forEach((ausleihe -> {
+                ausleihe.setHistorie(historie);
+            }));
+            historie.setAusleiheList(ausleiheList);
+        }
 
-        List<Kauf> kaufList = createKaufList(args[2].split(","));
-        kaufList.forEach((kauf -> {kauf.setHistorie(historie);}));
-        historie.setKaufList(kaufList);
+        if (!args[2].equals("null") && !args[2].isEmpty()) {
+            List<Kauf> kaufList = createKaufList(args[2].split(","));
+            kaufList.forEach((kauf -> {
+                kauf.setHistorie(historie);
+            }));
+            historie.setKaufList(kaufList);
+        }
 
-        List<Verkauf> verkaufList = createVerkaufList(args[3].split(","));
-        verkaufList.forEach((verkauf -> {verkauf.setHistorie(historie);}));
-        historie.setVerkaufList(verkaufList);
+        if (!args[3].equals("null") && !args[3].isEmpty()) {
+            List<Verkauf> verkaufList = createVerkaufList(args[3].split(","));
+            verkaufList.forEach((verkauf -> {
+                verkauf.setHistorie(historie);
+            }));
+            historie.setVerkaufList(verkaufList);
+        }
 
-        Anlage anlage = createAnlage(args[4].split("-"));
-        anlage.setHistorie(historie);
-        historie.setAnlage(anlage);
+        if (!args[4].equals("null") && !args[4].isEmpty()) {
+            Anlage anlage = createAnlage(args[4].split("-"));
+            if(anlage != null) {
+                anlage.setHistorie(historie);
+                historie.setAnlage(anlage);
+            }
+        }
 
-        List<Aenderung> aenderungList = createaenderungList(args[5].split(","));
-        aenderungList.forEach((aenderung -> {aenderung.setHistorie(historie);}));
-        historie.setAenderungList(aenderungList);
+        if (args.length == 6 && !args[5].equals("null") && !args[5].isEmpty()) {
+            List<Aenderung> aenderungList = createaenderungList(args[5].split(","));
+            aenderungList.forEach((aenderung -> {
+                aenderung.setHistorie(historie);
+            }));
+            historie.setAenderungList(aenderungList);
+        }
 
         return historie;
 
@@ -181,8 +205,7 @@ public class ElementFactory {
     public Verleih createVerleih(String[] args) {
 
         try {
-            Verleih verleih = new Verleih(Statics.dateFormat.parse(args[0]), Statics.dateFormat.parse(args[1]), Double.parseDouble(args[2]));
-            return verleih;
+            return new Verleih(Statics.dateFormat.parse(args[0]), Statics.dateFormat.parse(args[1]), Double.parseDouble(args[2]));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -260,10 +283,12 @@ public class ElementFactory {
     public Anlage createAnlage(String[] arg) {
 
         try {
-            Anlage anlage = new Anlage(Statics.dateFormat.parse(arg[0]));
-            ((Angestellter)adapter.getElement(Classtype.ANGESTELLTER, arg[1])).addAnlage(anlage);
-            anlage.setAngestellter((Angestellter)adapter.getElement(Classtype.ANGESTELLTER, arg[1]));
-            return anlage;
+            if(!arg[0].equals("null")) {
+                Anlage anlage = new Anlage(Statics.dateFormat.parse(arg[0]));
+                ((Angestellter) adapter.getElement(Classtype.ANGESTELLTER, arg[1])).addAnlage(anlage);
+                anlage.setAngestellter((Angestellter) adapter.getElement(Classtype.ANGESTELLTER, arg[1]));
+                return anlage;
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -283,8 +308,8 @@ public class ElementFactory {
     public Aenderung createAenderung(String[] arg) {
 
         try {
-            Aenderung aenderung = new Aenderung(Statics.dateFormat.parse(arg[0]), (Angestellter)adapter.getElement(Classtype.ANGESTELLTER, arg[1]));
-            ((Angestellter)adapter.getElement(Classtype.ANGESTELLTER, arg[1])).addAenderung(aenderung);
+            Aenderung aenderung = new Aenderung(Statics.dateFormat.parse(arg[0]), (Angestellter) adapter.getElement(Classtype.ANGESTELLTER, arg[1]));
+            ((Angestellter) adapter.getElement(Classtype.ANGESTELLTER, arg[1])).addAenderung(aenderung);
             return aenderung;
         } catch (ParseException e) {
             e.printStackTrace();
@@ -310,8 +335,8 @@ public class ElementFactory {
     public ExponatsFoerderung createExponatFoerderung(String[] args) {
 
         ExponatsFoerderung foerderung = new ExponatsFoerderung(args[0], Double.parseDouble(args[1]));
-        ((Exponat)adapter.getElement(Classtype.EXPONAT, args[2])).addFoerderung(foerderung);
-        foerderung.setExponat((Exponat)adapter.getElement(Classtype.EXPONAT, args[2]));
+        ((Exponat) adapter.getElement(Classtype.EXPONAT, args[2])).addFoerderung(foerderung);
+        foerderung.setExponat((Exponat) adapter.getElement(Classtype.EXPONAT, args[2]));
 
         return foerderung;
 
@@ -325,8 +350,8 @@ public class ElementFactory {
 
     public Kuenstler createKuenstler(String[] args) {
         try {
-            Date geburt = (!args[1].isEmpty() && !args[1].equals("null")  ? Statics.dateFormat.parse(args[1]) : null);
-            Date tod =  (!args[2].isEmpty() && !args[2].equals("null") ? Statics.dateFormat.parse(args[2]) : null);
+            Date geburt = (!args[1].isEmpty() && !args[1].equals("null") ? Statics.dateFormat.parse(args[1]) : null);
+            Date tod = (!args[2].isEmpty() && !args[2].equals("null") ? Statics.dateFormat.parse(args[2]) : null);
             return new Kuenstler(args[0], geburt, tod, args[3]);
         } catch (ParseException e) {
             e.printStackTrace();

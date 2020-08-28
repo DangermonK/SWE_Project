@@ -1,30 +1,24 @@
-KOMMENTAR;;Reihenfolge der angelegten Daten: Angestellte, Besitzer, Exponate, Foerdernde, Rï¿½ume;;;;;;;;;;;;
+ANGESTELLTER;P100;Julian Mayer;JM_User;ADMINISTRATOR;Passbild,src/assets/images/person_1.jpg;;;;;;;;;
+ANGESTELLTER;P101;Robin Hefter;RH_User;ADMINISTRATOR;Passbild,src/assets/images/person_2.jpg;;;;;;;;;
 ;;;;;;;;;;;;;;
-KOMMENTAR;;Angestellte;;;;;;;;;;;;
-;;;;;;;;;;;;;;
-ANGESTELLTER;P100;Julian Mayer;JM_User;ADMINISTRATOR;Schrei,src/assets/images/Schrei.jpg;;;;;;;;;
-ANGESTELLTER;P101;Robin Hefter;RH_User;ADMINISTRATOR;Schrei,src/assets/images/Schrei.jpg;;;;;;;;;
-;;;;;;;;;;;;;;
-FOERDERNDER;P103;Justus Aurelius;justus@aurelius.com;Richkidstraï¿½e 10 123456 Goldhausen;0178 1;Schrei.src/assets/images/,Schrei1.src/assets/images/;Geld-100.0-E2103,Geld-500.0-E2129;Sponsor-400.0;;;;;;
-;;;;;;;;;;;;;;
-KOMMENTAR;;Besitzer;;;;;;;;;;;;
-;;;;;;;;;;;;;;
-BESITZER;P102;Hermann Mï¿½ller;hermann.mueller@gmx.de;Weinstraï¿½e 8 73678 Groï¿½stadt;0179 69348209;Schrei,src/assets/images/Schrei.jpg:Schrei1,src/assets/images/Schrei1.jpg;;;;;;;;
+BESITZER;P102;Hermann Mï¿½ller;hermann.mueller@gmx.de;Weinstraï¿½e 8 73678 Groï¿½stadt;0179 69348209;Passbild,src/assets/images/person_4;;;;;;;;
 ;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;
-KOMMENTAR;;EXPONATE;;;;;;;;;;;;
-;;;;;;;;;;;;;;
-EXPONAT;E2103;Der Schrei;Menschliche Figur mit angstvollem Blick;Bild;1930;4000.0;ï¿½l, Pastel auf Pappe;true;Van Gogh,30.11.1913,12.6.1940,Franzï¿½sisch;Schrei,src/assets/images/Schrei.jpg:Schrei1,src/assets/images/Schrei1.jpg;Expressionismus,blbla;23.2.2010-23.3.2010-400.0,1.8.2018-1.9.2018-300.0:12.5.2020-30.6.2020:17.4.2020-5000.0:30.9.2020-200.0:23.2.2010-P100:23.8.2020-P101;P102;1
-EXPONAT;E2129;Das letzte abendmal;Kommilitonen sitzen beim letzten Abendmal;Bild;2019;200000.0;digital;false;Nico,5.11.1999,5.5.2087,Deutsch;Schrei,src/assets/images/Schrei.jpg:Schrei1,src/assets/images/Schrei1.jpg;Mathematik,Das zusammenzï¿½hlen einzelner Zahlen;23.2.2010-23.3.2010-400.0,1.8.2018-1.9.2018-300.0:12.5.2020-30.6.2020:17.4.2020-5000.0:30.9.2020-200.0:23.2.2010-P101:23.8.2020-P100;P102;3
+EXPONAT;E2103;Der schrei;Menschliche Figur mit angstvollem Blick;Gemälde;1930;4000.0;ï¿½l, Pastel auf Pappe;true;Van Gogh,30.11.1913,12.6.1940,Franzï¿½sisch;schrei,src/assets/images/schrei.jpg:schrei,src/assets/images/schrei.jpg;Expressionismus,Kunst;23.2.2010-23.3.2010-400.0,1.8.2018-1.9.2018-300.0:12.5.2020-30.6.2020:17.4.2020-5000.0:30.9.2020-200.0:23.2.2010-P100:23.8.2020-P101;P102;1
+EXPONAT;E2130;Apfelhaufen;Äpfel die auf einem haufen liegen;Gemälde;2014;500.0;Acryl auf Leinwand;false;So Jin,12.3.1975,null,koreanisch;aepfel komplett,src/assets/images/aepfel_1.jpg:aepfel nah,src/assets/images/aepfel_2.jpg;Moderne,modernes Bild;null:null:null:null:null:null;P102;2
+EXPONAT;E2131;Topf mit Landschaft;Ein Topf der auf Feuer steht. Darin ist eine Landschaft zu sehen.;Gemälde;2015;400.0;Acryl auf Leinwand;false;So Jin,12.3.1975,null,koreanisch;Topf mit Landschaft,src/assets/images/illusion.jpg;Moderne,modernes Bild;null:null:null:null:null:null;P102;3
+EXPONAT;E2134;Apfel;Ein einzelner Apfel der auf dem Boden liegt.;Gemälde;2006;100.0;Pastel auf Holz;false;null,null,null,null;Apfel,src/assets/images/apfel.jpg;Moderne,modernes Bild;null:null:null:null:null:null;P102;1
+EXPONAT;E1001;Blumen;Blaue Blumen auf weißem Hintergrund;Gemälde;1980;250.0;Pastel auf Leinwand;true;null,null,null,null;blumen,src/assets/images/blumen.jpg;Expressionismus,Kunst;23.2.2010-23.3.2010-400.0,1.8.2018-1.9.2018-300.0:12.5.2020-30.6.2020:17.4.2020-5000.0:30.9.2020-200.0:23.2.2010-P100:23.8.2020-P101;P102;2
+EXPONAT;E1020;Landschaft;Landschaft in Goldrahmen;Gemälde;2014;500.0;Acryl auf Leinwand;false;So Jin,12.3.1975,null,koreanisch;Landschaft,src/assets/images/landschaft.jpg;Moderne,modernes Bild;null:null:null:null:null:null;P102;2
+EXPONAT;E1004;Museum;Frauen in einem Museum;Gemälde;2015;2000.0;Acryl auf Leinwand;false;Johannes Hüppi,31.2.1965,null,Deutsch;Museum,src/assets/images/museum.jpg;Moderne,modernes Bild;null:null:null:null:null:null;P102;3
+EXPONAT;E1005;Storch;Storch beim losfliegen;Fotografie;2016;300.0;Foto;true;Jonas,11.4.1990,null,Deutsch;Storch,src/assets/images/storch_1.jpg:Storch nah,src/assets/images/storch_2.jpg;Moderne,modernes Bild;null:null:null:null:null:null;P102;1
+EXPONAT;E1006;Wald;Auto am Waldrand;Gemälde;2017;400.0;Acryl auf Leinwand;false;Johannes Hüppi,31.2.1965,null,Deutsch;wald,src/assets/images/wald.jpg;Moderne,modernes Bild;null:null:null:null:null:null;P102;3
 ;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;
-KOMMENTAR;;Fï¿½rdernde;;;;;;;;;;;;
 ;;;;;;;;;;;;;;
-FOERDERNDER;P103;Justus Aurelius;justus@aurelius.com;Richkidstraï¿½e 10 123456 Goldhausen;0178 1;Schrei.src/assets/images/,Schrei1.src/assets/images/;Geld-100.0-E2103,Geld-500.0-E2129;Sponsor-400.0;;;;;;
+FOERDERNDER;P103;Justus Aurelius;justus@aurelius.com;Richkidstraï¿½e 10 123456 Goldhausen;0178 1;Passbild,src/assets/images/person_3.jpg;Geld-100.0-E2103,Geld-500.0-E2131;Sponsor-400.0;;;;;;
 ;;;;;;;;;;;;;;
-KOMMENTAR;;Rï¿½UME;;;;;;;;;;;;
-;;;;;;;;;;;;;;
-RAUM;1;20;30;Beschreibung;Kategorie;Schrei,src/assets/images/Schrei.jpg:Schrei1,src/assets/images/Schrei1.jpg;;;;;;;;
-RAUM;2;20;30;Beschreibung;Kategorie;Schrei,src/assets/images/Schrei.jpg:Schrei1,src/assets/images/Schrei1.jpg;;;;;;;;
-RAUM;3;20;30;Beschreibung;Kategorie;Schrei,src/assets/images/Schrei.jpg:Schrei1,src/assets/images/Schrei1.jpg;;;;;;;;
+RAUM;1;20;30;Beschreibung;Kategorie;Raum 1,src/assets/images/room_1.jpg;;;;;;;;
+RAUM;2;20;30;Beschreibung;Kategorie;Raum 2,src/assets/images/room_2.jpg;;;;;;;;
+RAUM;3;20;30;Beschreibung;Kategorie;Raum 3,src/assets/images/room_3.jpg;;;;;;;;

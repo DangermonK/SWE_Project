@@ -34,7 +34,8 @@ public class MuseumsController {
             tabellenArr[i][2] = entityAdapter.getExponatList().get(i).getRaum().getNummer();
             tabellenArr[i][3] = entityAdapter.getExponatList().get(i).getKuenstler().getName();
             tabellenArr[i][4] = entityAdapter.getExponatList().get(i).getKategorie();
-            tabellenArr[i][5] = Statics.dateFormat.format(entityAdapter.getExponatList().get(i).getHistorie().getAenderungList().get(0).getAenderungsDatum());
+            Aenderung date = entityAdapter.getExponatList().get(i).getHistorie().getLetzteAenderung();
+            tabellenArr[i][5] = (date != null ? Statics.dateFormat.format(date.getAenderungsDatum()) : null);
         }
 
         String[] pathsArr = new String[((Exponat)entityAdapter.getElement(Classtype.EXPONAT, tabellenArr[0][0])).getBildList().size()];

@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Historie {
@@ -15,10 +16,19 @@ public class Historie {
 
     public Historie() {
 
+        aenderungList = new ArrayList<>();
+        kaufList = new ArrayList<>();
+        verkaufList = new ArrayList<>();
+        verleihList = new ArrayList<>();
+        ausleiheList = new ArrayList<>();
+
     }
 
     public Aenderung getLetzteAenderung() {
-        return aenderungList.get(0);
+        if(aenderungList.size() > 0) {
+            return aenderungList.get(0);
+        }
+        return null;
     }
 
     public Anlage getAnlage() {
