@@ -38,7 +38,7 @@ public class GUIExponatBearbeiten implements IGUIEventListener {
 
         //Fallback bild für Anlegen
         if(bildPfade.length==0 || bildPfade[0].isEmpty()){
-            bildPfade = new String[]{"C:\\_Workspace_\\IdeaProjects\\SWE_Project\\src\\assets\\images\\Schrei.jpg"};
+            bildPfade = new String[]{"src/assets/images/landschaft.jpg"};
             System.out.println("test");
         }
 

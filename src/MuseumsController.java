@@ -2,6 +2,7 @@ import datentypen.Classtype;
 import datentypen.Dateiformat;
 import datentypen.SuchkriteriumExponat;
 import de.dhbwka.swe.utils.gui.TextComponent;
+import model.Aenderung;
 import model.Exponat;
 import model.Historie;
 import model.Kuenstler;
