@@ -12,9 +12,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
 import java.awt.image.ImageFilter;
 import java.io.File;
 import java.io.IOException;
@@ -38,6 +36,12 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
     private SlideshowComponent slideshow;
 
     private TextComponent tc;
+
+    private JButton raumButton;
+    private JButton kuenstlerButton;
+    private JButton foerderungenButton;
+    private JButton besitzerButton;
+    private JButton historieButton;
 
     public GUIExponatBearbeiten(IGUIEventListener listener) {
         this(new String[]{""}, new String[]{""}, new String[]{""}, new String[]{""}, null, null, null, false, null, listener);
@@ -170,6 +174,7 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
         }
         attComp.setEnabled(true);
 
+
         //attElemsLeft[5].setLabelBGColor(Color.RED);
 
 
@@ -180,6 +185,36 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
         c.insets = new Insets(0, 5, 0, 0);
         attributePanel.add(attComp, c);
 
+        ActionListener buttonListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if (e.getSource() == raumButton){
+                    fireGUIEvent(new GUIEvent(e.getSource(), () -> "raum gui", null));
+                    raumButton.setEnabled(false);
+
+                }
+
+                if (e.getSource() == kuenstlerButton){
+                    fireGUIEvent(new GUIEvent(e.getSource(), () -> "kuenstler gui", null));
+                    kuenstlerButton.setEnabled(false);
+
+                }
+
+                if (e.getSource() == foerderungenButton){
+                    fireGUIEvent(new GUIEvent(e.getSource(), () -> "foerderung gui", null));
+                    foerderungenButton.setEnabled(false);
+                }
+                if (e.getSource() == besitzerButton){
+                    fireGUIEvent(new GUIEvent(e.getSource(), () -> "besitzer gui", null));
+                    besitzerButton.setEnabled(false);
+                }
+                if (e.getSource() == historieButton){
+                    fireGUIEvent(new GUIEvent(e.getSource(), () -> "historie gui", null));
+                    historieButton.setEnabled(false);
+                }
+            }
+        };
 
         JPanel choosePanel = new JPanel(new GridLayout(6, 2));
 
@@ -190,15 +225,23 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
         JLabel historieLabel = new JLabel("Historie");
         JLabel inWebLabel = new JLabel("Im Web anzeigen");
 
-        JButton raumButton = new JButton("auswählen");
-        JButton kuenstlerButton = new JButton("bearbeiten");
-        JButton foerderungenButton = new JButton("bearbeiten");
-        JButton besitzerButton = new JButton("auswählen");
-        JButton historieButton = new JButton("bearbeiten");
+         raumButton = new JButton("auswählen");
+         raumButton.addActionListener(buttonListener);
+
+
+         kuenstlerButton = new JButton("bearbeiten");
+        kuenstlerButton.addActionListener(buttonListener);
+         foerderungenButton = new JButton("bearbeiten");
+        foerderungenButton.addActionListener(buttonListener);
+        besitzerButton = new JButton("auswählen");
+        besitzerButton.addActionListener(buttonListener);
+        historieButton = new JButton("bearbeiten");
+        historieButton.addActionListener(buttonListener);
 
         inWebBox = new JCheckBox();
         inWebBox.setSelected(showWeb);
         inWebBox.setHorizontalAlignment(SwingConstants.RIGHT);
+
 
         choosePanel.add(raumLabel);
         choosePanel.add(raumButton);
@@ -236,6 +279,7 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
         bearbeitenFrame.add(tc);
         bearbeitenFrame.setSize(500, 700);
         bearbeitenFrame.setVisible(true);
+
 
     }
 
@@ -303,20 +347,20 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
                         imageString += "Bild," + path + "-";
                     }
                     String[] data = new String[]{
-                        "E1000",
-                        attElemsLeft[0].getValue(),
-                        tc.getText(),
-                        attElemsLeft[3].getValue(),
-                        attElemsLeft[1].getValue(),
-                        attElemsLeft[2].getValue(),
-                        attElemsLeft[4].getValue(),
-                        String.valueOf(getInWebBox()),
-                        "So Jin,12.3.1975,null,Koreanisch",
-                        imageString,
-                        attElemsLeft[5].getValue(),
-                        "null:null:null:null:23.2.2010-P100:23.2.2010-P100",
-                        "P102",
-                        "1"
+                            "E1000",
+                            attElemsLeft[0].getValue(),
+                            tc.getText(),
+                            attElemsLeft[3].getValue(),
+                            attElemsLeft[1].getValue(),
+                            attElemsLeft[2].getValue(),
+                            attElemsLeft[4].getValue(),
+                            String.valueOf(getInWebBox()),
+                            "So Jin,12.3.1975,null,Koreanisch",
+                            imageString,
+                            attElemsLeft[5].getValue(),
+                            "null:null:null:null:23.2.2010-P100:23.2.2010-P100",
+                            "P102",
+                            "1"
                     };
                     fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "safe data", data));
                     bearbeitenFrame.dispatchEvent(new WindowEvent(bearbeitenFrame, WindowEvent.WINDOW_CLOSING));
@@ -329,6 +373,8 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
             ImageElement imageElement = (ImageElement) guiEvent.getData();
             currentImageIndex = imagePaths.indexOf(imageElement.getPath());
         }
+
+
     }
 
 

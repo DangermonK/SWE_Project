@@ -29,6 +29,7 @@ public class EntityAdapter {
     }
 
     public List<Raum> getRaumList() {
+
         return raumEntityManager.getAsList();
     }
 

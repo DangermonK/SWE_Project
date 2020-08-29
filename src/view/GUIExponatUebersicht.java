@@ -160,5 +160,20 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
         } else if(guiEvent.getCmdText().equals("safe data")) {
             fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "safe data", guiEvent.getData()));
         }
+        if(guiEvent.getCmdText().equals("raum gui")) {
+            fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "raum gui", guiEvent.getData()));
+        }
+        if(guiEvent.getCmdText().equals("foerderung gui")) {
+            fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "foerderung gui", guiEvent.getData()));
+        }
+        if(guiEvent.getCmdText().equals("besitzer gui")) {
+            fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "besitzer gui", guiEvent.getData()));
+        }
+        if(guiEvent.getCmdText().equals("historie gui")) {
+            fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "historie gui", guiEvent.getData()));
+        }
+        if(guiEvent.getCmdText().equals("kuenstler gui")) {
+            fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "kuenstler gui", guiEvent.getData()));
+        }
     }
 }

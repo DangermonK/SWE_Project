@@ -4,25 +4,16 @@ import datentypen.SuchkriteriumExponat;
 import de.dhbwka.swe.utils.event.GUIEvent;
 import de.dhbwka.swe.utils.event.IGUIEventListener;
 import de.dhbwka.swe.utils.model.IListElement;
-import javafx.util.Pair;
-import model.Aenderung;
-import model.Exponat;
-import sun.net.ExtendedOptionsImpl;
+import model.*;
 import util.EntityAdapter;
 import util.Statics;
 import util.StorageAdapter;
+import view.GUIAuswahlPanel;
 import view.GUIExponatDetails;
 import view.ListElement;
 import view.MainGUI;
 
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MuseumsController implements IGUIEventListener {
 
@@ -185,6 +176,37 @@ public class MuseumsController implements IGUIEventListener {
                 data[0] = findNextInventarnummer();
                 entityAdapter.addElement(Classtype.EXPONAT, data);
                 view.addElement(getExponatTabellenData(data[0]));
+                break;
+            case "raum gui":
+
+                List<Raum> raumlist =  entityAdapter.getRaumList();
+                String[] raeume = new String[raumlist.size()];
+                int index =0;
+                for (Raum r: raumlist){
+                    raeume[index] = String.valueOf(r.getNummer());
+                    index++;
+                }
+                new GUIAuswahlPanel(raeume, "Raum");
+                break;
+            case "historie gui":
+                System.out.println("historie ist geil");
+                break;
+            case "foerderung gui":
+                System.out.println("foerderung ist geil");
+                break;
+            case "besitzer gui":
+                List<Person> besitzerList =   entityAdapter.getPersonList();
+
+                String[] besitzer = new String[besitzerList.size()];
+                index =0;
+                for (Person b: besitzerList){
+                    besitzer[index] = String.valueOf(b.getName());
+                    index++;
+                }
+                new GUIAuswahlPanel(besitzer, "Besitzer");
+                break;
+            case "kuenstler gui":
+                System.out.println("kuenstler ist geil");
                 break;
         }
     }

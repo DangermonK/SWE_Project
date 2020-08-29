@@ -1,3 +1,4 @@
+import de.dhbwka.swe.utils.app.AttributeComponentApp;
 import de.dhbwka.swe.utils.app.SimpleListComponentApp;
 import de.dhbwka.swe.utils.app.SlideShowComponentApp;
 import de.dhbwka.swe.utils.model.IListElement;
@@ -39,9 +40,10 @@ public class TestController {
                 attribute, "bla",true,false);
         gdetail.setHistorie(historyElements);*/
 
-        String[] bildPfade = new String[]{""};
+      /*  String[] bildPfade = new String[]{""};
         String[] comboboxDataFutter = new String[]{"Gras", "Moehren", "Fleisch", "Mäuse"};
         new GUIExponatBearbeiten(bildPfade,comboboxDataFutter,comboboxDataFutter,comboboxDataFutter,"bla",
-                "20","8 euro", true, "beschreibungdddddd", null);
+                "20","8 euro", true, "beschreibungdddddd", null);*/
+
     }
 }
