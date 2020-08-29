@@ -41,7 +41,7 @@ public class ElementFactory {
         exponat.setInWeb(Boolean.parseBoolean(args[7]));
         exponat.setKuenstler(createKuenstler(args[8].split(",")));
 
-        exponat.setBildList(createBildList(args[9].split(":")));
+        exponat.setBildList(createBildList(args[9].split("-")));
 
         exponat.setExpTypList(createExponattypList(args[10].split(":")));
 
@@ -91,9 +91,11 @@ public class ElementFactory {
 
         String[] exponatFoerderungArray = args[6].split(",");
         for (String exponatFoerderung : exponatFoerderungArray) {
-            ExponatsFoerderung foerderung = createExponatFoerderung(exponatFoerderung.split("-"));
-            foerderung.setFoerdernder(foerdernder);
-            foerdernder.addFoerderung(foerderung);
+            if(!exponatFoerderung.isEmpty()) {
+                ExponatsFoerderung foerderung = createExponatFoerderung(exponatFoerderung.split("-"));
+                foerderung.setFoerdernder(foerdernder);
+                foerdernder.addFoerderung(foerderung);
+            }
         }
 
         String[] museumFoerderungArray = args[7].split(",");
@@ -333,7 +335,6 @@ public class ElementFactory {
     }
 
     public ExponatsFoerderung createExponatFoerderung(String[] args) {
-
         ExponatsFoerderung foerderung = new ExponatsFoerderung(args[0], Double.parseDouble(args[1]));
         ((Exponat) adapter.getElement(Classtype.EXPONAT, args[2])).addFoerderung(foerderung);
         foerderung.setExponat((Exponat) adapter.getElement(Classtype.EXPONAT, args[2]));

@@ -42,6 +42,6 @@ public class TestController {
         String[] bildPfade = new String[]{""};
         String[] comboboxDataFutter = new String[]{"Gras", "Moehren", "Fleisch", "Mäuse"};
         new GUIExponatBearbeiten(bildPfade,comboboxDataFutter,comboboxDataFutter,comboboxDataFutter,"bla",
-                "20","8 euro", true, "beschreibungdddddd");
+                "20","8 euro", true, "beschreibungdddddd", null);
     }
 }

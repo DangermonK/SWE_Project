@@ -259,6 +259,25 @@ public class EntityAdapter {
     public void removeElement(Classtype type, Object key) {
         switch (type) {
             case EXPONAT:
+                Exponat exponat = exponatEntityManager.find(key);
+
+                exponat.getFoerderungList().forEach(exponatsFoerderung -> {
+                    exponatsFoerderung.getFoerdernder().getFoerderungList().remove(exponatsFoerderung);
+                });
+
+                Anlage anlage = exponat.getHistorie().getAnlage();
+                anlage.getAngestellter().getAnlageList().remove(anlage);
+
+                exponat.getHistorie().getAenderungList().forEach(aenderung -> {
+                    aenderung.getAngestellter().getAenderungsList().remove(aenderung);
+                });
+
+                exponat.getRaum().getExponatList().remove(exponat);
+
+                exponat.getBesitzerList().forEach(besitzer -> {
+                    besitzer.getExponatList().remove(exponat);
+                });
+
                 exponatEntityManager.remove(key);
             case RAUM:
                 raumEntityManager.remove(key);

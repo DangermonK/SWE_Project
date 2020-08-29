@@ -3,13 +3,17 @@ package view;
 
 import de.dhbwka.swe.utils.event.GUIEvent;
 import de.dhbwka.swe.utils.event.IGUIEventListener;
+import de.dhbwka.swe.utils.gui.ObservableComponent;
 import sun.management.snmp.jvmmib.JVM_MANAGEMENT_MIBOidTable;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import java.awt.*;
 
-public class GUIExponatSuchComponent implements IGUIEventListener {
+public class GUIExponatSuchComponent extends ObservableComponent implements ListSelectionListener, IGUIEventListener {
 
     JPanel suchPanel;
     //String[] suchAttribute;
@@ -78,16 +82,15 @@ public class GUIExponatSuchComponent implements IGUIEventListener {
                 return spaltenNamen[index];
             }
 
-
         };
 
-
         ergebnisTable = new JTable(model){
-
-        public boolean editCellAt(int row, int column, java.util.EventObject e) {
+            public boolean editCellAt(int row, int column, java.util.EventObject e) {
                 return false;
             }
         };
+        ergebnisTable.getTableHeader().setReorderingAllowed(false);
+        setTabellenListener(this);
 
         JScrollPane scrollPane = new JScrollPane(ergebnisTable);
 
@@ -97,6 +100,10 @@ public class GUIExponatSuchComponent implements IGUIEventListener {
 
         //suchPanel.setSize(400,400);
         //suchPanel.setVisible(true);
+    }
+
+    public void setGUIListener(IGUIEventListener listener) {
+        this.addObserver(listener);
     }
 
     public JPanel getPane(){
@@ -110,12 +117,39 @@ public class GUIExponatSuchComponent implements IGUIEventListener {
         for(int i= 0; i< tabellenDaten.length;i++){
             model.addRow(tabellenDaten[i]);
         }
-
         ergebnisTable.setModel(model);
+    }
 
+    public void addRow(Object[] data) {
+        ((DefaultTableModel)ergebnisTable.getModel()).addRow(data);
+    }
+
+    public void removeSelectedRow() {
+        ((DefaultTableModel)ergebnisTable.getModel()).removeRow(ergebnisTable.getSelectedRow());
+    }
+
+    public void setTabellenListener(ListSelectionListener listener) {
+        ListSelectionModel model = ergebnisTable.getSelectionModel();
+        model.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        model.addListSelectionListener(listener);
+        ergebnisTable.setSelectionModel(model);
+    }
+
+    public String getSelectionIndex() {
+        if(ergebnisTable.getSelectedRow() <= -1)
+            return null;
+
+        return ergebnisTable.getValueAt(ergebnisTable.getSelectedRow(), ergebnisTable.getColumn("Inv-Nr.").getModelIndex()).toString();
     }
 
     public void processGUIEvent(GUIEvent guiEvent) {
 
+    }
+
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        if(getSelectionIndex() != null) {
+            fireGUIEvent(new GUIEvent(e.getSource(), () -> "selected element", null));
+        }
     }
 }

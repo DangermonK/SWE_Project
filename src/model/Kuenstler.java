@@ -1,6 +1,11 @@
 package model;
 
+import util.Statics;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class Kuenstler {
 
@@ -16,12 +21,6 @@ public class Kuenstler {
         this.nationalitaet = nationalitaet;
     }
 
-    public String getLebensspanne() {
-
-        return null;
-
-    }
-
     public String getName() {
         return name;
     }
@@ -32,6 +31,11 @@ public class Kuenstler {
 
     public Date getGeburtsdatum() {
         return geburtsdatum;
+    }
+
+    public String getLebensspanne() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy");
+        return (geburtsdatum != null ? format.format(geburtsdatum) : "N/A") + " - " + (todesdatum != null ? format.format(todesdatum) : "N/A");
     }
 
     public void setGeburtsdatum(Date geburtsdatum) {

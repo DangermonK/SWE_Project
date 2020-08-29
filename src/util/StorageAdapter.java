@@ -88,7 +88,7 @@ public class StorageAdapter {
         attributes[5] = (String) object.get("telefon");
         attributes[6] = "";
         JSONArray bilder = (JSONArray) object.get("bilder");
-        bilder.forEach(bild -> attributes[6] += ((JSONObject)bild).get("titel") + "," + ((JSONObject)bild).get("pfad") + ":");
+        bilder.forEach(bild -> attributes[6] += ((JSONObject)bild).get("titel") + "," + ((JSONObject)bild).get("pfad") + "-");
 
         attributes[7] = "";
         JSONArray expFoerArr = (JSONArray) object.get("exponatsFoerderung");
@@ -113,7 +113,7 @@ public class StorageAdapter {
         attributes[5] = (String) object.get("telefon");
         attributes[6] = "";
         JSONArray bilder = (JSONArray) object.get("bilder");
-        bilder.forEach(bild -> attributes[6] += ((JSONObject)bild).get("titel") + "," + ((JSONObject)bild).get("pfad") + ":");
+        bilder.forEach(bild -> attributes[6] += ((JSONObject)bild).get("titel") + "," + ((JSONObject)bild).get("pfad") + "-");
 
         return attributes;
     }
@@ -127,7 +127,7 @@ public class StorageAdapter {
         attributes[4] = (String) object.get("rolle");
         attributes[5] = "";
         JSONArray bilder = (JSONArray) object.get("bilder");
-        bilder.forEach(bild -> attributes[5] += ((JSONObject)bild).get("titel") + "," + ((JSONObject)bild).get("pfad") + ":");
+        bilder.forEach(bild -> attributes[5] += ((JSONObject)bild).get("titel") + "," + ((JSONObject)bild).get("pfad") + "-");
 
         return attributes;
     }
@@ -142,7 +142,7 @@ public class StorageAdapter {
         attributes[5] = (String) object.get("kategorie");
         attributes[6] = "";
         JSONArray bilder = (JSONArray) object.get("bilder");
-        bilder.forEach(bild -> attributes[6] += ((JSONObject)bild).get("titel") + "," + ((JSONObject)bild).get("pfad") + ":");
+        bilder.forEach(bild -> attributes[6] += ((JSONObject)bild).get("titel") + "," + ((JSONObject)bild).get("pfad") + "-");
         return attributes;
     }
 
@@ -168,7 +168,7 @@ public class StorageAdapter {
         attributes[10] = "";
         JSONArray bilder = (JSONArray) object.get("bilder");
         if(bilder != null)
-            bilder.forEach(bild -> attributes[10] += ((JSONObject)bild).get("titel") + "," + ((JSONObject)bild).get("pfad") + ":");
+            bilder.forEach(bild -> attributes[10] += ((JSONObject)bild).get("titel") + "," + ((JSONObject)bild).get("pfad") + "-");
 
         attributes[11] = "";
         JSONArray exptypArr = (JSONArray) object.get("exponattypen");

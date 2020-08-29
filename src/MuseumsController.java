@@ -1,35 +1,76 @@
 import datentypen.Classtype;
 import datentypen.Dateiformat;
 import datentypen.SuchkriteriumExponat;
-import de.dhbwka.swe.utils.gui.TextComponent;
+import de.dhbwka.swe.utils.event.GUIEvent;
+import de.dhbwka.swe.utils.event.IGUIEventListener;
+import de.dhbwka.swe.utils.model.IListElement;
+import javafx.util.Pair;
 import model.Aenderung;
 import model.Exponat;
-import model.Historie;
-import model.Kuenstler;
+import sun.net.ExtendedOptionsImpl;
 import util.EntityAdapter;
 import util.Statics;
 import util.StorageAdapter;
+import view.GUIExponatDetails;
+import view.ListElement;
 import view.MainGUI;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class MuseumsController {
+public class MuseumsController implements IGUIEventListener {
 
     private EntityAdapter entityAdapter;
 
     private StorageAdapter storageAdapter;
 
+    private MainGUI view;
+
     public MuseumsController() {
         entityAdapter = new EntityAdapter();
         storageAdapter = new StorageAdapter();
 
+        // todo: delete
+        boolean json = true;
+        if(!json) {
+            List<String[]> data = storageAdapter.importData("src/assets/database/TestData.csv", Dateiformat.CSV);
+            entityAdapter.createAll(data);
+        } else {
+            load();
+        }
+
+
+        Object[][] tData = getTabellenData();
+        view = new MainGUI(new String[] {"src/assets/images/keineBilder.jpg"}, new String[]{
+                SuchkriteriumExponat.RAUM.toString(),
+                SuchkriteriumExponat.NAME.toString(),
+                SuchkriteriumExponat.KUENSTLERNAME.toString(),
+                SuchkriteriumExponat.KATEGORIE.toString(),
+                SuchkriteriumExponat.INVENTARNUMMER.toString(),
+                SuchkriteriumExponat.AENDERUNGSDATUM.toString()
+        }, tData);
+        view.setGUIListener(this);
+
+    }
+
+    private void load() {
         List<String[]> data = storageAdapter.importData("src/assets/database/data.json", Dateiformat.JSON);
         entityAdapter.createAll(data);
+    }
 
+    private void safe() {
+        storageAdapter.exportData(entityAdapter.getAllData(), "src/assets/database/data.json");
+    }
+
+    public Object[][] getTabellenData() {
         Object[][] tabellenArr = new Object[entityAdapter.getExponatList().size()][6];
-        for(int i = 0; i < tabellenArr.length; i++) {
+        for (int i = 0; i < tabellenArr.length; i++) {
             tabellenArr[i][0] = entityAdapter.getExponatList().get(i).getInventarnummer();
             tabellenArr[i][1] = entityAdapter.getExponatList().get(i).getName();
             tabellenArr[i][2] = entityAdapter.getExponatList().get(i).getRaum().getNummer();
@@ -38,28 +79,113 @@ public class MuseumsController {
             Aenderung date = entityAdapter.getExponatList().get(i).getHistorie().getLetzteAenderung();
             tabellenArr[i][5] = (date != null ? Statics.dateFormat.format(date.getAenderungsDatum()) : null);
         }
+        return tabellenArr;
+    }
 
-        String[] pathsArr = new String[((Exponat)entityAdapter.getElement(Classtype.EXPONAT, tabellenArr[0][0])).getBildList().size()];
-        for(int i = 0; i < pathsArr.length; i++) {
-            pathsArr[i] = ((Exponat)entityAdapter.getElement(Classtype.EXPONAT,  tabellenArr[0][0])).getBildList().get(i).getPfad();
-        }
-
-        new MainGUI(pathsArr, new String[] {
-                SuchkriteriumExponat.RAUM.toString(),
-                SuchkriteriumExponat.NAME.toString(),
-                SuchkriteriumExponat.KUENSTLERNAME.toString(),
-                SuchkriteriumExponat.KATEGORIE.toString(),
-                SuchkriteriumExponat.INVENTARNUMMER.toString(),
-                SuchkriteriumExponat.AENDERUNGSDATUM.toString()
-        }, tabellenArr);
+    public Object[] getExponatTabellenData(String index) {
+        Object[] data = new Object[6];
+        Exponat exponat = (Exponat) entityAdapter.getElement(Classtype.EXPONAT, index);
+        data[0] = exponat.getInventarnummer();
+        data[1] = exponat.getName();
+        data[2] = exponat.getRaum().getNummer();
+        data[3] = exponat.getKuenstler().getName();
+        data[4] = exponat.getKategorie();
+        Aenderung date = exponat.getHistorie().getLetzteAenderung();
+        data[5] = (date != null ? Statics.dateFormat.format(date.getAenderungsDatum()) : null);
+        return data;
     }
 
     public static void main(String[] args) {
 
         MuseumsController controller = new MuseumsController();
 
-        controller.storageAdapter.exportData(controller.entityAdapter.getAllData(), "src/assets/database/data.json");
+    }
+
+    private String[] getImagePaths(String index) {
+        Exponat exponat = (Exponat) entityAdapter.getElement(Classtype.EXPONAT, index);
+        String[] pathsArr = new String[exponat.getBildList().size()];
+        for (int i = 0; i < pathsArr.length; i++) {
+            pathsArr[i] = exponat.getBildList().get(i).getPfad();
+        }
+        return pathsArr;
+    }
+
+    private void createDetailAnsicht() {
+        Exponat exponat = (Exponat) entityAdapter.getElement(Classtype.EXPONAT, view.getTableSelection());
+
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("Name", exponat.getName());
+        attributes.put("Inv-Nr.", exponat.getInventarnummer());
+        attributes.put("Material", exponat.getMaterial());
+        attributes.put("Schaetzwert", exponat.getSchaetzWert());
+        attributes.put("Erstellungsjahr", exponat.getErstellungsJahr());
+        attributes.put("Raum", exponat.getRaum().getNummer());
+        attributes.put("Kategorie", exponat.getKategorie());
+        attributes.put("beschreibung", exponat.getBeschreibung());
+        attributes.put("isInWeb", exponat.isInWeb());
+        attributes.put("isInMuseum", exponat.isInMuseum());
+
+        GUIExponatDetails details = new GUIExponatDetails(getImagePaths(exponat.getInventarnummer()), attributes);
+        ArrayList<IListElement> kuenstler = new ArrayList<>();
+        kuenstler.add(new ListElement(exponat.getKuenstler()));
+        details.setKuenstler(kuenstler);
+
+        ArrayList<IListElement> besitzer = new ArrayList<>();
+        exponat.getBesitzerList().forEach(b-> besitzer.add(new ListElement(b)));
+        details.setBesitzer(besitzer);
+
+        ArrayList<IListElement> foerderungen = new ArrayList<>();
+        exponat.getFoerderungList().forEach(f-> foerderungen.add(new ListElement(f)));
+        details.setFoerderungen(foerderungen);
+
+        ArrayList<IListElement> exponattypen = new ArrayList<>();
+        exponat.getExpTypList().forEach(e-> exponattypen.add(new ListElement(e)));
+        details.setExponattyp(exponattypen);
+
+        ArrayList<IListElement> historie = new ArrayList<>();
+        historie.add(new ListElement(exponat.getHistorie().getAnlage()));
+        exponat.getHistorie().getAenderungList().forEach(aenderung -> historie.add(new ListElement(aenderung)));
+        exponat.getHistorie().getKaufList().forEach(kauf -> historie.add(new ListElement(kauf)));
+        exponat.getHistorie().getVerkaufList().forEach(verkauf -> historie.add(new ListElement(verkauf)));
+        exponat.getHistorie().getVerleihList().forEach(verleih -> historie.add(new ListElement(verleih)));
+        exponat.getHistorie().getAusleiheList().forEach(ausleihe -> historie.add(new ListElement(ausleihe)));
+        details.setHistorie(historie);
+
 
     }
 
+    private String findNextInventarnummer() {
+        int counter = 1000;
+        String invNummer = "E"+counter;
+        while(entityAdapter.getElement(Classtype.EXPONAT, invNummer) != null) {
+            counter++;
+            invNummer = "E"+counter;
+        }
+        return invNummer;
+    }
+
+    @Override
+    public void processGUIEvent(GUIEvent guiEvent) {
+        switch (guiEvent.getCmdText()) {
+            case "open details":
+                createDetailAnsicht();
+                break;
+            case "selected element":
+                view.setUebersichtBilder(getImagePaths(view.getTableSelection()));
+                break;
+            case "delete element":
+                entityAdapter.removeElement(Classtype.EXPONAT, view.getTableSelection());
+                view.setUebersichtBilder(new String[] {"src/assets/images/keineBilder.jpg"});
+                break;
+            case "close Program":
+                safe();
+                break;
+            case "safe data":
+                String[] data = (String[]) guiEvent.getData();
+                data[0] = findNextInventarnummer();
+                entityAdapter.addElement(Classtype.EXPONAT, data);
+                view.addElement(getExponatTabellenData(data[0]));
+                break;
+        }
+    }
 }

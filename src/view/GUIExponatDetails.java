@@ -19,9 +19,12 @@ public class GUIExponatDetails {
     SimpleListComponent exponattypListComp;
     SimpleListComponent historyListComp;
 
-    public GUIExponatDetails(String []bildPfade , Map<String,String> attribute, String beschreibung, Boolean showWeb, Boolean inMuseuem) {
+    private SlideshowComponent slideshow;
 
-        JFrame detailFrame = new JFrame("");
+    public GUIExponatDetails(String []bildPfade , Map<String,Object> attribute) {
+
+        JFrame detailFrame = new JFrame("Detailansicht " + attribute.get("Name"));
+        detailFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         detailFrame.setLayout(new GridBagLayout());
         GridBagConstraints main = new GridBagConstraints();
 
@@ -38,16 +41,8 @@ public class GUIExponatDetails {
         JPanel slidePanel = new JPanel();
         slidePanel.setLayout(new BorderLayout());
 
-        ImageElement[] loadedImageElements = null;
-        try{
-            loadedImageElements = ImageLoader.loadImageElements(bildPfade);
-        }
-        catch( Exception e ){
-            e.printStackTrace();
-        }
-
-        SlideshowComponent slideshow =   SlideshowComponent.builder("SSC")
-                .imageElements(loadedImageElements).smallImageSize(new Dimension(40, 40)).build();
+        slideshow =   SlideshowComponent.builder("SSC").smallImageSize(new Dimension(40, 40)).build();
+        setBilder(bildPfade);
         slideshow.setPreferredSize(new Dimension(500,250));
 
         slidePanel.add(slideshow, BorderLayout.PAGE_START);
@@ -74,20 +69,20 @@ public class GUIExponatDetails {
                         .labelSize(new Dimension(100,5))
                         .actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
                         .mandatory(false).maxLength(10)
-                        .value(attribute.get("Inv-Nr."))
+                        .value((String) attribute.get("Inv-Nr."))
                         .build(),
 
                 AttributeElement.builder("Schaetzwert")
                         .labelName("Schätzwert €")
                         .labelSize(new Dimension(100,5))
                         .actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
-                        .mandatory(false).maxLength(10).value(attribute.get("Schaetzwert")).build(),
+                        .mandatory(false).maxLength(10).value(String.valueOf(attribute.get("Schaetzwert"))).build(),
 
                 AttributeElement.builder("Material")
                         .labelName("Material")
                         .labelSize(new Dimension(100,5))
                         .actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
-                        .mandatory(false).maxLength(10).value(attribute.get("Material")).build(),
+                        .mandatory(false).maxLength(10).value((String) attribute.get("Material")).build(),
                 };
 
         AttributeComponent attComp = null;
@@ -97,25 +92,25 @@ public class GUIExponatDetails {
                         .labelName("Name")
                         .labelSize(new Dimension(100,5))
                         .actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
-                        .mandatory(false).maxLength(10).value(attribute.get("Name")).build(),
+                        .mandatory(false).maxLength(10).value((String) attribute.get("Name")).build(),
 
                 AttributeElement.builder("Erstellungsjahr")
                         .labelName("Erstellungsjahr")
                         .labelSize(new Dimension(100,5))
                         .actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
-                        .mandatory(false).maxLength(10).value(attribute.get("Erstellungsjahr")).build(),
+                        .mandatory(false).maxLength(10).value(String.valueOf(attribute.get("Erstellungsjahr"))).build(),
 
                 AttributeElement.builder("Raum")
                         .labelName("Raum")
                         .labelSize(new Dimension(100,5))
                         .actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
-                        .mandatory(false).maxLength(10).value(attribute.get("Raum")).build(),
+                        .mandatory(false).maxLength(10).value(String.valueOf(attribute.get("Raum"))).build(),
 
                 AttributeElement.builder("Kategorie")
                         .labelName("Kategorie")
                         .labelSize(new Dimension(100,5))
                         .actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
-                        .mandatory(false).maxLength(10).value(attribute.get("Kategorie")).build(),
+                        .mandatory(false).maxLength(10).value((String) attribute.get("Kategorie")).build(),
         };
         AttributeComponent attComp2 = null;
 
@@ -149,7 +144,7 @@ public class GUIExponatDetails {
         c.insets = new Insets(0,0,0,0);
         attributePanel.add(attComp2,c);
 
-        TextComponent tc = TextComponent.builder("textFeld").title("Beschreibung").initialText(beschreibung).build();
+        TextComponent tc = TextComponent.builder("textFeld").editable(false).title("Beschreibung").initialText((String) attribute.get("beschreibung")).build();
         c.gridx=0;
         c.gridy=1;
         c.insets = new Insets(0,0,0,30);
@@ -170,11 +165,11 @@ public class GUIExponatDetails {
         JCheckBox cbInMuseum = new JCheckBox();
         cbInMuseum.setHorizontalTextPosition(SwingConstants.LEFT);
         cbInMuseum.setEnabled(false);
-        cbInMuseum.setSelected(inMuseuem);
+        cbInMuseum.setSelected((Boolean) attribute.get("isInMuseum"));
         JLabel labelInWeb = new JLabel("Im Web anzeigen:");
         JCheckBox cbInWeb = new JCheckBox();
         cbInWeb.setEnabled(false);
-        cbInWeb.setSelected(showWeb);
+        cbInWeb.setSelected((Boolean) attribute.get("isInWeb"));
         cbInWeb.setHorizontalTextPosition(SwingConstants.LEFT);
         checkBoxes.add(labelInMuseum,d);
 
@@ -225,6 +220,7 @@ public class GUIExponatDetails {
                         .title("Förderung")
                         .selectionMode( ListSelectionModel.SINGLE_SELECTION )
                         .build();
+
        // foerderungListComp.setListElements( historyElements );
         foerderungListComp.setCellRenderer( new ListComponentCellRenderer() ); //optional
         //foerderungListComp.addObserver( ... );
@@ -276,6 +272,23 @@ public class GUIExponatDetails {
 
         detailFrame.setSize(500,700);
         detailFrame.setVisible(true);
+    }
+
+    public void setBilder(String[] bildPfade) {
+        if (bildPfade.length == 0 || bildPfade[0].isEmpty()) {
+            bildPfade = new String[]{"src/assets/images/keineBilder.jpg"};
+        }
+
+        ImageElement[] loadedImageElements = null;
+        try {
+            loadedImageElements = ImageLoader.loadImageElements(bildPfade);
+            loadedImageElements[0].setName("test");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        slideshow.setImageElements(loadedImageElements);
+
     }
 
     public void setKuenstler(ArrayList<IListElement> kuenstler){
