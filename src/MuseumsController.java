@@ -1,11 +1,13 @@
 import datentypen.Classtype;
 import datentypen.Dateiformat;
+import datentypen.ErweiterbareListe;
 import datentypen.SuchkriteriumExponat;
 import de.dhbwka.swe.utils.event.GUIEvent;
 import de.dhbwka.swe.utils.event.IGUIEventListener;
 import de.dhbwka.swe.utils.model.IListElement;
 import model.*;
 import util.EntityAdapter;
+import util.Property;
 import util.Statics;
 import util.StorageAdapter;
 import view.*;
@@ -23,6 +25,8 @@ public class MuseumsController implements IGUIEventListener {
     public MuseumsController() {
         entityAdapter = new EntityAdapter();
         storageAdapter = new StorageAdapter();
+
+        storageAdapter.loadProperties();
 
         // todo: delete
         boolean json = false;
@@ -161,9 +165,9 @@ public class MuseumsController implements IGUIEventListener {
                 Map<String, Object> map = new HashMap<>();
                 map.put("invNr", exponat.getInventarnummer());
                 map.put("bildPfade", getImagePaths(exponat.getInventarnummer()));
-                map.put("exponattypen", new String[] {"typ1,typ beschreibung", "typ2,neue beschreibung"});
-                map.put("kategorie", new String[] {"Gemälde", "Foto"});
-                map.put("material", new String[] {"acryl", "pastel"});
+                map.put("exponattypen", Property.getInstance().getProperty(ErweiterbareListe.EXPONATTYP).toArray());
+                map.put("kategorie", Property.getInstance().getProperty(ErweiterbareListe.KATEGORIE).toArray());
+                map.put("material", Property.getInstance().getProperty(ErweiterbareListe.MATERIAL).toArray());
                 map.put("name", exponat.getName());
                 map.put("erstellungsjahr", exponat.getErstellungsJahr());
                 map.put("schaetzwert", exponat.getSchaetzWert());

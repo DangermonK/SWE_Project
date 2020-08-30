@@ -15,15 +15,15 @@ public class ListElement implements IListElement {
     }
 
     public ListElement(Aenderung aenderung) {
-        this.listText = "Änderungsdatum: " + Statics.dateFormat.format(aenderung.getAenderungsDatum()) + ", bearbeitet von: " + aenderung.getAngestellter().getName();
+        this.listText = "Ã„nderungsdatum: " + Statics.dateFormat.format(aenderung.getAenderungsDatum()) + ", bearbeitet von: " + aenderung.getAngestellter().getName();
     }
 
     public ListElement(Kauf kauf) {
-        this.listText = "Erwerbsdatum: " + Statics.dateFormat.format(kauf.getErwerbsDatum()) + ", Einkaufswert: " + kauf.getKaufwert() + "€";
+        this.listText = "Erwerbsdatum: " + Statics.dateFormat.format(kauf.getErwerbsDatum()) + ", Einkaufswert: " + kauf.getKaufwert() + "â‚¬";
     }
 
     public ListElement(Verkauf verkauf) {
-        this.listText = "Verkaufsdatum: " + Statics.dateFormat.format(verkauf.getVerkaufsDatum()) + ", Verkaufswert: " + verkauf.getVerkaufswert() + "€";
+        this.listText = "Verkaufsdatum: " + Statics.dateFormat.format(verkauf.getVerkaufsDatum()) + ", Verkaufswert: " + verkauf.getVerkaufswert() + "â‚¬";
     }
 
     public ListElement(Ausleihe ausleihe) {
@@ -39,13 +39,13 @@ public class ListElement implements IListElement {
     }
 
     public ListElement(Kuenstler kuenstler) {
-        this.listText = "Name: " + kuenstler.getName() + ", nationalität: " + kuenstler.getNationalitaet() +
+        this.listText = "Name: " + kuenstler.getName() + ", nationalitÃ¤t: " + kuenstler.getNationalitaet() +
                         ", lebensspanne: " + kuenstler.getLebensspanne();
     }
 
     public ListElement(Foerderung foerderung){
         this.listText = "Name: " + foerderung.getFoerdernder().getName() + ", Art: " + foerderung.getFoerderungsart()
-                + ", Mittel: " + foerderung.getFoerderungsmittel() + "€";
+                + ", Mittel: " + foerderung.getFoerderungsmittel() + "â‚¬";
     }
 
     public ListElement(Exponattyp exponattyp) {

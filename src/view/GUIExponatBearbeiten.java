@@ -42,8 +42,8 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
     private JButton besitzerButton;
     private JButton historieButton;
 
-    public GUIExponatBearbeiten(IGUIEventListener listener) {
-        this(new String[0], new String[]{""}, new String[]{""}, new String[]{""}, null, null, null, false, null, listener);
+    public GUIExponatBearbeiten(IGUIEventListener listener, String[] comboboxDataExponattyp, String[] comboboxDataKategorie, String[] comboboxDataMaterial) {
+        this(new String[0], comboboxDataExponattyp, comboboxDataKategorie, comboboxDataMaterial, null, null, null, false, null, listener);
 
     }
 

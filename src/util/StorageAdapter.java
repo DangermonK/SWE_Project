@@ -2,18 +2,18 @@ package util;
 
 import datentypen.Classtype;
 import datentypen.Dateiformat;
+import datentypen.ErweiterbareListe;
 import de.dhbwka.swe.utils.util.CSVReader;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 public class StorageAdapter {
 
@@ -263,8 +263,38 @@ public class StorageAdapter {
 
     }
 
-    public void loadalldata() {}
-    public void loadProperties() {}
-    public void saveProperties() {}
+    public void loadalldata() {
+
+    }
+
+    public void loadProperties() {
+        File propertiesFile = new File("./src/assets/database/auswahllisten.properties");
+        Properties properties = new Properties();
+
+        if(propertiesFile.exists())
+        {
+            BufferedInputStream bis;
+            try {
+                bis = new BufferedInputStream(new FileInputStream(propertiesFile));
+                properties.load(bis);
+                bis.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Property.getInstance().putProperties(ErweiterbareListe.KATEGORIE, Arrays.asList(properties.getProperty("kategorie").split(",")));
+        List<String> expTyp = Arrays.asList(properties.getProperty("exponattyp").split(","));
+        expTyp.forEach(e -> e.replace(':', ','));
+        Property.getInstance().putProperties(ErweiterbareListe.EXPONATTYP, expTyp);
+        Property.getInstance().putProperties(ErweiterbareListe.MATERIAL, Arrays.asList(properties.getProperty("material").split(",")));
+
+    }
+
+    public void saveProperties() {
+
+    }
 
 }

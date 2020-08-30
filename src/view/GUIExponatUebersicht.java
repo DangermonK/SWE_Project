@@ -2,12 +2,14 @@ package view;
 
 import com.sun.corba.se.impl.ior.GenericIdentifiable;
 import com.sun.org.apache.xpath.internal.operations.Bool;
+import datentypen.ErweiterbareListe;
 import de.dhbwka.swe.utils.event.EventCommand;
 import de.dhbwka.swe.utils.event.GUIEvent;
 import de.dhbwka.swe.utils.event.IGUIEventListener;
 import de.dhbwka.swe.utils.gui.*;
 import de.dhbwka.swe.utils.model.ImageElement;
 import de.dhbwka.swe.utils.util.ImageLoader;
+import util.Property;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -150,7 +152,10 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
             switch (button.getID()) {
                 case "anlegen":
                     buttonComp.enableButtons(false);
-                    GUIExponatBearbeiten bearbeiten = new GUIExponatBearbeiten(this);
+                    new GUIExponatBearbeiten(this,
+                            (String[])Property.getInstance().getProperty(ErweiterbareListe.EXPONATTYP).toArray(),
+                            (String[])Property.getInstance().getProperty(ErweiterbareListe.KATEGORIE).toArray(),
+                            (String[])Property.getInstance().getProperty(ErweiterbareListe.MATERIAL).toArray());
                     break;
                 case "bearbeiten":
                     if(suchGUI.getSelectionIndex() != null) {
