@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.Map;
 
 public class MainGUI extends ObservableComponent {
 
@@ -33,6 +34,10 @@ public class MainGUI extends ObservableComponent {
         mainFrame.add(tabbedPane);
         mainFrame.setSize(400,400);
         mainFrame.setVisible(true);
+    }
+
+    public void initBearbeitenGUI(Map<String, Object> data) {
+        uebersicht.initBearbeitenGUI(data);
     }
 
     public void addElement(Object[] data) {

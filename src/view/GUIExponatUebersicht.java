@@ -1,6 +1,7 @@
 package view;
 
 import com.sun.corba.se.impl.ior.GenericIdentifiable;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import de.dhbwka.swe.utils.event.EventCommand;
 import de.dhbwka.swe.utils.event.GUIEvent;
 import de.dhbwka.swe.utils.event.IGUIEventListener;
@@ -13,6 +14,7 @@ import javax.swing.border.Border;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.util.EventListener;
+import java.util.Map;
 
 public class GUIExponatUebersicht extends ObservableComponent implements IGUIEventListener {
 
@@ -126,6 +128,21 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
         suchGUI.setGUIListener(listener);
     }
 
+    public void initBearbeitenGUI(Map<String, Object> data) {
+
+        new GUIExponatBearbeiten((String[])data.get("bildPfade"),
+                (String[])data.get("exponattypen"),
+                (String[])data.get("kategorie"),
+                (String[])data.get("material"),
+                (String)data.get("name"),
+                String.valueOf(data.get("erstellungsjahr")),
+                String.valueOf(data.get("schaetzwert")),
+                Boolean.parseBoolean(data.get("schowInWeb").toString()),
+                (String)data.get("beschreibung"),
+                this).setInvNr((String)data.get("invNr"));
+
+    }
+
     @Override
     public void processGUIEvent(GUIEvent guiEvent) {
         if (ButtonComponent.Commands.BUTTON_PRESSED.equals(guiEvent.getCmd())) {
@@ -133,11 +150,12 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
             switch (button.getID()) {
                 case "anlegen":
                     buttonComp.enableButtons(false);
-                    new GUIExponatBearbeiten(this);
+                    GUIExponatBearbeiten bearbeiten = new GUIExponatBearbeiten(this);
                     break;
                 case "bearbeiten":
                     if(suchGUI.getSelectionIndex() != null) {
-                        System.out.println("bearbeiten");
+                        buttonComp.enableButtons(false);
+                        fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "load edit", null));
                     }
                     break;
                 case "loeschen":

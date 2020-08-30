@@ -137,7 +137,6 @@ public class MuseumsController implements IGUIEventListener {
         exponat.getHistorie().getVerleihList().forEach(verleih -> historie.add(new ListElement(verleih)));
         exponat.getHistorie().getAusleiheList().forEach(ausleihe -> historie.add(new ListElement(ausleihe)));
         details.setHistorie(historie);
-
     }
 
     private String findNextInventarnummer() {
@@ -156,6 +155,23 @@ public class MuseumsController implements IGUIEventListener {
             case "open details":
                 createDetailAnsicht();
                 break;
+            case "load edit":
+                Exponat exponat = (Exponat) entityAdapter.getElement(Classtype.EXPONAT, view.getTableSelection());
+
+                Map<String, Object> map = new HashMap<>();
+                map.put("invNr", exponat.getInventarnummer());
+                map.put("bildPfade", getImagePaths(exponat.getInventarnummer()));
+                map.put("exponattypen", new String[] {"typ1,typ beschreibung", "typ2,neue beschreibung"});
+                map.put("kategorie", new String[] {"Gemälde", "Foto"});
+                map.put("material", new String[] {"acryl", "pastel"});
+                map.put("name", exponat.getName());
+                map.put("erstellungsjahr", exponat.getErstellungsJahr());
+                map.put("schaetzwert", exponat.getSchaetzWert());
+                map.put("schowInWeb", String.valueOf(exponat.isInWeb()));
+                map.put("beschreibung", exponat.getBeschreibung());
+
+                view.initBearbeitenGUI(map);
+                break;
             case "selected element":
                 view.setUebersichtBilder(getImagePaths(view.getTableSelection()));
                 break;
@@ -165,14 +181,18 @@ public class MuseumsController implements IGUIEventListener {
                 break;
             case "close Program":
                 safe();
+                System.exit(0);
                 break;
             case "safe data":
                 String[] data = (String[]) guiEvent.getData();
                 if(data[0] == null) {
                     data[0] = findNextInventarnummer();
+                    entityAdapter.addElement(Classtype.EXPONAT, data);
+                    view.addElement(getExponatTabellenData(data[0]));
+                } else {
+                    entityAdapter.addElement(Classtype.EXPONAT, data);
+                    view.updateElement(getExponatTabellenData(data[0]));
                 }
-                entityAdapter.addElement(Classtype.EXPONAT, data);
-                view.updateElement(getExponatTabellenData(data[0]));
                 break;
             case "raum gui":
 
