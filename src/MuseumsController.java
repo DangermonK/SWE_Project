@@ -29,7 +29,7 @@ public class MuseumsController implements IGUIEventListener {
         storageAdapter.loadProperties();
 
         // todo: delete
-        boolean json = false;
+        boolean json = true;
         if(!json) {
             List<String[]> data = storageAdapter.importData("src/assets/database/TestData.csv", Dateiformat.CSV);
             entityAdapter.createAll(data);
@@ -173,6 +173,10 @@ public class MuseumsController implements IGUIEventListener {
                 map.put("schaetzwert", exponat.getSchaetzWert());
                 map.put("schowInWeb", String.valueOf(exponat.isInWeb()));
                 map.put("beschreibung", exponat.getBeschreibung());
+                map.put("raum", exponat.getRaum().getNummer());
+                map.put("besitzer", exponat.getBesitzerList());
+
+
 
                 view.initBearbeitenGUI(map);
                 break;
@@ -207,17 +211,40 @@ public class MuseumsController implements IGUIEventListener {
                     raeume[index] = String.valueOf(r.getNummer());
                     index++;
                 }
-                new GUIAuswahlPanel(raeume, "Raum");
+
+                String currentElement;
+                if(guiEvent.getData()==null){
+                     currentElement = "";
+                }
+                else{
+                    currentElement = guiEvent.getData().toString();
+                }
+
+
+                //System.out.println(currentElement);
+                view.initAuswahlPanel(raeume, "Raum", currentElement);
+                //new GUIAuswahlPanel(raeume, "Raum");
                 break;
             case "historie gui":
                 System.out.println("historie ist geil");
                 break;
             case "foerderung gui":
                 System.out.println("foerderung ist geil");
+                Exponat ex = (Exponat) entityAdapter.getElement(Classtype.EXPONAT, "E2131");
+                //System.out.println(ex.getFoerderungList().get(0).g);
+                ArrayList<IListElement> temp =  new ArrayList<>();
+                temp.add(new ListElement(ex.getFoerderungList().get(0)));
+                temp.add(new ListElement(ex.getFoerderungList().get(0)));
+                temp.add(new ListElement(ex.getFoerderungList().get(0)));
+                temp.add(new ListElement(ex.getFoerderungList().get(0)));
+
+                view.initListAuswahlPanel(temp, "Förderungen", temp);
                 break;
             case "besitzer gui":
                 List<Person> besitzerList = entityAdapter.getPersonList();
                 besitzerList.removeIf(p -> p instanceof Foerdernder || p instanceof Angestellter);
+
+
 
                 String[] besitzer = new String[besitzerList.size()];
                 index =0;
@@ -225,7 +252,15 @@ public class MuseumsController implements IGUIEventListener {
                     besitzer[index] = String.valueOf(b.getName());
                     index++;
                 }
-                new GUIAuswahlPanel(besitzer, "Besitzer");
+
+                String currentBesitzer;
+                if(guiEvent.getData()==null){
+                    currentBesitzer = "";
+                }
+                else{
+                    currentBesitzer = guiEvent.getData().toString();
+                }
+               view.initAuswahlPanel(besitzer, "Besitzer", currentBesitzer);
                 break;
             case "kuenstler gui":
                 System.out.println("kuenstler ist geil");

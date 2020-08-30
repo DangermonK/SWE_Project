@@ -3,11 +3,13 @@ package view;
 import de.dhbwka.swe.utils.event.GUIEvent;
 import de.dhbwka.swe.utils.event.IGUIEventListener;
 import de.dhbwka.swe.utils.gui.ObservableComponent;
+import de.dhbwka.swe.utils.model.IListElement;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.ArrayList;
 import java.util.Map;
 
 public class MainGUI extends ObservableComponent {
@@ -39,6 +41,15 @@ public class MainGUI extends ObservableComponent {
     public void initBearbeitenGUI(Map<String, Object> data) {
         uebersicht.initBearbeitenGUI(data);
     }
+
+    public void initAuswahlPanel(Object[] auswahlDaten, String elementname, String currentElement){
+        uebersicht.initAuswahlPanel(auswahlDaten, elementname, currentElement);
+    }
+
+    public void initListAuswahlPanel(ArrayList<IListElement> listElements, String elementname, ArrayList<IListElement>  currentElement){
+        uebersicht.initListAuswahlPanel(listElements, elementname, currentElement);
+    }
+
 
     public void addElement(Object[] data) {
         uebersicht.addTabellenElement(data);

@@ -7,14 +7,17 @@ import de.dhbwka.swe.utils.event.EventCommand;
 import de.dhbwka.swe.utils.event.GUIEvent;
 import de.dhbwka.swe.utils.event.IGUIEventListener;
 import de.dhbwka.swe.utils.gui.*;
+import de.dhbwka.swe.utils.model.IListElement;
 import de.dhbwka.swe.utils.model.ImageElement;
 import de.dhbwka.swe.utils.util.ImageLoader;
+import model.Besitzer;
 import util.Property;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.Map;
 
@@ -23,9 +26,11 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
     private JPanel uebersichtPanel;
     private JPanel topPanel;
     private GUIExponatSuchComponent suchGUI;
+    private GUIExponatBearbeiten bearbeitenGUI;
 
     private SlideshowComponent slideshow;
     private JPanel leftPanel;
+    private String[] raueme;
 
     private ButtonComponent buttonComp;
 
@@ -132,7 +137,7 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
 
     public void initBearbeitenGUI(Map<String, Object> data) {
 
-        new GUIExponatBearbeiten((String[])data.get("bildPfade"),
+         bearbeitenGUI = new GUIExponatBearbeiten((String[])data.get("bildPfade"),
                 (String[])data.get("exponattypen"),
                 (String[])data.get("kategorie"),
                 (String[])data.get("material"),
@@ -141,8 +146,21 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
                 String.valueOf(data.get("schaetzwert")),
                 Boolean.parseBoolean(data.get("schowInWeb").toString()),
                 (String)data.get("beschreibung"),
-                this).setInvNr((String)data.get("invNr"));
+                this);
+         bearbeitenGUI.setCurrentRaum(String.valueOf(data.get("raum")));
+         bearbeitenGUI.setBesitzerList((java.util.List<Besitzer>) data.get("besitzer"));
+         //bearbeitenGUI.setCurrentBesitzer(data.get());
+         bearbeitenGUI.setInvNr((String)data.get("invNr"));
 
+    }
+
+    public void initAuswahlPanel(Object[] auswahlDaten, String elementname, String currentElement){
+        bearbeitenGUI.initAuswahlPanel(auswahlDaten, elementname, currentElement);
+
+    }
+
+    public void initListAuswahlPanel(ArrayList<IListElement> listElements, String elementname, ArrayList<IListElement>  currentElement){
+        bearbeitenGUI.initListAuswahlPanel(listElements, elementname, currentElement);
     }
 
     @Override
@@ -152,7 +170,7 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
             switch (button.getID()) {
                 case "anlegen":
                     buttonComp.enableButtons(false);
-                    new GUIExponatBearbeiten(this,
+                    bearbeitenGUI = new GUIExponatBearbeiten(this,
                             (String[])Property.getInstance().getProperty(ErweiterbareListe.EXPONATTYP).toArray(),
                             (String[])Property.getInstance().getProperty(ErweiterbareListe.KATEGORIE).toArray(),
                             (String[])Property.getInstance().getProperty(ErweiterbareListe.MATERIAL).toArray());

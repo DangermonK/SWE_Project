@@ -5,8 +5,10 @@ import de.dhbwka.swe.utils.event.GUIEvent;
 import de.dhbwka.swe.utils.event.IGUIEventListener;
 import de.dhbwka.swe.utils.gui.*;
 import de.dhbwka.swe.utils.gui.TextComponent;
+import de.dhbwka.swe.utils.model.IListElement;
 import de.dhbwka.swe.utils.model.ImageElement;
 import de.dhbwka.swe.utils.util.ImageLoader;
+import model.Besitzer;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -29,6 +31,9 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
 
     private int currentImageIndex = 0;
 
+    private String currentRaumnummer;
+    private String currentBesitzer;
+
     private String invNr;
     private List<String> imagePaths = new ArrayList<>();
 
@@ -41,6 +46,7 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
     private JButton foerderungenButton;
     private JButton besitzerButton;
     private JButton historieButton;
+    private Map<String,String> besitzerMap;
 
     public GUIExponatBearbeiten(IGUIEventListener listener, String[] comboboxDataExponattyp, String[] comboboxDataKategorie, String[] comboboxDataMaterial) {
         this(new String[0], comboboxDataExponattyp, comboboxDataKategorie, comboboxDataMaterial, null, null, null, false, null, listener);
@@ -191,7 +197,8 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
             public void actionPerformed(ActionEvent e) {
 
                 if (e.getSource() == raumButton){
-                    fireGUIEvent(new GUIEvent(e.getSource(), () -> "raum gui", null));
+                    //System.out.println(currentRaumnummer);
+                    fireGUIEvent(new GUIEvent(e.getSource(), () -> "raum gui", currentRaumnummer));
                     raumButton.setEnabled(false);
 
                 }
@@ -284,6 +291,16 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
 
     }
 
+    public void initAuswahlPanel(Object[] auswahlDaten, String Elementname, String currentElement){
+
+        new GUIAuswahlPanel(auswahlDaten,Elementname, this, currentElement);
+
+    }
+
+    public void initListAuswahlPanel(ArrayList<IListElement> listElements, String elementname, ArrayList<IListElement>  currentElement){
+        new GUIListAuswahl(listElements, elementname, currentElement, this);
+    }
+
     public void setBilder(String[] bildPfade) {
         if (bildPfade.length == 0 || bildPfade[0].isEmpty()) {
             bildPfade = new String[]{"src/assets/images/keineBilder.jpg"};
@@ -351,24 +368,32 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
                     for (String path : imagePaths) {
                         imageString += "Bild," + path + "-";
                     }
-                    String[] data = new String[]{
-                            invNr,
-                            attElemsLeft[0].getValue(),
-                            tc.getText(),
-                            attElemsLeft[3].getValue(),
-                            attElemsLeft[1].getValue(),
-                            attElemsLeft[2].getValue(),
-                            attElemsLeft[4].getValue(),
-                            String.valueOf(getInWebBox()),
-                            "So Jin,12.3.1975,null,Koreanisch",
-                            imageString,
-                            attElemsLeft[5].getValue(),
-                            "null:null:null:null:23.2.2010-P100:23.2.2010-P100",
-                            "P102",
-                            "1"
-                    };
-                    fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "safe data", data));
-                    bearbeitenFrame.dispatchEvent(new WindowEvent(bearbeitenFrame, WindowEvent.WINDOW_CLOSING));
+                    if(currentRaumnummer!=null && currentBesitzer !=null) {
+
+                        String[] data = new String[]{
+                                invNr,
+                                attElemsLeft[0].getValue(),
+                                tc.getText(),
+                                attElemsLeft[3].getValue(),
+                                attElemsLeft[1].getValue(),
+                                attElemsLeft[2].getValue(),
+                                attElemsLeft[4].getValue(),
+                                String.valueOf(getInWebBox()),
+                                "So Jin,12.3.1975,null,Koreanisch",
+                                imageString,
+                                attElemsLeft[5].getValue(),
+                                "null:null:null:null:23.2.2010-P100:23.2.2010-P100",besitzerMap.get(currentBesitzer),
+                                currentRaumnummer
+                        };
+                        fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "safe data", data));
+                        bearbeitenFrame.dispatchEvent(new WindowEvent(bearbeitenFrame, WindowEvent.WINDOW_CLOSING));
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(this,
+                                "Raum nicht ausgewählt",
+                                "Daten fehlen",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
                     break;
                 case "cancel":
                     bearbeitenFrame.dispatchEvent(new WindowEvent(bearbeitenFrame, WindowEvent.WINDOW_CLOSING));
@@ -378,9 +403,40 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
             ImageElement imageElement = (ImageElement) guiEvent.getData();
             currentImageIndex = imagePaths.indexOf(imageElement.getPath());
         }
+        if(guiEvent.getCmdText().equals("Raum ausgewaehlt")){
+            raumButton.setEnabled(true);
+            currentRaumnummer = guiEvent.getData().toString();
+            System.out.println(currentRaumnummer);
+        }
+        if(guiEvent.getCmdText().equals("Besitzer ausgewaehlt")){
+            besitzerButton.setEnabled(true);
+            currentBesitzer = guiEvent.getData().toString();
+            //System.out.println(currentBesitzer);
+        }
+        if(guiEvent.getCmdText().equals("Förderungen ausgewaehlt")){
+            foerderungenButton.setEnabled(true);
+            currentBesitzer = guiEvent.getData().toString();
+            //System.out.println(currentBesitzer);
+        }
 
 
     }
 
 
+    public void setCurrentRaum(String raum) {
+        currentRaumnummer = raum;
+
+    }
+
+
+
+
+    public void setBesitzerList(List<Besitzer> besitzerList) {
+        //TODO : Exponat kann mehrere BEsitzer haben?
+        currentBesitzer = besitzerList.get(0).getName().toString();
+        this.besitzerMap = new HashMap<>();
+        for (Besitzer b: besitzerList) {
+            besitzerMap.put(b.getName(),b.getPersNr());
+        }
+    }
 }

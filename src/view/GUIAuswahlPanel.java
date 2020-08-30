@@ -1,33 +1,51 @@
 package view;
 
-import de.dhbwka.swe.utils.gui.AttributeComponent;
-import de.dhbwka.swe.utils.gui.AttributeElement;
-import de.dhbwka.swe.utils.gui.ButtonComponent;
-import de.dhbwka.swe.utils.gui.ButtonElement;
+import de.dhbwka.swe.utils.event.GUIEvent;
+import de.dhbwka.swe.utils.event.IGUIEventListener;
+import de.dhbwka.swe.utils.gui.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.sql.Array;
+import java.util.Arrays;
 
-public class GUIAuswahlPanel {
+public class GUIAuswahlPanel extends ObservableComponent implements IGUIEventListener {
 
+    private AttributeElement[] attElems;
+    private JFrame raumFrame;
+    private String elementName;
 
-    public GUIAuswahlPanel(Object[] listeneintraege, String elementName){
+    public GUIAuswahlPanel(Object[] listeneintraege, String elementName, IGUIEventListener listener, String currentElement){
+        this.addObserver(listener);
+        this.elementName = elementName;
 
-
-        JFrame raumFrame = new JFrame();
+        raumFrame = new JFrame();
         raumFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         raumFrame.setLayout(new GridLayout(1,2));
         JPanel raumPanel = new JPanel();
         JPanel buttonPanel = new JPanel();
 
+        String comboBoxDefaultValue = String.valueOf(listeneintraege[0]);
 
-        AttributeElement[] attElems = new AttributeElement[]{
+
+        if(!currentElement.isEmpty()) {
+            for (int i = 0; i < listeneintraege.length; i++) {
+                if (listeneintraege[i].toString().equals(currentElement)) {
+                    comboBoxDefaultValue = String.valueOf(listeneintraege[i]);
+                    break;
+                }
+            }
+        }
+        System.out.println(comboBoxDefaultValue);
+
+        attElems = new AttributeElement[]{
 
                 AttributeElement.builder(elementName)
                         .labelName(elementName)
                         .labelSize(new Dimension(50,5))
                         .actionElementSize(new Dimension(300,5))
-                        .value(String.valueOf(listeneintraege[0]))
+                        .value(comboBoxDefaultValue)
                         .data(listeneintraege)
                         .mandatory(true)
                         .modificationType(AttributeElement.ModificationType.INTERACTIVE)
@@ -60,6 +78,7 @@ public class GUIAuswahlPanel {
                 .build();
 
         buttonPanel.add(buttonComp);
+        buttonComp.addObserver(this);
 
 
         raumFrame.add(raumPanel);
@@ -70,5 +89,18 @@ public class GUIAuswahlPanel {
         raumFrame.setVisible(true);
 
 
+    }
+
+    @Override
+    public void processGUIEvent(GUIEvent guiEvent) {
+        if (ButtonComponent.Commands.BUTTON_PRESSED.equals(guiEvent.getCmd())) {
+            ButtonElement button = (ButtonElement) guiEvent.getData();
+            switch (button.getID()) {
+                case "auswählen":
+                    fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> (elementName+" ausgewaehlt"), attElems[0].getValue()));
+                    raumFrame.dispose();
+                    break;
+            }
+        }
     }
 }
