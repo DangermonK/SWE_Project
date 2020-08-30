@@ -25,7 +25,7 @@ public class MuseumsController implements IGUIEventListener {
         storageAdapter = new StorageAdapter();
 
         // todo: delete
-        boolean json = true;
+        boolean json = false;
         if(!json) {
             List<String[]> data = storageAdapter.importData("src/assets/database/TestData.csv", Dateiformat.CSV);
             entityAdapter.createAll(data);
@@ -212,7 +212,8 @@ public class MuseumsController implements IGUIEventListener {
                 System.out.println("foerderung ist geil");
                 break;
             case "besitzer gui":
-                List<Person> besitzerList =   entityAdapter.getPersonList();
+                List<Person> besitzerList = entityAdapter.getPersonList();
+                besitzerList.removeIf(p -> p instanceof Foerdernder || p instanceof Angestellter);
 
                 String[] besitzer = new String[besitzerList.size()];
                 index =0;
