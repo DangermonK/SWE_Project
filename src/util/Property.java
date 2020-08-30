@@ -2,6 +2,8 @@ package util;
 
 import datentypen.ErweiterbareListe;
 
+import java.util.List;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -11,7 +13,7 @@ public class Property {
     private HashMap<ErweiterbareListe, List<String>> erweiterbareListeListMap;
 
     private Property() {
-        erweiterbareListeListMap = new HashMap<ErweiterbareListe, List<String>>();
+        erweiterbareListeListMap = new HashMap<>();
     }
 
     public static Property getInstance() {
@@ -20,6 +22,11 @@ public class Property {
         }
 
         return instance;
+    }
+
+    public void swap(ErweiterbareListe eList, int a, int b) {
+        if(a >= 0 && b >= 0)
+            Collections.swap(erweiterbareListeListMap.get(eList), a, b);
     }
 
     public List<String> getProperty(ErweiterbareListe eList) {
@@ -32,7 +39,11 @@ public class Property {
         erweiterbareListeListMap.put(key, value);
     }
     public void addPropertyValue(ErweiterbareListe key, String value) {
-        erweiterbareListeListMap.get(key).add(value);
+        if(!erweiterbareListeListMap.get(key).contains(value)) {
+            List<String> list = erweiterbareListeListMap.get(key);
+            // todo: fix
+            erweiterbareListeListMap.put(key, list);
+        }
     }
 
 }

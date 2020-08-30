@@ -174,9 +174,9 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
                 case "anlegen":
                     buttonComp.enableButtons(false);
                     bearbeitenGUI = new GUIExponatBearbeiten(this,
-                            (String[])Property.getInstance().getProperty(ErweiterbareListe.EXPONATTYP).toArray(),
-                            (String[])Property.getInstance().getProperty(ErweiterbareListe.KATEGORIE).toArray(),
-                            (String[])Property.getInstance().getProperty(ErweiterbareListe.MATERIAL).toArray());
+                            Property.getInstance().getProperty(ErweiterbareListe.EXPONATTYP).toArray(new String[]{}),
+                            Property.getInstance().getProperty(ErweiterbareListe.KATEGORIE).toArray(new String[]{}),
+                            Property.getInstance().getProperty(ErweiterbareListe.MATERIAL).toArray(new String[]{}));
                     break;
                 case "bearbeiten":
                     if(suchGUI.getSelectionIndex() != null) {

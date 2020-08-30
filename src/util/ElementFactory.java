@@ -336,9 +336,10 @@ public class ElementFactory {
 
     public ExponatsFoerderung createExponatFoerderung(String[] args) {
         ExponatsFoerderung foerderung = new ExponatsFoerderung(args[0], Double.parseDouble(args[1]));
-        ((Exponat) adapter.getElement(Classtype.EXPONAT, args[2])).addFoerderung(foerderung);
-        foerderung.setExponat((Exponat) adapter.getElement(Classtype.EXPONAT, args[2]));
-
+        if(!args[2].equals("null")) {
+            ((Exponat) adapter.getElement(Classtype.EXPONAT, args[2])).addFoerderung(foerderung);
+            foerderung.setExponat((Exponat) adapter.getElement(Classtype.EXPONAT, args[2]));
+        }
         return foerderung;
 
     }

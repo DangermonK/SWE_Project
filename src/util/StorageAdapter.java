@@ -286,14 +286,39 @@ public class StorageAdapter {
         }
 
         Property.getInstance().putProperties(ErweiterbareListe.KATEGORIE, Arrays.asList(properties.getProperty("kategorie").split(",")));
-        List<String> expTyp = Arrays.asList(properties.getProperty("exponattyp").split(","));
-        expTyp.forEach(e -> e.replace(':', ','));
+        String[] arr = properties.getProperty("exponattyp").split(",");
+        for(int i = 0; i < arr.length; i++) {
+            arr[i] = arr[i].replace(":", ",");
+        }
+        List<String> expTyp = Arrays.asList(arr);
+
         Property.getInstance().putProperties(ErweiterbareListe.EXPONATTYP, expTyp);
         Property.getInstance().putProperties(ErweiterbareListe.MATERIAL, Arrays.asList(properties.getProperty("material").split(",")));
 
     }
 
     public void saveProperties() {
+        List<String> kategorieList = Property.getInstance().getProperty(ErweiterbareListe.KATEGORIE);
+        List<String> materialList = Property.getInstance().getProperty(ErweiterbareListe.MATERIAL);
+        List<String> exponattypList = Property.getInstance().getProperty(ErweiterbareListe.EXPONATTYP);
+
+        final String[] propertiesArr = {"", "", ""};
+        kategorieList.forEach(k -> propertiesArr[0] += k + ",");
+        materialList.forEach(m -> propertiesArr[1] += m + ",");
+        exponattypList.forEach(e -> propertiesArr[2] += e.replace(',', ':') + ",");
+
+        Properties properties = new Properties();
+        properties.setProperty("kategorie", propertiesArr[0]);
+        properties.setProperty("material", propertiesArr[1]);
+        properties.setProperty("exponattyp", propertiesArr[2]);
+
+        try {
+            properties.store(new FileOutputStream("./src/assets/database/auswahllisten.properties"), null);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 

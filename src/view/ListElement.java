@@ -47,7 +47,7 @@ public class ListElement implements IListElement {
     public ListElement(Foerderung foerderung, int hash){
         this.hash = hash;
         this.listText = "Name: " + foerderung.getFoerdernder().getName() + ", Art: " + foerderung.getFoerderungsart()
-                + ", Mittel: " + foerderung.getFoerderungsmittel() + "€" +"teeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeest";
+                + ", Mittel: " + foerderung.getFoerderungsmittel() + "€";
     }
 
     public ListElement(Exponattyp exponattyp) {

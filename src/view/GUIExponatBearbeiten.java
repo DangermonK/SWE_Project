@@ -1,5 +1,6 @@
 package view;
 
+import datentypen.ErweiterbareListe;
 import de.dhbwka.swe.utils.event.EventCommand;
 import de.dhbwka.swe.utils.event.GUIEvent;
 import de.dhbwka.swe.utils.event.IGUIEventListener;
@@ -10,6 +11,7 @@ import de.dhbwka.swe.utils.model.ImageElement;
 import de.dhbwka.swe.utils.util.ImageLoader;
 import model.Besitzer;
 import model.Kuenstler;
+import util.Property;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -374,20 +376,27 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
                     for (String path : imagePaths) {
                         imageString += "Bild," + path + "-";
                     }
+                    String kategorie = attElemsLeft[3].getValue();
+                    Property.getInstance().addPropertyValue(ErweiterbareListe.KATEGORIE, kategorie);
+                    String material = attElemsLeft[4].getValue();
+                    Property.getInstance().addPropertyValue(ErweiterbareListe.MATERIAL, material);
+                    String exponattyp = attElemsLeft[5].getValue();
+                    Property.getInstance().addPropertyValue(ErweiterbareListe.EXPONATTYP, exponattyp);
+
                     if(currentRaumnummer!=null && currentBesitzer !=null) {
 
                         String[] data = new String[]{
                                 invNr,
                                 attElemsLeft[0].getValue(),
                                 tc.getText(),
-                                attElemsLeft[3].getValue(),
+                                kategorie,
                                 attElemsLeft[1].getValue(),
                                 attElemsLeft[2].getValue(),
-                                attElemsLeft[4].getValue(),
+                                material,
                                 String.valueOf(getInWebBox()),
                                 currentKuenstler,
                                 imageString,
-                                attElemsLeft[5].getValue(),
+                                exponattyp,
                                 "null:null:null:null:23.2.2010-P100:23.2.2010-P100",besitzerMap.get(currentBesitzer),
                                 currentRaumnummer, currentFoerderungen
                         };
@@ -487,7 +496,7 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
 
 
     public void setBesitzerList(List<Besitzer> besitzerList) {
-        //TODO : Exponat kann mehrere BEsitzer haben?
+        //TODO : Exponat kann mehrere Besitzer haben?
         currentBesitzer = besitzerList.get(0).getName().toString();
         this.besitzerMap = new HashMap<>();
         for (Besitzer b: besitzerList) {

@@ -122,6 +122,7 @@ public class GUIExponatSuchComponent extends ObservableComponent implements List
 
     public void insertRow(Object[] data, int row) {
         ((DefaultTableModel)ergebnisTable.getModel()).insertRow(row, data);
+        selectRow(row);
     }
 
     public void addRow(Object[] data) {
@@ -141,6 +142,10 @@ public class GUIExponatSuchComponent extends ObservableComponent implements List
         model.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         model.addListSelectionListener(listener);
         ergebnisTable.setSelectionModel(model);
+    }
+
+    public void selectRow(int row) {
+        ergebnisTable.getSelectionModel().setLeadSelectionIndex(row);
     }
 
     public int getIndexOf(String invNr) {

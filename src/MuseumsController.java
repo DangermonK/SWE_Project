@@ -12,6 +12,7 @@ import util.Statics;
 import util.StorageAdapter;
 import view.*;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class MuseumsController implements IGUIEventListener {
@@ -27,9 +28,8 @@ public class MuseumsController implements IGUIEventListener {
         storageAdapter = new StorageAdapter();
 
         storageAdapter.loadProperties();
-
         // todo: delete
-        boolean json = true;
+        boolean json = false;
         if(!json) {
             List<String[]> data = storageAdapter.importData("src/assets/database/TestData.csv", Dateiformat.CSV);
             entityAdapter.createAll(data);
@@ -57,6 +57,7 @@ public class MuseumsController implements IGUIEventListener {
 
     private void safe() {
         storageAdapter.exportData(entityAdapter.getAllData(), "src/assets/database/data.json");
+        storageAdapter.saveProperties();
     }
 
     public Object[][] getTabellenData() {
@@ -165,8 +166,14 @@ public class MuseumsController implements IGUIEventListener {
                 Map<String, Object> map = new HashMap<>();
                 map.put("invNr", exponat.getInventarnummer());
                 map.put("bildPfade", getImagePaths(exponat.getInventarnummer()));
+
+                String exponattyp = exponat.getExpTypList().get(0).getBezeichnung() + "," + exponat.getExpTypList().get(0).getBeschreibung();
+                Property.getInstance().swap(ErweiterbareListe.EXPONATTYP, 0, Property.getInstance().getProperty(ErweiterbareListe.EXPONATTYP).indexOf(exponattyp));
                 map.put("exponattypen", Property.getInstance().getProperty(ErweiterbareListe.EXPONATTYP).toArray());
+
+                Property.getInstance().swap(ErweiterbareListe.KATEGORIE, 0, Property.getInstance().getProperty(ErweiterbareListe.KATEGORIE).indexOf(exponat.getKategorie()));
                 map.put("kategorie", Property.getInstance().getProperty(ErweiterbareListe.KATEGORIE).toArray());
+                Property.getInstance().swap(ErweiterbareListe.MATERIAL, 0, Property.getInstance().getProperty(ErweiterbareListe.MATERIAL).indexOf(exponat.getMaterial()));
                 map.put("material", Property.getInstance().getProperty(ErweiterbareListe.MATERIAL).toArray());
                 map.put("name", exponat.getName());
                 map.put("erstellungsjahr", exponat.getErstellungsJahr());
@@ -176,8 +183,6 @@ public class MuseumsController implements IGUIEventListener {
                 map.put("raum", exponat.getRaum().getNummer());
                 map.put("besitzer", exponat.getBesitzerList());
                 map.put("kuenstler", exponat.getKuenstler());
-
-
 
                 view.initBearbeitenGUI(map);
                 break;
@@ -280,7 +285,7 @@ public class MuseumsController implements IGUIEventListener {
                 else{
                     currentBesitzer = guiEvent.getData().toString();
                 }
-               view.initAuswahlPanel(besitzer, "Besitzer", currentBesitzer);
+                view.initAuswahlPanel(besitzer, "Besitzer", currentBesitzer);
                 break;
             case "kuenstler gui":
                 System.out.println("kuenstler ist geil");
