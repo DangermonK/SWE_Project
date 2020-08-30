@@ -126,7 +126,7 @@ public class MuseumsController implements IGUIEventListener {
         details.setBesitzer(besitzer);
 
         ArrayList<IListElement> foerderungen = new ArrayList<>();
-        exponat.getFoerderungList().forEach(f-> foerderungen.add(new ListElement(f)));
+        exponat.getFoerderungList().forEach(f-> foerderungen.add(new ListElement(f,f.hashCode())));
         details.setFoerderungen(foerderungen);
 
         ArrayList<IListElement> exponattypen = new ArrayList<>();
@@ -175,6 +175,7 @@ public class MuseumsController implements IGUIEventListener {
                 map.put("beschreibung", exponat.getBeschreibung());
                 map.put("raum", exponat.getRaum().getNummer());
                 map.put("besitzer", exponat.getBesitzerList());
+                map.put("kuenstler", exponat.getKuenstler());
 
 
 
@@ -230,15 +231,34 @@ public class MuseumsController implements IGUIEventListener {
                 break;
             case "foerderung gui":
                 System.out.println("foerderung ist geil");
-                Exponat ex = (Exponat) entityAdapter.getElement(Classtype.EXPONAT, "E2131");
-                //System.out.println(ex.getFoerderungList().get(0).g);
-                ArrayList<IListElement> temp =  new ArrayList<>();
-                temp.add(new ListElement(ex.getFoerderungList().get(0)));
-                temp.add(new ListElement(ex.getFoerderungList().get(0)));
-                temp.add(new ListElement(ex.getFoerderungList().get(0)));
-                temp.add(new ListElement(ex.getFoerderungList().get(0)));
 
-                view.initListAuswahlPanel(temp, "Förderungen", temp);
+                Exponat ex = (Exponat) entityAdapter.getElement(Classtype.EXPONAT, guiEvent.getData()) ;
+
+                //Exponat ex = (Exponat) entityAdapter.getElement(Classtype.EXPONAT, "E2131");
+                //System.out.println(ex.getFoerderungList().get(0).g);
+
+                List<Person> personList = entityAdapter.getPersonList();
+                personList.removeIf(p -> p instanceof Besitzer || p instanceof Angestellter);
+
+                ArrayList<IListElement> foerderungElements =  new ArrayList<>();
+                for (Person p: personList ) {
+                    Foerdernder foerdernder =  (Foerdernder) p;
+                    List<Foerderung> foerderungen =  new ArrayList<>(foerdernder.getFoerderungList()) ;
+                    foerderungen.removeIf(m -> m instanceof MuseumsFoerderung);
+                    for (Foerderung fd: foerderungen) {
+                        foerderungElements.add(new ListElement(fd, fd.hashCode()));
+                    }
+                }
+                List<Foerderung> currentSelected = new ArrayList<>(ex.getFoerderungList());
+                currentSelected.removeIf(m->m instanceof MuseumsFoerderung);
+                ArrayList<IListElement> currentFoerderungElements =  new ArrayList<>();
+                for (Foerderung fd: currentSelected) {
+                    currentFoerderungElements.add(new ListElement(fd, fd.hashCode()));
+                }
+
+
+
+                view.initListAuswahlPanel(foerderungElements, "Förderungen", currentFoerderungElements);
                 break;
             case "besitzer gui":
                 List<Person> besitzerList = entityAdapter.getPersonList();

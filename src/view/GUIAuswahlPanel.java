@@ -6,23 +6,20 @@ import de.dhbwka.swe.utils.gui.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.sql.Array;
-import java.util.Arrays;
 
 public class GUIAuswahlPanel extends ObservableComponent implements IGUIEventListener {
 
     private AttributeElement[] attElems;
-    private JFrame raumFrame;
+    private JFrame auswahlFrame;
     private String elementName;
 
     public GUIAuswahlPanel(Object[] listeneintraege, String elementName, IGUIEventListener listener, String currentElement){
         this.addObserver(listener);
         this.elementName = elementName;
 
-        raumFrame = new JFrame();
-        raumFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        raumFrame.setLayout(new GridLayout(1,2));
+        auswahlFrame = new JFrame();
+        auswahlFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        auswahlFrame.setLayout(new GridLayout(1,2));
         JPanel raumPanel = new JPanel();
         JPanel buttonPanel = new JPanel();
 
@@ -81,12 +78,12 @@ public class GUIAuswahlPanel extends ObservableComponent implements IGUIEventLis
         buttonComp.addObserver(this);
 
 
-        raumFrame.add(raumPanel);
-        raumFrame.add(buttonPanel);
+        auswahlFrame.add(raumPanel);
+        auswahlFrame.add(buttonPanel);
 
-        raumFrame.setSize(350,150);
-        raumFrame.setResizable(false);
-        raumFrame.setVisible(true);
+        auswahlFrame.setSize(350,150);
+        auswahlFrame.setResizable(false);
+        auswahlFrame.setVisible(true);
 
 
     }
@@ -98,8 +95,12 @@ public class GUIAuswahlPanel extends ObservableComponent implements IGUIEventLis
             switch (button.getID()) {
                 case "auswählen":
                     fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> (elementName+" ausgewaehlt"), attElems[0].getValue()));
-                    raumFrame.dispose();
+                    auswahlFrame.dispose();
                     break;
+
+                case "abbrechen":
+                    fireGUIEvent(new GUIEvent(guiEvent.getSource(),() -> elementName+" closed",null));
+                    auswahlFrame.dispose();
             }
         }
     }

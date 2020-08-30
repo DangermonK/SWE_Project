@@ -11,6 +11,7 @@ import de.dhbwka.swe.utils.model.IListElement;
 import de.dhbwka.swe.utils.model.ImageElement;
 import de.dhbwka.swe.utils.util.ImageLoader;
 import model.Besitzer;
+import model.Kuenstler;
 import util.Property;
 
 import javax.swing.*;
@@ -151,6 +152,8 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
          bearbeitenGUI.setBesitzerList((java.util.List<Besitzer>) data.get("besitzer"));
          //bearbeitenGUI.setCurrentBesitzer(data.get());
          bearbeitenGUI.setInvNr((String)data.get("invNr"));
+         Kuenstler k = ((Kuenstler) data.get("kuenstler"));
+         bearbeitenGUI.setCurrentKuenstler(k);
 
     }
 

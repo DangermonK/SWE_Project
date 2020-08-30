@@ -9,6 +9,7 @@ import de.dhbwka.swe.utils.model.IListElement;
 import de.dhbwka.swe.utils.model.ImageElement;
 import de.dhbwka.swe.utils.util.ImageLoader;
 import model.Besitzer;
+import model.Kuenstler;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -47,6 +48,10 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
     private JButton besitzerButton;
     private JButton historieButton;
     private Map<String,String> besitzerMap;
+    private List<ListElement> foerderungen;
+    private String currentFoerderungen;
+    private String currentKuenstler ="";
+    private Kuenstler kuenstler;
 
     public GUIExponatBearbeiten(IGUIEventListener listener, String[] comboboxDataExponattyp, String[] comboboxDataKategorie, String[] comboboxDataMaterial) {
         this(new String[0], comboboxDataExponattyp, comboboxDataKategorie, comboboxDataMaterial, null, null, null, false, null, listener);
@@ -204,13 +209,14 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
                 }
 
                 if (e.getSource() == kuenstlerButton){
-                    fireGUIEvent(new GUIEvent(e.getSource(), () -> "kuenstler gui", null));
+                    //fireGUIEvent(new GUIEvent(e.getSource(), () -> "kuenstler gui", null));
                     kuenstlerButton.setEnabled(false);
+                    initKuenstlerGUI(kuenstler);
 
                 }
 
                 if (e.getSource() == foerderungenButton){
-                    fireGUIEvent(new GUIEvent(e.getSource(), () -> "foerderung gui", null));
+                    fireGUIEvent(new GUIEvent(e.getSource(), () -> "foerderung gui", invNr));
                     foerderungenButton.setEnabled(false);
                 }
                 if (e.getSource() == besitzerButton){
@@ -379,11 +385,11 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
                                 attElemsLeft[2].getValue(),
                                 attElemsLeft[4].getValue(),
                                 String.valueOf(getInWebBox()),
-                                "So Jin,12.3.1975,null,Koreanisch",
+                                currentKuenstler,
                                 imageString,
                                 attElemsLeft[5].getValue(),
                                 "null:null:null:null:23.2.2010-P100:23.2.2010-P100",besitzerMap.get(currentBesitzer),
-                                currentRaumnummer
+                                currentRaumnummer, currentFoerderungen
                         };
                         fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "safe data", data));
                         bearbeitenFrame.dispatchEvent(new WindowEvent(bearbeitenFrame, WindowEvent.WINDOW_CLOSING));
@@ -408,15 +414,56 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
             currentRaumnummer = guiEvent.getData().toString();
             System.out.println(currentRaumnummer);
         }
+        if(guiEvent.getCmdText().equals("Raum closed")){
+            raumButton.setEnabled(true);
+
+        }
+        if(guiEvent.getCmdText().equals("Historie closed")){
+            historieButton.setEnabled(true);
+
+        }
+        if(guiEvent.getCmdText().equals("Künstler closed")){
+            kuenstlerButton.setEnabled(true);
+
+        }
         if(guiEvent.getCmdText().equals("Besitzer ausgewaehlt")){
             besitzerButton.setEnabled(true);
             currentBesitzer = guiEvent.getData().toString();
             //System.out.println(currentBesitzer);
         }
+        if(guiEvent.getCmdText().equals("Besitzer closed")){
+            besitzerButton.setEnabled(true);
+
+        }
         if(guiEvent.getCmdText().equals("Förderungen ausgewaehlt")){
             foerderungenButton.setEnabled(true);
-            currentBesitzer = guiEvent.getData().toString();
-            //System.out.println(currentBesitzer);
+            foerderungen = (List<ListElement>) guiEvent.getData();
+            int index = 0;
+            for (ListElement il: foerderungen) {
+                if(index==0){
+                    currentFoerderungen= String.valueOf(il.getFoerderungElementHash());
+                    index++;
+                    continue;
+                }
+                currentFoerderungen = currentFoerderungen+ "," +il.getFoerderungElementHash();
+            }
+        }
+        if(guiEvent.getCmdText().equals("Förderungen closed")){
+            foerderungenButton.setEnabled(true);
+
+        }
+
+        if(guiEvent.getCmdText().equals("künstler hinzugefügt")){
+            kuenstlerButton.setEnabled(true);
+            String[] kuenstlerdata = (String[]) guiEvent.getData();
+            for (int i = 0; i< kuenstlerdata.length;i++) {
+                currentKuenstler = currentKuenstler + kuenstlerdata[i];
+                if(i<kuenstlerdata.length-1){
+
+                    currentKuenstler = currentKuenstler+",";
+                }
+            }
+            System.out.println(currentKuenstler);
         }
 
 
@@ -426,6 +473,14 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
     public void setCurrentRaum(String raum) {
         currentRaumnummer = raum;
 
+    }
+
+    public void setCurrentKuenstler(Kuenstler kuenstler){
+        this.kuenstler = kuenstler;
+    }
+
+    public void initKuenstlerGUI(Kuenstler kuenstler){
+        new GUIKuenstler(this, kuenstler);
     }
 
 
