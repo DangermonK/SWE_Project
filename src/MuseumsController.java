@@ -8,10 +8,7 @@ import model.*;
 import util.EntityAdapter;
 import util.Statics;
 import util.StorageAdapter;
-import view.GUIAuswahlPanel;
-import view.GUIExponatDetails;
-import view.ListElement;
-import view.MainGUI;
+import view.*;
 
 import java.util.*;
 
@@ -35,7 +32,6 @@ public class MuseumsController implements IGUIEventListener {
         } else {
             load();
         }
-
 
         Object[][] tData = getTabellenData();
         view = new MainGUI(new String[] {"src/assets/images/keineBilder.jpg"}, new String[]{
@@ -142,7 +138,6 @@ public class MuseumsController implements IGUIEventListener {
         exponat.getHistorie().getAusleiheList().forEach(ausleihe -> historie.add(new ListElement(ausleihe)));
         details.setHistorie(historie);
 
-
     }
 
     private String findNextInventarnummer() {
@@ -173,9 +168,11 @@ public class MuseumsController implements IGUIEventListener {
                 break;
             case "safe data":
                 String[] data = (String[]) guiEvent.getData();
-                data[0] = findNextInventarnummer();
+                if(data[0] == null) {
+                    data[0] = findNextInventarnummer();
+                }
                 entityAdapter.addElement(Classtype.EXPONAT, data);
-                view.addElement(getExponatTabellenData(data[0]));
+                view.updateElement(getExponatTabellenData(data[0]));
                 break;
             case "raum gui":
 

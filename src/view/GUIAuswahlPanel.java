@@ -15,6 +15,7 @@ public class GUIAuswahlPanel {
 
 
         JFrame raumFrame = new JFrame();
+        raumFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         raumFrame.setLayout(new GridLayout(1,2));
         JPanel raumPanel = new JPanel();
         JPanel buttonPanel = new JPanel();

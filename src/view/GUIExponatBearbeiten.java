@@ -16,10 +16,8 @@ import java.awt.event.*;
 import java.awt.image.ImageFilter;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEventListener {
 
@@ -31,6 +29,7 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
 
     private int currentImageIndex = 0;
 
+    private String invNr;
     private List<String> imagePaths = new ArrayList<>();
 
     private SlideshowComponent slideshow;
@@ -51,6 +50,8 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
     public GUIExponatBearbeiten(String[] bildPfade, String[] comboboxDataExponattyp, String[] comboboxDataKategorie, String[] comboboxDataMaterial,
                                 String name, String erstellungsjahr, String schaetzwert, Boolean showWeb, String beschreibung, IGUIEventListener listener) {
         this.addObserver(listener);
+
+        imagePaths.addAll(Arrays.asList(bildPfade));
 
         bearbeitenFrame = new JFrame("Bearbeiten");
         bearbeitenFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -300,6 +301,10 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
 
     }
 
+    public void setInvNr(String invNr) {
+        this.invNr = invNr;
+    }
+
     public Boolean getInWebBox() {
         return inWebBox.isSelected();
     }
@@ -347,7 +352,7 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
                         imageString += "Bild," + path + "-";
                     }
                     String[] data = new String[]{
-                            "E1000",
+                            invNr,
                             attElemsLeft[0].getValue(),
                             tc.getText(),
                             attElemsLeft[3].getValue(),

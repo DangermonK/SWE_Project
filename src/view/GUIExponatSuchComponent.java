@@ -120,12 +120,20 @@ public class GUIExponatSuchComponent extends ObservableComponent implements List
         ergebnisTable.setModel(model);
     }
 
+    public void insertRow(Object[] data, int row) {
+        ((DefaultTableModel)ergebnisTable.getModel()).insertRow(row, data);
+    }
+
     public void addRow(Object[] data) {
         ((DefaultTableModel)ergebnisTable.getModel()).addRow(data);
     }
 
     public void removeSelectedRow() {
-        ((DefaultTableModel)ergebnisTable.getModel()).removeRow(ergebnisTable.getSelectedRow());
+        removeRowAt(ergebnisTable.getSelectedRow());
+    }
+
+    public void removeRowAt(int index) {
+        ((DefaultTableModel)ergebnisTable.getModel()).removeRow(index);
     }
 
     public void setTabellenListener(ListSelectionListener listener) {
@@ -133,6 +141,15 @@ public class GUIExponatSuchComponent extends ObservableComponent implements List
         model.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         model.addListSelectionListener(listener);
         ergebnisTable.setSelectionModel(model);
+    }
+
+    public int getIndexOf(String invNr) {
+        for(int i = 0; i < ergebnisTable.getRowCount(); i++) {
+            if(ergebnisTable.getValueAt(i,0).toString().equals(invNr)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public String getSelectionIndex() {

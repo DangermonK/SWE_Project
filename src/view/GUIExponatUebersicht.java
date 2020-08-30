@@ -176,4 +176,12 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
             fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "kuenstler gui", guiEvent.getData()));
         }
     }
+
+    public void updateTabellenElement(Object[] data) {
+        int index = suchGUI.getIndexOf(data[0].toString());
+        if(index != -1) {
+            suchGUI.removeRowAt(index);
+            suchGUI.insertRow(data, index);
+        }
+    }
 }

@@ -39,6 +39,10 @@ public class MainGUI extends ObservableComponent {
         uebersicht.addTabellenElement(data);
     }
 
+    public void updateElement(Object[] data) {
+        uebersicht.updateTabellenElement(data);
+    }
+
     public void setGUIListener(IGUIEventListener listener) {
         this.addObserver(listener);
         uebersicht.setGUIEventListener(listener);
