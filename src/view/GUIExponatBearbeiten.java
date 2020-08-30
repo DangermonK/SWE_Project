@@ -43,7 +43,7 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
     private JButton historieButton;
 
     public GUIExponatBearbeiten(IGUIEventListener listener) {
-        this(new String[]{""}, new String[]{""}, new String[]{""}, new String[]{""}, null, null, null, false, null, listener);
+        this(new String[0], new String[]{""}, new String[]{""}, new String[]{""}, null, null, null, false, null, listener);
 
     }
 

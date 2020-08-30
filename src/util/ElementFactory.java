@@ -67,7 +67,7 @@ public class ElementFactory {
         Angestellter angestellter = new Angestellter(args[0], args[1], args[2]);
         angestellter.setRolle(Rolle.valueOf(args[3]));
 
-        angestellter.setBildList(createBildList(args[4].split(":")));
+        angestellter.setBildList(createBildList(args[4].split("-")));
 
         return angestellter;
 
@@ -77,7 +77,7 @@ public class ElementFactory {
 
         Besitzer besitzer = new Besitzer(args[0], args[1], args[2], args[3], args[4]);
 
-        besitzer.setBildList(createBildList(args[5].split(":")));
+        besitzer.setBildList(createBildList(args[5].split("-")));
 
         return besitzer;
 
@@ -87,7 +87,7 @@ public class ElementFactory {
 
         Foerdernder foerdernder = new Foerdernder(args[0], args[1], args[2], args[3], args[4]);
 
-        foerdernder.setBildList(createBildList(args[5].split(":")));
+        foerdernder.setBildList(createBildList(args[5].split("-")));
 
         String[] exponatFoerderungArray = args[6].split(",");
         for (String exponatFoerderung : exponatFoerderungArray) {
@@ -116,7 +116,7 @@ public class ElementFactory {
         raum.setBeschreibung(args[3]);
         raum.setKategorie(args[4]);
 
-        raum.setBildList(createBildList(args[5].split(":")));
+        raum.setBildList(createBildList(args[5].split("-")));
 
         return raum;
 
