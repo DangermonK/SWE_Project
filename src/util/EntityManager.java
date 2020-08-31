@@ -8,6 +8,7 @@ public class EntityManager<T> {
 
     private HashMap<Object, T> entityMap;
 
+    // Basis EntityManager kann mit verschiedenen Typen initialisiert werden
     public EntityManager() {
         entityMap = new HashMap<Object, T>();
     }
@@ -37,10 +38,6 @@ public class EntityManager<T> {
 
     public boolean contains(T entity) {
         return entityMap.containsValue(entity);
-    }
-
-    public void update() {
-
     }
 
 }

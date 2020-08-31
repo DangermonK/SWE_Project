@@ -1,16 +1,16 @@
 package util;
 
 import datentypen.ErweiterbareListe;
-
-import java.lang.reflect.Array;
 import java.util.*;
-import java.util.List;
 
 public class Property {
 
     private static Property instance;
     private HashMap<ErweiterbareListe, String[]> erweiterbareListeListMap;
 
+    /*
+        Speichert die erweiterbaren listen so ab, dass einfach darauf zugegriffen werden kann
+     */
     private Property() {
         erweiterbareListeListMap = new HashMap<>();
     }
@@ -23,6 +23,7 @@ public class Property {
         return instance;
     }
 
+    // tauscht zwei elemente um eine Reihenfolge zu erstellen
     public void swap(ErweiterbareListe eList, int a, int b) {
         if (a >= 0 && b >= 0)
             Collections.swap(Arrays.asList(erweiterbareListeListMap.get(eList)), a, b);
@@ -32,6 +33,7 @@ public class Property {
         return erweiterbareListeListMap.get(eList);
     }
 
+    // sucht den Index für ein Element
     public int indexOf(ErweiterbareListe eList, String value) {
         String[] arr = getProperty(eList);
         for (int i = 0; i < arr.length; i++) {

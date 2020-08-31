@@ -17,6 +17,14 @@ import java.util.Properties;
 
 public class StorageAdapter {
 
+    /*
+        verwaltet die Schnittstelle zwischen Datensatz und Programm
+     */
+    public StorageAdapter() {
+
+    }
+
+    // Importiert entweder json oder csv Daten
     public List<String[]> importData(String path, Dateiformat format) {
 
         List<String[]> data = new ArrayList<>();
@@ -77,6 +85,7 @@ public class StorageAdapter {
         return data;
     }
 
+    // übersetzt den json datensatz für die element factory
     private String[] getFoerdernderData(JSONObject object) {
         String[] attributes = new String[9];
         attributes[0] = Classtype.FOERDERNDER.toString();
@@ -101,6 +110,7 @@ public class StorageAdapter {
 
     }
 
+    // übersetzt den json datensatz für die element factory
     private String[] getBesitzerData(JSONObject object) {
 
         String[] attributes = new String[7];
@@ -117,6 +127,7 @@ public class StorageAdapter {
         return attributes;
     }
 
+    // übersetzt den json datensatz für die element factory
     private String[] getAngestellterData(JSONObject object) {
         String[] attributes = new String[6];
         attributes[0] = Classtype.ANGESTELLTER.toString();
@@ -131,6 +142,7 @@ public class StorageAdapter {
         return attributes;
     }
 
+    // übersetzt den json datensatz für die element factory
     private String[] getRaumData(JSONObject object) {
         String[] attributes = new String[7];
         attributes[0] = Classtype.RAUM.toString();
@@ -145,6 +157,7 @@ public class StorageAdapter {
         return attributes;
     }
 
+    // übersetzt den json datensatz für die element factory
     private String[] getExponatData(JSONObject object) {
 
         String[] attributes = new String[15];
@@ -207,6 +220,7 @@ public class StorageAdapter {
         return attributes;
     }
 
+    // Sortiert einen Datensatz so, dass Referenzen einfach aufgelöst werden können
     private List<String[]> sort(List<String[]> data) {
 
         List<String[]> sorted = new ArrayList<>();
@@ -245,6 +259,7 @@ public class StorageAdapter {
 
     }
 
+    // Exportiert einen json Datensatz
     public void exportData(JSONObject data, String path) {
 
         try {
@@ -266,6 +281,7 @@ public class StorageAdapter {
         return importData("src/assets/database/data.json", Dateiformat.JSON);
     }
 
+    // lädt die properties datei und speichert sie im Programm
     public void loadProperties() {
         File propertiesFile = new File("./src/assets/database/auswahllisten.properties");
         Properties properties = new Properties();
@@ -293,6 +309,7 @@ public class StorageAdapter {
 
     }
 
+    // speichert die Properties aus dem Programm in der properties datei
     public void saveProperties() {
         List<String> kategorieList = Arrays.asList(Property.getInstance().getProperty(ErweiterbareListe.KATEGORIE));
         List<String> materialList = Arrays.asList(Property.getInstance().getProperty(ErweiterbareListe.MATERIAL));

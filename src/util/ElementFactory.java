@@ -14,6 +14,9 @@ public class ElementFactory {
     private EntityAdapter adapter;
     private static ElementFactory instance;
 
+    /*
+        Erstellt alle Model Objecte per String arrays
+     */
     private ElementFactory(EntityAdapter adapter) {
         this.adapter = adapter;
     }

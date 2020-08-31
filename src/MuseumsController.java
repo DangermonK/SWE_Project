@@ -12,19 +12,19 @@ import util.Statics;
 import util.StorageAdapter;
 import view.*;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class MuseumsController implements IGUIEventListener {
 
     private EntityAdapter entityAdapter;
-
     private StorageAdapter storageAdapter;
-
     private MainGUI view;
-
     private Angestellter user;
 
+    /*
+        lädt die Daten in das Model und Startet die GUI
+        stellt die Schnittstelle zwischen GUI und Model dar
+     */
     public MuseumsController(String customPath) {
         entityAdapter = new EntityAdapter();
         storageAdapter = new StorageAdapter();
@@ -52,15 +52,18 @@ public class MuseumsController implements IGUIEventListener {
 
     }
 
+    // lädt den JSON Datensatz automatisch in das Programm
     private void load() {
         entityAdapter.createAll(storageAdapter.loadalldata());
     }
 
+    // speichert den JSON Datensatz automatisch
     private void safe() {
         storageAdapter.savedata(entityAdapter.getAllData());
         storageAdapter.saveProperties();
     }
 
+    // Lädt alle relevanten Tabellendaten in der richtigen Reihenfolge
     public Object[][] getTabellenData() {
         Object[][] tabellenArr = new Object[entityAdapter.getExponatList().size()][6];
         for (int i = 0; i < tabellenArr.length; i++) {
@@ -75,6 +78,7 @@ public class MuseumsController implements IGUIEventListener {
         return tabellenArr;
     }
 
+    // Lädt die Daten für eine einzelne Zeile anhand des index
     public Object[] getExponatTabellenData(String index) {
         Object[] data = new Object[6];
         Exponat exponat = (Exponat) entityAdapter.getElement(Classtype.EXPONAT, index);
@@ -89,11 +93,12 @@ public class MuseumsController implements IGUIEventListener {
     }
 
     public static void main(String[] args) {
-
+        
         MuseumsController controller = new MuseumsController(args.length > 0 ? args[0] : null);
 
     }
 
+    // lädt die Bildpfade eines Exponats
     private String[] getImagePaths(String index) {
         Exponat exponat = (Exponat) entityAdapter.getElement(Classtype.EXPONAT, index);
         String[] pathsArr = new String[exponat.getBildList().size()];
@@ -103,6 +108,7 @@ public class MuseumsController implements IGUIEventListener {
         return pathsArr;
     }
 
+    // Erstellt die Detailansicht mit den relevanten Daten
     private void createDetailAnsicht() {
         Exponat exponat = (Exponat) entityAdapter.getElement(Classtype.EXPONAT, view.getTableSelection());
 
@@ -145,6 +151,7 @@ public class MuseumsController implements IGUIEventListener {
         details.setHistorie(historie);
     }
 
+    // sucht eine freie Inventarnummer
     private String findNextInventarnummer() {
         int counter = 1000;
         String invNummer = "E" + counter;
@@ -155,6 +162,7 @@ public class MuseumsController implements IGUIEventListener {
         return invNummer;
     }
 
+    // verarbeitet alle GUI Events die Zugriff auf das Modell benötigen
     @Override
     public void processGUIEvent(GUIEvent guiEvent) {
         switch (guiEvent.getCmdText()) {
@@ -281,10 +289,7 @@ public class MuseumsController implements IGUIEventListener {
                     currentElement = guiEvent.getData().toString();
                 }
 
-
-                //System.out.println(currentElement);
                 view.initAuswahlPanel(raeume, "Raum", currentElement);
-                //new GUIAuswahlPanel(raeume, "Raum");
                 break;
             case "historie gui":
                 System.out.println("historie ist geil");
@@ -297,9 +302,6 @@ public class MuseumsController implements IGUIEventListener {
                 }
 
                 Exponat ex = (Exponat) entityAdapter.getElement(Classtype.EXPONAT, guiEvent.getData());
-
-                //Exponat ex = (Exponat) entityAdapter.getElement(Classtype.EXPONAT, "E2131");
-                //System.out.println(ex.getFoerderungList().get(0).g);
 
                 List<Person> personList = entityAdapter.getPersonList();
                 personList.removeIf(p -> p instanceof Besitzer || p instanceof Angestellter);
