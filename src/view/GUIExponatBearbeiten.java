@@ -1,5 +1,6 @@
 package view;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import datentypen.ErweiterbareListe;
 import de.dhbwka.swe.utils.event.EventCommand;
 import de.dhbwka.swe.utils.event.GUIEvent;
@@ -57,6 +58,7 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
     private String currentFoerderungen;
     private String currentKuenstler ="";
     private Kuenstler kuenstler;
+    private AttributeComponent attComp = null;
 
     public GUIExponatBearbeiten(IGUIEventListener listener, String[] comboboxDataExponattyp, String[] comboboxDataKategorie, String[] comboboxDataMaterial) {
         this(new String[0], comboboxDataExponattyp, comboboxDataKategorie, comboboxDataMaterial, null, null, null, false, null, listener);
@@ -140,7 +142,7 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
                         .labelName("Name")
                         .labelSize(new Dimension(100, 5))
                         .actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
-                        .mandatory(false).maxLength(10)
+                        .mandatory(true)
                         .value(name)
                         .build(),
 
@@ -148,13 +150,13 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
                         .labelName("Erstellungsjahr")
                         .labelSize(new Dimension(100, 5))
                         .actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
-                        .mandatory(false).maxLength(10).value(erstellungsjahr).build(),
+                        .mandatory(true).allowedChars(AttributeElement.CHARSET_NUMBER).value(erstellungsjahr).build(),
 
                 AttributeElement.builder("Schaetzwert")
                         .labelName("Schätzwert €")
                         .labelSize(new Dimension(100, 5))
                         .actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
-                        .mandatory(false).maxLength(10).value(schaetzwert).build(),
+                        .mandatory(true).allowedChars(AttributeElement.CHARSET_FLOAT).maxLength(10).value(schaetzwert).build(),
                 //AttributeElement.builder("Futter").labelName("Futter").value(comboboxDataFutter[0]).actionType(AttributeElement.ActionType.COMBOBOX).build()};
 
 
@@ -163,6 +165,7 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
                         .labelSize(new Dimension(100, 5))
                         .value(comboboxDataKategorie[0])
                         .data(comboboxDataKategorie)
+                        .mandatory(true)
                         .actionType(AttributeElement.ActionType.EDITABLE_COMBOBOX).build(),
 
                 AttributeElement.builder("Material")
@@ -170,6 +173,7 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
                         .labelSize(new Dimension(100, 5))
                         .value(comboboxDataMaterial[0])
                         .data(comboboxDataMaterial)
+                        .mandatory(true)
                         .actionType(AttributeElement.ActionType.EDITABLE_COMBOBOX).build(),
 
                 AttributeElement.builder("Exponattyp")
@@ -177,10 +181,9 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
                         .labelSize(new Dimension(100, 5))
                         .value(comboboxDataExponattyp[0])
                         .data(comboboxDataExponattyp)
+                        .mandatory(true)
                         .actionType(AttributeElement.ActionType.EDITABLE_COMBOBOX).build()
         };
-
-        AttributeComponent attComp = null;
 
 
         try {
@@ -386,8 +389,36 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
                     String exponattyp = attElemsLeft[5].getValue();
                     Property.getInstance().addPropertyValue(ErweiterbareListe.EXPONATTYP, exponattyp);
 
-                    if(currentRaumnummer!=null && currentBesitzer !=null && !currentKuenstler.isEmpty()) {
+                    String[] nichtEingetragen = attComp.validateMandatoryAttributeValues();
 
+
+                    if((nichtEingetragen.length>0)){
+                        JOptionPane.showMessageDialog(this,
+                                "Attribute nicht eingetragen",
+                                "Daten fehlen",
+                                JOptionPane.ERROR_MESSAGE);
+                        
+                    }else if(currentRaumnummer == null){
+
+                        JOptionPane.showMessageDialog(this,
+                                    "Raum nicht ausgewählt",
+                                    "Daten fehlen",
+                                    JOptionPane.ERROR_MESSAGE);
+
+                    }
+                    else if (currentBesitzer == null){
+                        JOptionPane.showMessageDialog(this,
+                                "Besitzer nicht ausgewählt",
+                                "Daten fehlen",
+                                JOptionPane.ERROR_MESSAGE);
+
+                    }else if (currentKuenstler.isEmpty()){
+                        JOptionPane.showMessageDialog(this,
+                                "Kuenstler nicht hinzgefügt",
+                                "Daten fehlen",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                    else{
                         String[] data = new String[]{
                                 invNr,
                                 attElemsLeft[0].getValue(),
@@ -405,13 +436,8 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
                         };
                         fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "safe data", data));
                         bearbeitenFrame.dispatchEvent(new WindowEvent(bearbeitenFrame, WindowEvent.WINDOW_CLOSING));
-                    }
-                    else {
-                        JOptionPane.showMessageDialog(this,
-                                "Raum nicht ausgewählt",
-                                "Daten fehlen",
-                                JOptionPane.ERROR_MESSAGE);
-                    }
+                     }
+
                     break;
                 case "cancel":
                     bearbeitenFrame.dispatchEvent(new WindowEvent(bearbeitenFrame, WindowEvent.WINDOW_CLOSING));
@@ -468,14 +494,16 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
         if(guiEvent.getCmdText().equals("künstler hinzugefügt")){
             kuenstlerButton.setEnabled(true);
             String[] kuenstlerdata = (String[]) guiEvent.getData();
-            for (int i = 0; i< kuenstlerdata.length;i++) {
-                currentKuenstler = currentKuenstler + kuenstlerdata[i];
+            String newKuenstler="";
+            for (int i = 0; i< kuenstlerdata.length; i++) {
+                newKuenstler = newKuenstler + kuenstlerdata[i];
                 if(i<kuenstlerdata.length-1){
 
-                    currentKuenstler = currentKuenstler+",";
+                    newKuenstler = newKuenstler+",";
                 }
             }
-            System.out.println(currentKuenstler);
+            currentKuenstler = newKuenstler;
+            System.out.println(newKuenstler);
         }
 
 
@@ -507,9 +535,11 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
 
 
 
-    public void setBesitzerList(List<Besitzer> besitzerList) {
+    public void setBesitzerList(List<Besitzer> besitzerList, Boolean bearbeiten) {
         //TODO : Exponat kann mehrere Besitzer haben?
-        currentBesitzer = besitzerList.get(0).getName();
+        if(bearbeiten){
+            currentBesitzer = besitzerList.get(0).getName();
+        }
         this.besitzerMap = new HashMap<>();
         for (Besitzer b: besitzerList) {
             besitzerMap.put(b.getName(),b.getPersNr());

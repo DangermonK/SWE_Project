@@ -8,18 +8,22 @@ import model.Kuenstler;
 import javax.swing.*;
 import java.awt.*;
 import java.text.Format;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Formatter;
 
 public class GUIKuenstler extends ObservableComponent implements IGUIEventListener {
 
     private JFrame kuenstlerframe;
     private AttributeElement[] attElements;
+    private Format formatter ;
+    private  AttributeComponent attComp = null;
 
     public GUIKuenstler(IGUIEventListener listener, Kuenstler kuenstler){
         this.addObserver(listener);
 
         kuenstlerframe = new JFrame();
-        Format formatter = new SimpleDateFormat("dd.MM.YYYY");
+        formatter = new SimpleDateFormat("dd.MM.YYYY");
 
         String name ="";
         String geburtsdatum="";
@@ -50,7 +54,7 @@ public class GUIKuenstler extends ObservableComponent implements IGUIEventListen
                         .labelSize(new Dimension(100, 5))
                         .value(geburtsdatum)
                         .actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
-                        .mandatory(false).maxLength(10).allowedChars(AttributeElement.CHARSET_DATE).build(),
+                        .mandatory(true).maxLength(10).allowedChars(AttributeElement.CHARSET_DATE).build(),
 
 
 
@@ -72,7 +76,7 @@ public class GUIKuenstler extends ObservableComponent implements IGUIEventListen
                         .mandatory(true).build(),
         };
 
-        AttributeComponent attComp = null;
+
 
 
         try {
@@ -96,6 +100,8 @@ public class GUIKuenstler extends ObservableComponent implements IGUIEventListen
                 .stretchButtons()
                 .build();
 
+
+
         buttonComp.addObserver(this);
         kuenstlerframe.add(attComp,BorderLayout.CENTER);
         kuenstlerframe.add(buttonComp,BorderLayout.EAST);
@@ -111,14 +117,41 @@ public class GUIKuenstler extends ObservableComponent implements IGUIEventListen
             ButtonElement button = (ButtonElement) guiEvent.getData();
             switch (button.getID()) {
                 case "hinzufügen":
-                    String[] data = new String[]{
-                            attElements[0].getValue(),
-                            attElements[1].getValue(),
-                            attElements[2].getValue(),
-                            attElements[3].getValue()
-                    };
-                    fireGUIEvent(new GUIEvent(guiEvent.getSource(),() -> "künstler hinzugefügt", data));
-                    kuenstlerframe.dispose();
+
+                    String[] nichtEingetragen = attComp.validateMandatoryAttributeValues();
+                    if(!(nichtEingetragen.length>0)){
+                        String[] data = new String[]{
+                                attElements[0].getValue(),
+                                attElements[1].getValue(),
+                                attElements[2].getValue(),
+                                attElements[3].getValue()
+                        };
+
+                        try {
+                            formatter.parseObject(data[1]);
+                            if(!data[2].isEmpty()){
+                                formatter.parseObject(data[2]);
+                            }
+                            fireGUIEvent(new GUIEvent(guiEvent.getSource(),() -> "künstler hinzugefügt", data));
+                            kuenstlerframe.dispose();
+
+                        } catch (ParseException e) {
+                            JOptionPane.showMessageDialog(this,
+                                    "Geburtsdatum falsches Format, korrigiere in: dd.mm.yyyy",
+                                    "Format fehlerhaft",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(this,
+                                "Es wurden nicht alle benötigten Daten eingegeben",
+                                "Daten fehlen",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+
+
+
+
                     break;
                 case "abbrechen":
                     fireGUIEvent(new GUIEvent(guiEvent.getSource(),() -> "Künstler closed",null));

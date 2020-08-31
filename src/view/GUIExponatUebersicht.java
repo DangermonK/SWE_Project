@@ -149,7 +149,7 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
                 (String)data.get("beschreibung"),
                 this);
          bearbeitenGUI.setCurrentRaum(String.valueOf(data.get("raum")));
-         bearbeitenGUI.setBesitzerList((java.util.List<Besitzer>) data.get("besitzer"));
+         bearbeitenGUI.setBesitzerList((java.util.List<Besitzer>) data.get("besitzer"), true);
          //bearbeitenGUI.setCurrentBesitzer(data.get());
          bearbeitenGUI.setInvNr((String)data.get("invNr"));
          Kuenstler k = ((Kuenstler) data.get("kuenstler"));
@@ -163,7 +163,7 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
                 Property.getInstance().getProperty(ErweiterbareListe.KATEGORIE).toArray(new String[]{}),
                 Property.getInstance().getProperty(ErweiterbareListe.MATERIAL).toArray(new String[]{}));
 
-        bearbeitenGUI.setBesitzerList((java.util.List<Besitzer>) data.get("besitzer"));
+        bearbeitenGUI.setBesitzerList((java.util.List<Besitzer>) data.get("besitzer"), false);
     }
 
     public void initAuswahlPanel(Object[] auswahlDaten, String elementname, String currentElement){
