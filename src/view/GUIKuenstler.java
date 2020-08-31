@@ -7,6 +7,8 @@ import model.Kuenstler;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,6 +25,13 @@ public class GUIKuenstler extends ObservableComponent implements IGUIEventListen
         this.addObserver(listener);
 
         kuenstlerframe = new JFrame();
+        kuenstlerframe.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                fireGUIEvent(new GUIEvent(e.getSource(), () -> "Künstler closed", null));
+            }
+        });
+        kuenstlerframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         formatter = new SimpleDateFormat("dd.MM.YYYY");
 
         String name ="";

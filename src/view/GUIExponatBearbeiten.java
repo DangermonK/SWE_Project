@@ -13,6 +13,7 @@ import de.dhbwka.swe.utils.util.ImageLoader;
 import model.Besitzer;
 import model.Kuenstler;
 import util.Property;
+import util.Statics;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -24,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.Format;
 import java.text.Normalizer;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
@@ -397,7 +399,7 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
                                 "Attribute nicht eingetragen",
                                 "Daten fehlen",
                                 JOptionPane.ERROR_MESSAGE);
-                        
+
                     }else if(currentRaumnummer == null){
 
                         JOptionPane.showMessageDialog(this,
@@ -486,6 +488,11 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
                 currentFoerderungen = currentFoerderungen+ "," +il.getFoerderungElementHash();
             }
         }
+        if(guiEvent.getCmdText().equals("keineFörderung")){
+            currentFoerderungen = null;
+            foerderungenButton.setEnabled(true);
+        }
+
         if(guiEvent.getCmdText().equals("Förderungen closed")){
             foerderungenButton.setEnabled(true);
 
@@ -494,8 +501,26 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
         if(guiEvent.getCmdText().equals("künstler hinzugefügt")){
             kuenstlerButton.setEnabled(true);
             String[] kuenstlerdata = (String[]) guiEvent.getData();
+
+            String name="";
+            Date geburtsdatum= null ;
+            Date todesdatum ;
+            String nationalität="";
+
+            try {
+                 name = kuenstlerdata[0];
+                 nationalität = kuenstlerdata[3];
+                 geburtsdatum  = Statics.dateFormat.parse(kuenstlerdata[1]);
+                 todesdatum = Statics.dateFormat.parse(kuenstlerdata[2]);
+
+            } catch (ParseException e) {
+                todesdatum = null;
+            }
+            kuenstler = new Kuenstler(name, geburtsdatum,todesdatum,nationalität);
+
             String newKuenstler="";
             for (int i = 0; i< kuenstlerdata.length; i++) {
+
                 newKuenstler = newKuenstler + kuenstlerdata[i];
                 if(i<kuenstlerdata.length-1){
 

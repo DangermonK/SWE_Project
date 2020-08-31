@@ -7,6 +7,8 @@ import de.dhbwka.swe.utils.model.IListElement;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +26,14 @@ public class GUIListAuswahl extends ObservableComponent implements IGUIEventList
         this.elementName = elementName;
 
          listAuswahl = new JFrame();
+
+        listAuswahl.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                fireGUIEvent(new GUIEvent(e.getSource(), () -> elementName+" closed", null));
+            }
+        });
+        listAuswahl.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         //listAuswahl.setLayout(new BoxLayout(listAuswahl.getContentPane(), BoxLayout.X_AXIS));
         //listAuswahl.setLayout(n);
         //listAuswahl.setLayout(new GridLayout(1,2));
@@ -31,11 +41,25 @@ public class GUIListAuswahl extends ObservableComponent implements IGUIEventList
        // JPanel listPanel = new JPanel();
        // JPanel buttonPanel = new JPanel();
 
+        ButtonElement[] btns;
+        if(elementName =="Förderungen") {
 
-        ButtonElement[] btns = new ButtonElement[]{
-                ButtonElement.builder("auswählen").buttonText(elementName+" auswählen").type(ButtonElement.Type.BUTTON).build(),
-                ButtonElement.builder("abbrechen").buttonText("Abbrechen").type(ButtonElement.Type.BUTTON).build(),
-        };
+
+             btns = new ButtonElement[]{
+                    ButtonElement.builder("auswählen").buttonText(elementName + " auswählen").type(ButtonElement.Type.BUTTON).build(),
+                    ButtonElement.builder("keineauswahl").buttonText("Keine Förderung auswählen").type(ButtonElement.Type.BUTTON).build(),
+                    ButtonElement.builder("abbrechen").buttonText("Abbrechen").type(ButtonElement.Type.BUTTON).build()
+
+            };
+        }else{
+             btns = new ButtonElement[]{
+                    ButtonElement.builder("auswählen").buttonText(elementName + " auswählen").type(ButtonElement.Type.BUTTON).build(),
+                    ButtonElement.builder("abbrechen").buttonText("Abbrechen").type(ButtonElement.Type.BUTTON).build()
+            };
+        }
+
+
+
 
         ButtonComponent buttonComp = ButtonComponent.builder("BC").buttonElements(btns)
                 .position(ButtonComponent.Position.EAST)
@@ -114,6 +138,10 @@ public class GUIListAuswahl extends ObservableComponent implements IGUIEventList
                     break;
                 case "abbrechen":
                     fireGUIEvent(new GUIEvent(guiEvent.getSource(),() -> elementName+" closed",null));
+                    listAuswahl.dispose();
+                    break;
+                case "keineauswahl":
+                    fireGUIEvent(new GUIEvent(guiEvent.getSource(),() -> elementName+" keineFörderung",null));
                     listAuswahl.dispose();
             }
 

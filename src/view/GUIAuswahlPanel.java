@@ -6,6 +6,8 @@ import de.dhbwka.swe.utils.gui.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class GUIAuswahlPanel extends ObservableComponent implements IGUIEventListener {
 
@@ -18,6 +20,13 @@ public class GUIAuswahlPanel extends ObservableComponent implements IGUIEventLis
         this.elementName = elementName;
 
         auswahlFrame = new JFrame();
+
+        auswahlFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                fireGUIEvent(new GUIEvent(e.getSource(), () -> elementName+" closed", null));
+            }
+        });
         auswahlFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         auswahlFrame.setLayout(new GridLayout(1,2));
         JPanel raumPanel = new JPanel();
