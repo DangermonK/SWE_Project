@@ -76,7 +76,6 @@ public class GUIListAuswahl extends ObservableComponent implements IGUIEventList
             for (int c = 0; c < currentElements.size(); c++) {
                 if (listElements.get(i).getListText().equals(currentElements.get(c).getListText())) {
                     indexe.add(i);
-                    System.out.println(i);
                 }
             }
         }
@@ -113,7 +112,6 @@ public class GUIListAuswahl extends ObservableComponent implements IGUIEventList
             switch (button.getID()) {
                 //Prüfe ob Elemente ausgewählt wurde und wenn ja, schicke Elemente an Bearbeiten GUI
                 case "auswählen":
-                    System.out.println(selectedVals);
                     if (selectedVals.isEmpty()) {
                         JOptionPane.showMessageDialog(this,
                                 ("Keine " +elementName +" ausgewählt"),
