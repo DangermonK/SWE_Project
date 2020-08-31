@@ -168,13 +168,13 @@ public class MuseumsController implements IGUIEventListener {
                 map.put("bildPfade", getImagePaths(exponat.getInventarnummer()));
 
                 String exponattyp = exponat.getExpTypList().get(0).getBezeichnung() + "," + exponat.getExpTypList().get(0).getBeschreibung();
-                Property.getInstance().swap(ErweiterbareListe.EXPONATTYP, 0, Property.getInstance().getProperty(ErweiterbareListe.EXPONATTYP).indexOf(exponattyp));
-                map.put("exponattypen", Property.getInstance().getProperty(ErweiterbareListe.EXPONATTYP).toArray());
+                Property.getInstance().swap(ErweiterbareListe.EXPONATTYP, 0, Property.getInstance().indexOf(ErweiterbareListe.EXPONATTYP, exponattyp));
+                map.put("exponattypen", Property.getInstance().getProperty(ErweiterbareListe.EXPONATTYP));
 
-                Property.getInstance().swap(ErweiterbareListe.KATEGORIE, 0, Property.getInstance().getProperty(ErweiterbareListe.KATEGORIE).indexOf(exponat.getKategorie()));
-                map.put("kategorie", Property.getInstance().getProperty(ErweiterbareListe.KATEGORIE).toArray());
-                Property.getInstance().swap(ErweiterbareListe.MATERIAL, 0, Property.getInstance().getProperty(ErweiterbareListe.MATERIAL).indexOf(exponat.getMaterial()));
-                map.put("material", Property.getInstance().getProperty(ErweiterbareListe.MATERIAL).toArray());
+                Property.getInstance().swap(ErweiterbareListe.KATEGORIE, 0, Property.getInstance().indexOf(ErweiterbareListe.KATEGORIE, exponat.getKategorie()));
+                map.put("kategorie", Property.getInstance().getProperty(ErweiterbareListe.KATEGORIE));
+                Property.getInstance().swap(ErweiterbareListe.MATERIAL, 0, Property.getInstance().indexOf(ErweiterbareListe.MATERIAL, exponat.getMaterial()));
+                map.put("material", Property.getInstance().getProperty(ErweiterbareListe.MATERIAL));
                 map.put("name", exponat.getName());
                 map.put("erstellungsjahr", exponat.getErstellungsJahr());
                 map.put("schaetzwert", exponat.getSchaetzWert());
@@ -191,9 +191,9 @@ public class MuseumsController implements IGUIEventListener {
 
                 Map<String, Object> anlegenmap = new HashMap<>();
 
-                anlegenmap.put("exponattyp",Property.getInstance().getProperty(ErweiterbareListe.EXPONATTYP).toArray(new String[]{}));
-                anlegenmap.put("kategorie",Property.getInstance().getProperty(ErweiterbareListe.KATEGORIE).toArray(new String[]{}));
-                anlegenmap.put("material",Property.getInstance().getProperty(ErweiterbareListe.MATERIAL).toArray(new String[]{}));
+                anlegenmap.put("exponattyp",Property.getInstance().getProperty(ErweiterbareListe.EXPONATTYP));
+                anlegenmap.put("kategorie",Property.getInstance().getProperty(ErweiterbareListe.KATEGORIE));
+                anlegenmap.put("material",Property.getInstance().getProperty(ErweiterbareListe.MATERIAL));
 
 
                 List<Person> allBesitzer = entityAdapter.getPersonList();
