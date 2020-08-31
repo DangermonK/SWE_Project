@@ -258,12 +258,12 @@ public class StorageAdapter {
 
     }
 
-    public void savedata() {
-
+    public void savedata(JSONObject data) {
+        exportData(data,"src/assets/database/data.json");
     }
 
-    public void loadalldata() {
-
+    public List<String[]> loadalldata() {
+        return importData("src/assets/database/data.json", Dateiformat.JSON);
     }
 
     public void loadProperties() {

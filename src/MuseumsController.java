@@ -25,16 +25,14 @@ public class MuseumsController implements IGUIEventListener {
 
     private Angestellter user;
 
-    public MuseumsController() {
+    public MuseumsController(String customPath) {
         entityAdapter = new EntityAdapter();
         storageAdapter = new StorageAdapter();
 
         storageAdapter.loadProperties();
-        // todo: delete
-        boolean json = false;
-        if (!json) {
-            List<String[]> data = storageAdapter.importData("src/assets/database/TestData.csv", Dateiformat.CSV);
-            entityAdapter.createAll(data);
+
+        if(customPath != null) {
+            entityAdapter.createAll(storageAdapter.importData(customPath, Dateiformat.CSV));
         } else {
             load();
         }
@@ -55,12 +53,11 @@ public class MuseumsController implements IGUIEventListener {
     }
 
     private void load() {
-        List<String[]> data = storageAdapter.importData("src/assets/database/data.json", Dateiformat.JSON);
-        entityAdapter.createAll(data);
+        entityAdapter.createAll(storageAdapter.loadalldata());
     }
 
     private void safe() {
-        storageAdapter.exportData(entityAdapter.getAllData(), "src/assets/database/data.json");
+        storageAdapter.savedata(entityAdapter.getAllData());
         storageAdapter.saveProperties();
     }
 
@@ -93,7 +90,7 @@ public class MuseumsController implements IGUIEventListener {
 
     public static void main(String[] args) {
 
-        MuseumsController controller = new MuseumsController();
+        MuseumsController controller = new MuseumsController(args.length > 0 ? args[0] : null);
 
     }
 
@@ -214,6 +211,7 @@ public class MuseumsController implements IGUIEventListener {
             case "delete element":
                 entityAdapter.removeElement(Classtype.EXPONAT, view.getTableSelection());
                 view.setUebersichtBilder(new String[]{"src/assets/images/keineBilder.jpg"});
+                view.setUpdate(false);
                 break;
             case "close Program save":
                 safe();
