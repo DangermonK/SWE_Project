@@ -29,7 +29,7 @@ public class MuseumsController implements IGUIEventListener {
 
         storageAdapter.loadProperties();
         // todo: delete
-        boolean json = false;
+        boolean json = true;
         if(!json) {
             List<String[]> data = storageAdapter.importData("src/assets/database/TestData.csv", Dateiformat.CSV);
             entityAdapter.createAll(data);
@@ -213,9 +213,16 @@ public class MuseumsController implements IGUIEventListener {
                 entityAdapter.removeElement(Classtype.EXPONAT, view.getTableSelection());
                 view.setUebersichtBilder(new String[] {"src/assets/images/keineBilder.jpg"});
                 break;
-            case "close Program":
+            case "close Program save":
                 safe();
                 System.exit(0);
+                break;
+
+            case "close Program":
+                System.exit(0);
+                break;
+            case "save programm":
+                safe();
                 break;
             case "safe data":
                 String[] data = (String[]) guiEvent.getData();

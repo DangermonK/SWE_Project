@@ -12,6 +12,8 @@ import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.Map;
 
+import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
+
 public class MainGUI extends ObservableComponent {
 
     private GUIExponatUebersicht uebersicht;
@@ -20,13 +22,20 @@ public class MainGUI extends ObservableComponent {
 
     public MainGUI(String[] bildPfade, String[] suchAttribute, Object[][] tabellenDaten){
         mainFrame = new JFrame("Museumsverwaltung");
-        mainFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         mainFrame.addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosed(WindowEvent e) {
+            public void windowClosing(WindowEvent e) {
+
+                int option = JOptionPane.showConfirmDialog(null, "Vor dem Schließen speichern?", "Programm schließen", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if(option == 0) {
+                    fireGUIEvent(new GUIEvent(e.getSource(), () -> "close Program save", null));
+
+                }
+                if(option == 1){
                 fireGUIEvent(new GUIEvent(e.getSource(), () -> "close Program", null));
             }
-        });
+        }});
 
         uebersicht = new GUIExponatUebersicht(bildPfade,suchAttribute);
         uebersicht.setSuchComponentErgebnisse(tabellenDaten);
@@ -34,7 +43,7 @@ public class MainGUI extends ObservableComponent {
         tabbedPane.addTab("Exponat", uebersicht.getPane());
 
         mainFrame.add(tabbedPane);
-        mainFrame.setSize(400,400);
+        mainFrame.setSize(600,500);
         mainFrame.setVisible(true);
     }
 

@@ -34,6 +34,7 @@ public class GUIExponatDetails {
         main.gridwidth=1;
         main.gridy = 0;
         main.gridheight =1;
+        main.insets = new Insets(-20,0,0,0);
         main.fill = GridBagConstraints.HORIZONTAL;
 
 
@@ -145,6 +146,7 @@ public class GUIExponatDetails {
         attributePanel.add(attComp2,c);
 
         TextComponent tc = TextComponent.builder("textFeld").editable(false).title("Beschreibung").initialText((String) attribute.get("beschreibung")).build();
+
         c.gridx=0;
         c.gridy=1;
         c.insets = new Insets(0,0,0,30);
@@ -211,7 +213,9 @@ public class GUIExponatDetails {
                         .build();
         //historyListComp.setListElements( historyElements );
         historyListComp.setCellRenderer( new ListComponentCellRenderer() ); //optional
-
+        //historyListComp.setPreferredSize(new Dimension(100,200));
+        //historyListComp.setSize(100,200);
+        //historyListComp.setPreferredSize(new Dimension(1000,300));
         //historyListComp.addObserver( ... );
 
          foerderungListComp =
@@ -258,6 +262,7 @@ public class GUIExponatDetails {
 
         JPanel listPanel = new JPanel();
         listPanel.setLayout(new BoxLayout(listPanel,BoxLayout.Y_AXIS));
+
         listPanel.add(historyListComp);
         listPanel.add(foerderungListComp);
         listPanel.add(besitzerListComp);
@@ -265,12 +270,14 @@ public class GUIExponatDetails {
         listPanel.add(kuenstlerListComp);
 
         listPanel.setBorder(panelBorder);
+
         main.gridy = 2;
-        main.weighty=0.45;
+        main.weighty=0.5;
+        main.insets = new Insets(-40,0,0,0);
        // main.fill = GridBagConstraints.HORIZONTAL;
         detailFrame.add(listPanel,main);
 
-        detailFrame.setSize(500,700);
+        detailFrame.setSize(600,750);
         detailFrame.setVisible(true);
     }
 

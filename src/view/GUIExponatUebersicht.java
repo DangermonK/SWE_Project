@@ -67,13 +67,13 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
                 ButtonElement.builder("bearbeiten").buttonText("bearbeiten").type(ButtonElement.Type.BUTTON).build(),
                 ButtonElement.builder("loeschen").buttonText("löschen").type(ButtonElement.Type.BUTTON).build(),
                 ButtonElement.builder("details").buttonText("mehr Details").type(ButtonElement.Type.BUTTON).build(),
+                ButtonElement.builder("leer").buttonText(" ").type(ButtonElement.Type.BUTTON).backgroundColor(Color.WHITE).enableAtStartup(false).build(),
+                ButtonElement.builder("speichern").buttonText("speichern").type(ButtonElement.Type.BUTTON).build(),
         };
 
 
         buttonComp = ButtonComponent.builder("BC").buttonElements(buttons)
                 .position(ButtonComponent.Position.EAST)
-                .buttonColors(new Color[]{Color.cyan, null, Color.red, Color.yellow, null})
-                .buttonTextColors(new Color[]{null, Color.cyan, null, null, Color.magenta})
                 .build();
 
         buttonComp.addObserver(this);
@@ -93,8 +93,7 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
         suchGUI = new GUIExponatSuchComponent(suchAttribute);
         uebersichtPanel.add(suchGUI.getPane());
 
-        //uebersichtPanel.setSize(400,400);
-        //uebersichtPanel.setVisible(true);
+
     }
 
     public void setUebersichtBilder(String[] bildPfade) {
@@ -112,7 +111,6 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
         }
 
         slideshow.setImageElements(loadedImageElements);
-
     }
 
     public String getTableSelection() {
@@ -198,6 +196,10 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
                             suchGUI.removeSelectedRow();
                         }
                     }
+                    break;
+
+                case "speichern":
+                    fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "save programm", null));
                     break;
                 case "details":
                     if(suchGUI.getSelectionIndex() != null) {

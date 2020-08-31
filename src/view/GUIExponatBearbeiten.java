@@ -17,6 +17,7 @@ import util.Statics;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.awt.event.*;
@@ -29,6 +30,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
+
+import static java.awt.Color.GRAY;
 
 public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEventListener {
 
@@ -234,8 +237,12 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
                     besitzerButton.setEnabled(false);
                 }
                 if (e.getSource() == historieButton){
-                    fireGUIEvent(new GUIEvent(e.getSource(), () -> "historie gui", null));
-                    historieButton.setEnabled(false);
+                    JOptionPane.showMessageDialog(bearbeitenFrame,
+                            "Historie bearbeiten ist noch nicht möglich.\nDas Anlage- und Änderungsdatum wird jedoch automatisch gesetzt und in der Historie abgespeichert.",
+                            "Bald verfügbar",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    //fireGUIEvent(new GUIEvent(e.getSource(), () -> "historie gui", null));
+                    //historieButton.setEnabled(false);
                 }
             }
         };
@@ -295,13 +302,19 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
 
         JPanel textFieldPanel = new JPanel();
         tc = TextComponent.builder("textFeld").title("Beschreibung").initialText(beschreibung).build();
+
+
+        Border tb = BorderFactory.createTitledBorder("Beschreibung");
+        Border tcBorder = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(7, 7, 7, 7), tb);
+
+        tc.setBorder(tcBorder);
         textFieldPanel.add(tc);
 
 
         bearbeitenFrame.add(toppanel);
         bearbeitenFrame.add(attributePanel);
         bearbeitenFrame.add(tc);
-        bearbeitenFrame.setSize(500, 700);
+        bearbeitenFrame.setSize(800, 700);
         bearbeitenFrame.setVisible(true);
 
 
@@ -408,17 +421,17 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
                                     JOptionPane.ERROR_MESSAGE);
 
                     }
-                    else if (currentBesitzer == null){
-                        JOptionPane.showMessageDialog(this,
-                                "Besitzer nicht ausgewählt",
-                                "Daten fehlen",
-                                JOptionPane.ERROR_MESSAGE);
-
-                    }else if (currentKuenstler.isEmpty()){
+                    else if (currentKuenstler.isEmpty()) {
                         JOptionPane.showMessageDialog(this,
                                 "Kuenstler nicht hinzgefügt",
                                 "Daten fehlen",
                                 JOptionPane.ERROR_MESSAGE);
+                    }
+                    else if (currentBesitzer == null) {
+                            JOptionPane.showMessageDialog(this,
+                                    "Besitzer nicht ausgewählt",
+                                    "Daten fehlen",
+                                    JOptionPane.ERROR_MESSAGE);
                     }
                     else{
                         String[] data = new String[]{
