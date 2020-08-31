@@ -3,7 +3,10 @@ ANGESTELLTER;P200;Max Mustermann;MM_User;ADMINISTRATOR;Passbild,src/assets/image
 ANGESTELLTER;P100;Julian Mayer;JM_User;ADMINISTRATOR;Passbild,src/assets/images/person_1.jpg;;;;;;;;;
 ANGESTELLTER;P101;Robin Hefter;RH_User;ADMINISTRATOR;Passbild,src/assets/images/person_2.jpg;;;;;;;;;
 ;;;;;;;;;;;;;;
-BESITZER;P102;Hermann Müller;hermann.mueller@gmx.de;Weinstrasse 8 73678 Großstadt;0179 69348209;Passbild,src/assets/images/person_4;;;;;;;;
+BESITZER;P102;Hermann Müller;hermann.mueller@gmx.de;Holzstrasse 5 23423 Großstadt;0179 69348209;Passbild,src/assets/images/person_4;;;;;;;;
+BESITZER;P110;Torsten Ganz;torsten.ganz@gmx.de;Winterweg 8 12312 Großstadt;0179 69348209;Passbild,src/assets/images/person_4;;;;;;;;
+BESITZER;P111;Kevin Stuck;kevin.stuck@gmx.de;Weinstrasse 34 23423 Großstadt;0179 69348209;Passbild,src/assets/images/person_4;;;;;;;;
+BESITZER;P112;Alex Kruse;alex.kruse@gmx.de;Mühlenweg 12 32672 Großstadt;0179 69348209;Passbild,src/assets/images/person_4;;;;;;;;
 ;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;
 EXPONAT;E2103;Der schrei;Menschliche Figur mit angstvollem Blick;Gemälde;1930;4000.0;Öl, Pastel auf Pappe;true;Van Gogh,30.11.1913,12.6.1940,Französisch;schrei,src/assets/images/schrei.jpg-schrei,src/assets/images/schrei.jpg;Expressionismus,Kunst;23.2.2010-23.3.2010-400.0,1.8.2018-1.9.2018-300.0:12.5.2020-30.6.2020:17.4.2020-5000.0:30.9.2020-200.0:23.2.2010-P100:23.8.2020-P101;P102;1

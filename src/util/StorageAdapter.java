@@ -17,6 +17,8 @@ import java.util.Properties;
 
 public class StorageAdapter {
 
+    private String propertieBasePath = "./src/assets/database/auswahllisten.properties";
+
     /*
         verwaltet die Schnittstelle zwischen Datensatz und Programm
      */
@@ -282,8 +284,10 @@ public class StorageAdapter {
     }
 
     // lädt die properties datei und speichert sie im Programm
-    public void loadProperties() {
-        File propertiesFile = new File("./src/assets/database/auswahllisten.properties");
+    public void loadProperties(String path) {
+
+        propertieBasePath = path != null ? path : propertieBasePath;
+        File propertiesFile = new File(propertieBasePath);
         Properties properties = new Properties();
 
         if (propertiesFile.exists()) {
@@ -326,7 +330,7 @@ public class StorageAdapter {
         properties.setProperty("exponattyp", propertiesArr[2]);
 
         try {
-            properties.store(new FileOutputStream("./src/assets/database/auswahllisten.properties"), null);
+            properties.store(new FileOutputStream(propertieBasePath), null);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

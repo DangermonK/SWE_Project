@@ -25,11 +25,11 @@ public class MuseumsController implements IGUIEventListener {
         lädt die Daten in das Model und Startet die GUI
         stellt die Schnittstelle zwischen GUI und Model dar
      */
-    public MuseumsController(String customPath) {
+    public MuseumsController(String customPath, String propertiesPath) {
         entityAdapter = new EntityAdapter();
         storageAdapter = new StorageAdapter();
 
-        storageAdapter.loadProperties();
+        storageAdapter.loadProperties(propertiesPath);
 
         if(customPath != null) {
             entityAdapter.createAll(storageAdapter.importData(customPath, Dateiformat.CSV));
@@ -93,8 +93,8 @@ public class MuseumsController implements IGUIEventListener {
     }
 
     public static void main(String[] args) {
-        
-        MuseumsController controller = new MuseumsController(args.length > 0 ? args[0] : null);
+
+        MuseumsController controller = new MuseumsController(args.length > 0 ? args[0] : null, args.length > 1 ? args[1] : null);
 
     }
 
