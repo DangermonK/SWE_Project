@@ -21,6 +21,9 @@ import java.awt.event.*;
 import java.awt.image.ImageFilter;
 import java.io.File;
 import java.io.IOException;
+import java.text.Format;
+import java.text.Normalizer;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 
@@ -383,7 +386,7 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
                     String exponattyp = attElemsLeft[5].getValue();
                     Property.getInstance().addPropertyValue(ErweiterbareListe.EXPONATTYP, exponattyp);
 
-                    if(currentRaumnummer!=null && currentBesitzer !=null) {
+                    if(currentRaumnummer!=null && currentBesitzer !=null && !currentKuenstler.isEmpty()) {
 
                         String[] data = new String[]{
                                 invNr,
@@ -486,6 +489,15 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
 
     public void setCurrentKuenstler(Kuenstler kuenstler){
         this.kuenstler = kuenstler;
+        Format formatter = new SimpleDateFormat("dd.MM.YYYY");
+        String todesdatum ="null";
+        if(kuenstler.getTodesdatum()!=null){
+            todesdatum = ((SimpleDateFormat) formatter).format(kuenstler.getTodesdatum());
+        }
+
+        currentKuenstler = kuenstler.getName()+","+ ((SimpleDateFormat) formatter).format(kuenstler.getGeburtsdatum())+","
+                + todesdatum
+                +","+kuenstler.getNationalitaet();
     }
 
     public void initKuenstlerGUI(Kuenstler kuenstler){
@@ -497,7 +509,7 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
 
     public void setBesitzerList(List<Besitzer> besitzerList) {
         //TODO : Exponat kann mehrere Besitzer haben?
-        currentBesitzer = besitzerList.get(0).getName().toString();
+        currentBesitzer = besitzerList.get(0).getName();
         this.besitzerMap = new HashMap<>();
         for (Besitzer b: besitzerList) {
             besitzerMap.put(b.getName(),b.getPersNr());

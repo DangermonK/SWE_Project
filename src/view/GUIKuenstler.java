@@ -21,13 +21,26 @@ public class GUIKuenstler extends ObservableComponent implements IGUIEventListen
         kuenstlerframe = new JFrame();
         Format formatter = new SimpleDateFormat("dd.MM.YYYY");
 
+        String name ="";
+        String geburtsdatum="";
+        String todesdatum="";
+        String nationalität="";
+
+        if(kuenstler != null){
+            name= kuenstler.getName();
+            geburtsdatum =formatter.format(kuenstler.getGeburtsdatum());
+            if(kuenstler.getTodesdatum() != null){
+                todesdatum = formatter.format(kuenstler.getTodesdatum());
+            }
+            nationalität = kuenstler.getNationalitaet();
+        }
 
 
         attElements = new AttributeElement[]{
                 AttributeElement.builder("Name")
                         .labelName("Name")
                         .labelSize(new Dimension(100, 5))
-                        .value(kuenstler.getName())
+                        .value(name)
                         .actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
                         .mandatory(true)
                         .build(),
@@ -35,13 +48,17 @@ public class GUIKuenstler extends ObservableComponent implements IGUIEventListen
                 AttributeElement.builder("Geburtsdatum")
                         .labelName("Geburtsdatum")
                         .labelSize(new Dimension(100, 5))
-                        .value(formatter.format(kuenstler.getGeburtsdatum()))
+                        .value(geburtsdatum)
                         .actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
                         .mandatory(false).maxLength(10).allowedChars(AttributeElement.CHARSET_DATE).build(),
 
+
+
+
+
                 AttributeElement.builder("Todesdatum")
                         .labelName("Todesdatum")
-                        .value(formatter.format(kuenstler.getTodesdatum()))
+                        .value(todesdatum)
                         .labelSize(new Dimension(100, 5))
                         .actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
                         .mandatory(false).maxLength(10).allowedChars(AttributeElement.CHARSET_DATE)
@@ -49,7 +66,7 @@ public class GUIKuenstler extends ObservableComponent implements IGUIEventListen
 
                 AttributeElement.builder("Nationalitaet")
                         .labelName("Nationalität")
-                        .value(kuenstler.getNationalitaet())
+                        .value(nationalität)
                         .labelSize(new Dimension(100, 5))
                         .actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
                         .mandatory(true).build(),

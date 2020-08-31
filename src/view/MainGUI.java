@@ -42,6 +42,10 @@ public class MainGUI extends ObservableComponent {
         uebersicht.initBearbeitenGUI(data);
     }
 
+    public void initAnlegenGUI(Map<String, Object> data) {
+        uebersicht.initAnlegenGUI(data);
+    }
+
     public void initAuswahlPanel(Object[] auswahlDaten, String elementname, String currentElement){
         uebersicht.initAuswahlPanel(auswahlDaten, elementname, currentElement);
     }

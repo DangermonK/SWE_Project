@@ -186,6 +186,26 @@ public class MuseumsController implements IGUIEventListener {
 
                 view.initBearbeitenGUI(map);
                 break;
+
+            case "load anlegen":
+
+                Map<String, Object> anlegenmap = new HashMap<>();
+
+                anlegenmap.put("exponattyp",Property.getInstance().getProperty(ErweiterbareListe.EXPONATTYP).toArray(new String[]{}));
+                anlegenmap.put("kategorie",Property.getInstance().getProperty(ErweiterbareListe.KATEGORIE).toArray(new String[]{}));
+                anlegenmap.put("material",Property.getInstance().getProperty(ErweiterbareListe.MATERIAL).toArray(new String[]{}));
+
+
+                List<Person> allBesitzer = entityAdapter.getPersonList();
+                allBesitzer.removeIf(p -> p instanceof Foerdernder || p instanceof Angestellter);
+                anlegenmap.put("besitzer", allBesitzer);
+
+
+
+
+                view.initAnlegenGUI(anlegenmap);
+
+                break;
             case "selected element":
                 view.setUebersichtBilder(getImagePaths(view.getTableSelection()));
                 break;
@@ -237,6 +257,10 @@ public class MuseumsController implements IGUIEventListener {
             case "foerderung gui":
                 System.out.println("foerderung ist geil");
 
+                if(guiEvent.getData()!=null){
+
+                }
+
                 Exponat ex = (Exponat) entityAdapter.getElement(Classtype.EXPONAT, guiEvent.getData()) ;
 
                 //Exponat ex = (Exponat) entityAdapter.getElement(Classtype.EXPONAT, "E2131");
@@ -254,13 +278,17 @@ public class MuseumsController implements IGUIEventListener {
                         foerderungElements.add(new ListElement(fd, fd.hashCode()));
                     }
                 }
-                List<Foerderung> currentSelected = new ArrayList<>(ex.getFoerderungList());
-                currentSelected.removeIf(m->m instanceof MuseumsFoerderung);
-                ArrayList<IListElement> currentFoerderungElements =  new ArrayList<>();
-                for (Foerderung fd: currentSelected) {
-                    currentFoerderungElements.add(new ListElement(fd, fd.hashCode()));
-                }
 
+                ArrayList<IListElement> currentFoerderungElements = new ArrayList<>();
+                if(ex != null) {
+
+                    List<Foerderung> currentSelected = new ArrayList<>(ex.getFoerderungList());
+                    currentSelected.removeIf(m -> m instanceof MuseumsFoerderung);
+
+                    for (Foerderung fd : currentSelected) {
+                        currentFoerderungElements.add(new ListElement(fd, fd.hashCode()));
+                    }
+                }
 
 
                 view.initListAuswahlPanel(foerderungElements, "Förderungen", currentFoerderungElements);

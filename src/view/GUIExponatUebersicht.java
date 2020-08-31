@@ -157,6 +157,15 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
 
     }
 
+    public void initAnlegenGUI(Map<String, Object> data){
+        bearbeitenGUI = new GUIExponatBearbeiten(this,
+                Property.getInstance().getProperty(ErweiterbareListe.EXPONATTYP).toArray(new String[]{}),
+                Property.getInstance().getProperty(ErweiterbareListe.KATEGORIE).toArray(new String[]{}),
+                Property.getInstance().getProperty(ErweiterbareListe.MATERIAL).toArray(new String[]{}));
+
+        bearbeitenGUI.setBesitzerList((java.util.List<Besitzer>) data.get("besitzer"));
+    }
+
     public void initAuswahlPanel(Object[] auswahlDaten, String elementname, String currentElement){
         bearbeitenGUI.initAuswahlPanel(auswahlDaten, elementname, currentElement);
 
@@ -173,10 +182,7 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
             switch (button.getID()) {
                 case "anlegen":
                     buttonComp.enableButtons(false);
-                    bearbeitenGUI = new GUIExponatBearbeiten(this,
-                            Property.getInstance().getProperty(ErweiterbareListe.EXPONATTYP).toArray(new String[]{}),
-                            Property.getInstance().getProperty(ErweiterbareListe.KATEGORIE).toArray(new String[]{}),
-                            Property.getInstance().getProperty(ErweiterbareListe.MATERIAL).toArray(new String[]{}));
+                    fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "load anlegen", null));
                     break;
                 case "bearbeiten":
                     if(suchGUI.getSelectionIndex() != null) {
