@@ -1,4 +1,4 @@
-package model;
+package datentypen;
 
 public enum Rolle {
 

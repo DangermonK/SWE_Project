@@ -1,19 +1,35 @@
 package model;
 
-import java.util.Arrays;
-import java.util.Objects;
+
+import java.util.List;
 
 public abstract class Person {
 
-    private static int persZaehler = 0;
-
     private String name;
-    private int persNr;
+    private String persNr;
 
-    private Bild[] bildArray;
+    private List<Bild> bildList;
 
-    @Override
-    public int hashCode() {
-        return persNr;
+    public Person(String persNr, String name) {
+        this.name = name;
+
+        this.persNr = persNr;
+
+    }
+
+    public String getPersNr() {
+        return this.persNr;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public List<Bild> getBildList() {
+        return bildList;
+    }
+
+    public void setBildList(List<Bild> bildList) {
+        this.bildList = bildList;
     }
 }

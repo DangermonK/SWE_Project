@@ -1,35 +1,43 @@
 package util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class EntityManager <T> {
+public class EntityManager<T> {
 
-    private HashMap<Integer, T> entityMap;
+    private HashMap<Object, T> entityMap;
 
+    // Basis EntityManager kann mit verschiedenen Typen initialisiert werden
     public EntityManager() {
-        entityMap = new HashMap<Integer, T>();
+        entityMap = new HashMap<Object, T>();
     }
 
-    public void persist(T entity) {
-        if(!contains(entity)) {
-            entityMap.put(entity.hashCode(), entity);
+    public void persist(Object key, T entity) {
+        if (!contains(entity)) {
+            entityMap.put(key, entity);
         }
     }
 
-    public T find() {
-        return null; //TODO: logic
+    public List<T> getAsList() {
+        return new ArrayList<>(entityMap.values());
     }
 
-    public void remove(T entity) {
-        entityMap.remove(entity.hashCode());
+    public T find(Object key) {
+        if (contains(entityMap.get(key))) {
+            return entityMap.get(key);
+        }
+        return null;
+    }
+
+    public void remove(Object key) {
+        if (contains(entityMap.get(key))) {
+            entityMap.remove(key);
+        }
     }
 
     public boolean contains(T entity) {
         return entityMap.containsValue(entity);
-    }
-
-    public void update() {
-
     }
 
 }

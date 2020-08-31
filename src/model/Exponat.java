@@ -1,13 +1,17 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Exponat {
 
-    private static int invZaehler = 0;
-
     private String name;
-    private int inventarnummer;
+    private String inventarnummer;
+    private List<Exponattyp> expTypList;
+    private List<Besitzer> besitzerList;
+
+    private Historie historie;
+    private Raum raum;
     private String kategorie;
 
     private int erstellungsJahr;
@@ -18,35 +22,37 @@ public class Exponat {
     private boolean inWeb;
 
     private Kuenstler kuenstler;
-    private Exponattyp[] expTypArray;
-    private Besitzer[] besitzerArray;
 
-    private Historie historie;
-    private Raum raum;
+    private List<ExponatsFoerderung> foerderungList;
+    private List<Bild> bildList;
 
-    private ExponatsFoerderung[] foerderungArray;
-    private Bild[] bildArray;
+    public Exponat(String inventarnummer, String name) {
 
-    public Exponat(String name) {
-
-        this.inventarnummer = invZaehler;
-        invZaehler++;
+        this.inventarnummer = inventarnummer;
 
         this.name = name;
 
+        expTypList = new ArrayList<>();
+        besitzerList = new ArrayList<>();
+        foerderungList = new ArrayList<>();
+        bildList = new ArrayList<>();
+
     }
 
-    public Foerdernder[] getFoerdernde() {
-        return null; //TODO: implement Logic
+    public List<Foerdernder> getFoerdernde() {
+        List<Foerdernder> foerdernderList = new ArrayList<>();
+        foerderungList.forEach(foerderung -> {
+            foerdernderList.add(foerderung.getFoerdernder());
+        });
+        return foerdernderList;
     }
 
     public boolean isInMuseum() {
         return true; //TODO: implement logic
     }
 
-    @Override
-    public int hashCode() {
-        return inventarnummer;
+    public String getInventarnummer() {
+        return this.inventarnummer;
     }
 
     public String getKategorie() {
@@ -121,4 +127,51 @@ public class Exponat {
         this.raum = raum;
     }
 
+    public List<Bild> getBildList() {
+        return bildList;
+    }
+
+    public void setBildList(List<Bild> bildList) {
+        this.bildList = bildList;
+    }
+
+    public List<Exponattyp> getExpTypList() {
+        return expTypList;
+    }
+
+    public void setExpTypList(List<Exponattyp> expTypList) {
+        this.expTypList = expTypList;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void addBesitzer(Besitzer besitzer) {
+        besitzerList.add(besitzer);
+    }
+
+    public List<Besitzer> getBesitzerList() {
+        return besitzerList;
+    }
+
+    public void setBesitzerList(List<Besitzer> besitzerList) {
+        this.besitzerList = besitzerList;
+    }
+
+    public void addFoerderung(ExponatsFoerderung foerderung) {
+        foerderungList.add(foerderung);
+    }
+
+    public List<ExponatsFoerderung> getFoerderungList() {
+        return foerderungList;
+    }
+
+    public void setFoerderungList(List<ExponatsFoerderung> foerderungList) {
+        this.foerderungList = foerderungList;
+    }
 }
