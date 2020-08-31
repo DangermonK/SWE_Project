@@ -20,6 +20,7 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.EventListener;
+import java.util.List;
 import java.util.Map;
 
 public class GUIExponatUebersicht extends ObservableComponent implements IGUIEventListener {
@@ -139,8 +140,8 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
     public void initBearbeitenGUI(Map<String, Object> data) {
 
          bearbeitenGUI = new GUIExponatBearbeiten((String[])data.get("bildPfade"),
-                (String[])data.get("exponattypen"),
-                (String[])data.get("kategorie"),
+                 (String[])data.get("exponattypen"),
+                 (String[])data.get("kategorie"),
                 (String[])data.get("material"),
                 (String)data.get("name"),
                 String.valueOf(data.get("erstellungsjahr")),
@@ -159,9 +160,9 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
 
     public void initAnlegenGUI(Map<String, Object> data){
         bearbeitenGUI = new GUIExponatBearbeiten(this,
-                Property.getInstance().getProperty(ErweiterbareListe.EXPONATTYP).toArray(new String[]{}),
-                Property.getInstance().getProperty(ErweiterbareListe.KATEGORIE).toArray(new String[]{}),
-                Property.getInstance().getProperty(ErweiterbareListe.MATERIAL).toArray(new String[]{}));
+                Property.getInstance().getProperty(ErweiterbareListe.EXPONATTYP),
+                Property.getInstance().getProperty(ErweiterbareListe.KATEGORIE),
+                Property.getInstance().getProperty(ErweiterbareListe.MATERIAL));
 
         bearbeitenGUI.setBesitzerList((java.util.List<Besitzer>) data.get("besitzer"), false);
     }

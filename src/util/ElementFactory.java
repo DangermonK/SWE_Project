@@ -34,7 +34,7 @@ public class ElementFactory {
 
         if (args[4].matches("[0-9]*"))
             exponat.setErstellungsJahr(Integer.valueOf(args[4]));
-        if (args[5].matches("[0-9]+\\.[0-9]*"))
+        if (args[5].matches("[0-9]+(\\.)?[0-9]*"))
             exponat.setSchaetzWert(Double.valueOf(args[5]));
 
         exponat.setMaterial(args[6]);
