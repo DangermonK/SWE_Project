@@ -232,6 +232,19 @@ public class MuseumsController implements IGUIEventListener {
                     List<Person> pList = entityAdapter.getPersonList();
                     pList.removeIf(p -> p instanceof Angestellter || p instanceof Besitzer);
 
+                    List<ExponatsFoerderung> expFoeList = new ArrayList<>();
+
+                    for (Person p : pList) {
+                        List<Foerderung> foerderungList = ((Foerdernder)p).getFoerderungList();
+                        for(Foerderung f : foerderungList) {
+                            if(f instanceof ExponatsFoerderung && hashList.contains(String.valueOf(f.hashCode()))) {
+                               ((ExponatsFoerderung) f).setExponat((Exponat) entityAdapter.getElement(Classtype.EXPONAT, data[0]));
+                               expFoeList.add((ExponatsFoerderung) f);
+                            }
+                        }
+                    }
+
+                    ((Exponat) entityAdapter.getElement(Classtype.EXPONAT, data[0])).setFoerderungList(expFoeList);
                 }
                 break;
             case "raum gui":
