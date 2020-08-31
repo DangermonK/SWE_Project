@@ -4,26 +4,28 @@ import de.dhbwka.swe.utils.gui.*;
 import de.dhbwka.swe.utils.model.IListElement;
 import de.dhbwka.swe.utils.model.ImageElement;
 import de.dhbwka.swe.utils.util.ImageLoader;
+import de.dhbwka.swe.utils.gui.TextComponent;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 
-import de.dhbwka.swe.utils.gui.TextComponent;
-
 import java.util.ArrayList;
 import java.util.Map;
 
+
+//GUI für die Detailansicht
 public class GUIExponatDetails {
 
-    SimpleListComponent kuenstlerListComp;
-    SimpleListComponent besitzerListComp;
-    SimpleListComponent foerderungListComp;
-    SimpleListComponent exponattypListComp;
-    SimpleListComponent historyListComp;
+    private SimpleListComponent kuenstlerListComp;
+    private SimpleListComponent besitzerListComp;
+    private SimpleListComponent foerderungListComp;
+    private SimpleListComponent exponattypListComp;
+    private SimpleListComponent historyListComp;
 
     private SlideshowComponent slideshow;
 
+    //Attribute werden als vom Controller als Map übergeben
     public GUIExponatDetails(String[] bildPfade, Map<String, Object> attribute) {
 
         JFrame detailFrame = new JFrame("Detailansicht " + attribute.get("Name"));
@@ -31,6 +33,7 @@ public class GUIExponatDetails {
         detailFrame.setLayout(new GridBagLayout());
         GridBagConstraints main = new GridBagConstraints();
 
+        //Layout Einstellungen für DetailFrame
         main.gridx = 0;
         main.weightx = 1;
         main.weighty = 0.2;
@@ -40,33 +43,37 @@ public class GUIExponatDetails {
         main.insets = new Insets(-20, 0, 0, 0);
         main.fill = GridBagConstraints.HORIZONTAL;
 
-
-        //JPanel slidePanel = new JPanel(new GridLayout(1,1));
+        //Panel für Slideshow
         JPanel slidePanel = new JPanel();
         slidePanel.setLayout(new BorderLayout());
-
         slideshow = SlideshowComponent.builder("SSC").smallImageSize(new Dimension(40, 40)).build();
-        setBilder(bildPfade);
-        slideshow.setPreferredSize(new Dimension(500, 250));
 
+        //Erstelle ImageElements und füge sie zur SlideshowComponent hinzu
+        setBilder(bildPfade);
+
+        slideshow.setPreferredSize(new Dimension(500, 250));
         slidePanel.add(slideshow, BorderLayout.PAGE_START);
-        Border panelBorder = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5), BorderFactory.createEtchedBorder());
+
+        //Border für die Components
+        Border panelBorder = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5),
+                BorderFactory.createEtchedBorder());
         slidePanel.setBorder(panelBorder);
+
         detailFrame.add(slidePanel, main);
 
-        main.fill = GridBagConstraints.HORIZONTAL;
 
         JPanel attributePanel = new JPanel(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
+        GridBagConstraints attributeLayout = new GridBagConstraints();
 
-        c.gridx = 0;
-        c.weightx = 0.5;
-        c.gridwidth = 1;
-        c.gridy = 0;
-        c.gridheight = 1;
-        c.fill = GridBagConstraints.HORIZONTAL;
+        //Layout Einstellungen für das Attribute Panel
+        attributeLayout.gridx = 0;
+        attributeLayout.weightx = 0.5;
+        attributeLayout.gridwidth = 1;
+        attributeLayout.gridy = 0;
+        attributeLayout.gridheight = 1;
+        attributeLayout.fill = GridBagConstraints.HORIZONTAL;
 
-
+        //Attribute der linken Component
         AttributeElement[] attElemsLeft = new AttributeElement[]{
                 AttributeElement.builder("Inv-Nr.")
                         .labelName("Inv-Nr.")
@@ -86,17 +93,18 @@ public class GUIExponatDetails {
                         .labelName("Material")
                         .labelSize(new Dimension(100, 5))
                         .actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
-                        .mandatory(false).maxLength(10).value((String) attribute.get("Material")).build(),
+                        .mandatory(false).value((String) attribute.get("Material")).build(),
         };
 
         AttributeComponent attComp = null;
 
+        //Attribute der rechten Component
         AttributeElement[] attElemsRight = new AttributeElement[]{
                 AttributeElement.builder("Name")
                         .labelName("Name")
                         .labelSize(new Dimension(100, 5))
                         .actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
-                        .mandatory(false).maxLength(10).value((String) attribute.get("Name")).build(),
+                        .mandatory(false).value((String) attribute.get("Name")).build(),
 
                 AttributeElement.builder("Erstellungsjahr")
                         .labelName("Erstellungsjahr")
@@ -114,7 +122,7 @@ public class GUIExponatDetails {
                         .labelName("Kategorie")
                         .labelSize(new Dimension(100, 5))
                         .actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
-                        .mandatory(false).maxLength(10).value((String) attribute.get("Kategorie")).build(),
+                        .mandatory(false).value((String) attribute.get("Kategorie")).build(),
         };
         AttributeComponent attComp2 = null;
 
@@ -134,37 +142,37 @@ public class GUIExponatDetails {
             var7.printStackTrace();
         }
         attComp.setEnabled(true);
-
         attComp2.setEnabled(true);
 
 
         //AttributComponent links hinzufügen
-        c.insets = new Insets(0, 0, 0, 30);
-        attributePanel.add(attComp, c);
+        attributeLayout.insets = new Insets(0, 0, 0, 30);
+        attributePanel.add(attComp, attributeLayout);
 
         //AttributComponent rechts hinzufügen
-        c.gridx = 1;
-        c.weightx = 0.5;
-        c.insets = new Insets(0, 0, 0, 0);
-        attributePanel.add(attComp2, c);
+        attributeLayout.gridx = 1;
+        attributeLayout.weightx = 0.5;
+        attributeLayout.insets = new Insets(0, 0, 0, 0);
+        attributePanel.add(attComp2, attributeLayout);
 
+        //TextComponent unter linke Attribute Component fügen
         TextComponent tc = TextComponent.builder("textFeld").editable(false).title("Beschreibung").initialText((String) attribute.get("beschreibung")).build();
 
-        c.gridx = 0;
-        c.gridy = 1;
-        c.insets = new Insets(0, 0, 0, 30);
-        attributePanel.add(tc, c);
+        attributeLayout.gridx = 0;
+        attributeLayout.gridy = 1;
+        attributeLayout.insets = new Insets(0, 0, 0, 30);
+        attributePanel.add(tc, attributeLayout);
 
-
+        //Panel für Checkboxen
         JPanel checkBoxes = new JPanel(new GridBagLayout());
-        GridBagConstraints d = new GridBagConstraints();
-        d.gridx = 0;
-        d.weightx = 0.5;
-        d.gridwidth = 1;
-        d.gridy = 0;
-        d.gridheight = 1;
-        d.fill = GridBagConstraints.HORIZONTAL;
-        d.insets = new Insets(0, 0, 0, 0);
+        GridBagConstraints checkboxLayout = new GridBagConstraints();
+        checkboxLayout.gridx = 0;
+        checkboxLayout.weightx = 0.5;
+        checkboxLayout.gridwidth = 1;
+        checkboxLayout.gridy = 0;
+        checkboxLayout.gridheight = 1;
+        checkboxLayout.fill = GridBagConstraints.HORIZONTAL;
+        checkboxLayout.insets = new Insets(0, 0, 0, 0);
 
         JLabel labelInMuseum = new JLabel("Ist im Museum:");
         JCheckBox cbInMuseum = new JCheckBox();
@@ -176,35 +184,34 @@ public class GUIExponatDetails {
         cbInWeb.setEnabled(false);
         cbInWeb.setSelected((Boolean) attribute.get("isInWeb"));
         cbInWeb.setHorizontalTextPosition(SwingConstants.LEFT);
-        checkBoxes.add(labelInMuseum, d);
+        checkBoxes.add(labelInMuseum, checkboxLayout);
 
-        d.gridx = 1;
-        d.insets = new Insets(0, 0, 0, 0);
-        checkBoxes.add(cbInMuseum, d);
+        checkboxLayout.gridx = 1;
+        checkboxLayout.insets = new Insets(0, 0, 0, 0);
+        checkBoxes.add(cbInMuseum, checkboxLayout);
 
-        d.insets = new Insets(0, 0, 0, 0);
-        d.gridx = 0;
-        d.gridy = 1;
-        d.weightx = 0.5;
-        checkBoxes.add(labelInWeb, d);
+        checkboxLayout.insets = new Insets(0, 0, 0, 0);
+        checkboxLayout.gridx = 0;
+        checkboxLayout.gridy = 1;
+        checkboxLayout.weightx = 0.5;
+        checkBoxes.add(labelInWeb, checkboxLayout);
 
-        d.insets = new Insets(0, 0, 0, 0);
-        d.gridx = 1;
-        d.gridy = 1;
-        checkBoxes.add(cbInWeb, d);
+        checkboxLayout.insets = new Insets(0, 0, 0, 0);
+        checkboxLayout.gridx = 1;
+        checkboxLayout.gridy = 1;
+        checkBoxes.add(cbInWeb, checkboxLayout);
 
         cbInMuseum.setHorizontalAlignment(SwingConstants.RIGHT);
         cbInWeb.setHorizontalAlignment(SwingConstants.RIGHT);
 
-
-        c.insets = new Insets(0, 0, 0, 0);
-        c.gridx = 1;
-        attributePanel.add(checkBoxes, c);
-
+        //checkBox Panel unter rechte Attribute Component fügen
+        attributeLayout.insets = new Insets(0, 0, 0, 0);
+        attributeLayout.gridx = 1;
+        attributePanel.add(checkBoxes, attributeLayout);
         attributePanel.setBorder(panelBorder);
+
         main.weighty = 0.3;
         main.gridy = 1;
-        // main.fill = GridBagConstraints.BOTH;
         detailFrame.add(attributePanel, main);
 
         //ListComponents initalisieruen
@@ -214,12 +221,7 @@ public class GUIExponatDetails {
                         .selectionMode(ListSelectionModel.SINGLE_SELECTION)
                         .title("History")
                         .build();
-        //historyListComp.setListElements( historyElements );
-        historyListComp.setCellRenderer(new ListComponentCellRenderer()); //optional
-        //historyListComp.setPreferredSize(new Dimension(100,200));
-        //historyListComp.setSize(100,200);
-        //historyListComp.setPreferredSize(new Dimension(1000,300));
-        //historyListComp.addObserver( ... );
+        historyListComp.setCellRenderer(new ListComponentCellRenderer());
 
         foerderungListComp =
                 SimpleListComponent.builder("historyList")
@@ -227,10 +229,7 @@ public class GUIExponatDetails {
                         .title("Förderung")
                         .selectionMode(ListSelectionModel.SINGLE_SELECTION)
                         .build();
-
-        // foerderungListComp.setListElements( historyElements );
-        foerderungListComp.setCellRenderer(new ListComponentCellRenderer()); //optional
-        //foerderungListComp.addObserver( ... );
+        foerderungListComp.setCellRenderer(new ListComponentCellRenderer());
 
         besitzerListComp =
                 SimpleListComponent.builder("historyList")
@@ -238,10 +237,7 @@ public class GUIExponatDetails {
                         .selectionMode(ListSelectionModel.SINGLE_SELECTION)
                         .title("Besitzer")
                         .build();
-        //besitzerListComp.setListElements( historyElements );
-        //besitzerListComp.set
-        besitzerListComp.setCellRenderer(new ListComponentCellRenderer()); //optional
-        //besitzerListComp.addObserver( ... );
+        besitzerListComp.setCellRenderer(new ListComponentCellRenderer());
 
         exponattypListComp =
                 SimpleListComponent.builder("historyList")
@@ -249,9 +245,7 @@ public class GUIExponatDetails {
                         .title("Exponattyp")
                         .selectionMode(ListSelectionModel.SINGLE_SELECTION)
                         .build();
-        //exponattypListComp.setListElements( historyElements );
-        exponattypListComp.setCellRenderer(new ListComponentCellRenderer()); //optional
-        //exponattypListComp.addObserver( ... );
+        exponattypListComp.setCellRenderer(new ListComponentCellRenderer());
 
         kuenstlerListComp =
                 SimpleListComponent.builder("historyList")
@@ -259,10 +253,9 @@ public class GUIExponatDetails {
                         .title("Künstler")
                         .selectionMode(ListSelectionModel.SINGLE_SELECTION)
                         .build();
-        // kuenstlerListComp.setListElements( historyElements );
-        kuenstlerListComp.setCellRenderer(new ListComponentCellRenderer()); //optional
-        //kuenstlerListComp.addObserver( ... );
+        kuenstlerListComp.setCellRenderer(new ListComponentCellRenderer());
 
+        //Panel für List Components
         JPanel listPanel = new JPanel();
         listPanel.setLayout(new BoxLayout(listPanel, BoxLayout.Y_AXIS));
 
@@ -277,13 +270,13 @@ public class GUIExponatDetails {
         main.gridy = 2;
         main.weighty = 0.5;
         main.insets = new Insets(-40, 0, 0, 0);
-        // main.fill = GridBagConstraints.HORIZONTAL;
         detailFrame.add(listPanel, main);
 
         detailFrame.setSize(600, 750);
         detailFrame.setVisible(true);
     }
 
+    //Methode um ImageElements zu erstellen und zur Slideshow hinzuzufügen
     public void setBilder(String[] bildPfade) {
         if (bildPfade.length == 0 || bildPfade[0].isEmpty()) {
             bildPfade = new String[]{"src/assets/images/keineBilder.jpg"};
@@ -296,11 +289,10 @@ public class GUIExponatDetails {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         slideshow.setImageElements(loadedImageElements);
-
     }
 
+    //Methoden um die Inhalte der SimpleListComponents zu setzen
     public void setKuenstler(ArrayList<IListElement> kuenstler) {
         kuenstlerListComp.setListElements(kuenstler);
     }

@@ -1,9 +1,6 @@
 package view;
 
-import com.sun.corba.se.impl.ior.GenericIdentifiable;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import datentypen.ErweiterbareListe;
-import de.dhbwka.swe.utils.event.EventCommand;
 import de.dhbwka.swe.utils.event.GUIEvent;
 import de.dhbwka.swe.utils.event.IGUIEventListener;
 import de.dhbwka.swe.utils.gui.*;
@@ -16,24 +13,19 @@ import util.Property;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.EventListener;
-import java.util.List;
 import java.util.Map;
 
+//GUI für die Überischt, die im Tabbed Pane auf der MainGUI dargstellt wird.
 public class GUIExponatUebersicht extends ObservableComponent implements IGUIEventListener {
 
     private JPanel uebersichtPanel;
     private JPanel topPanel;
     private GUIExponatSuchComponent suchGUI;
     private GUIExponatBearbeiten bearbeitenGUI;
-
     private SlideshowComponent slideshow;
     private JPanel leftPanel;
-    private String[] raueme;
-
     private ButtonComponent buttonComp;
 
     public GUIExponatUebersicht(String[] bildPfade, String[] suchAttribute) {
@@ -41,16 +33,21 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
         uebersichtPanel = new JPanel();
         uebersichtPanel.setLayout(new GridLayout(2, 1));
 
+        //Panel für Slideshow und ButtonComp (leftpanel + rightpanel)
         topPanel = new JPanel();
         topPanel.setLayout(new GridBagLayout());
         GridBagConstraints top = new GridBagConstraints();
+
+        //Layout Einstellungen für SlideshowPanel
         top.weightx = 1.0;
         top.weighty = 1.0;
         top.gridx = 0;
         top.gridy = 0;
         top.fill = GridBagConstraints.HORIZONTAL;
 
+        //Panel für Slideshow
         leftPanel = new JPanel(new GridLayout(1, 1));
+        //Panel für ButtonComp
         JPanel rightPanel = new JPanel();
 
         Border panelBorder = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5), BorderFactory.createEtchedBorder());
@@ -58,6 +55,7 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
         leftPanel.setBorder(panelBorder);
 
         slideshow = SlideshowComponent.builder("SSC").smallImageSize(new Dimension(40, 40)).build();
+        //Erzeuge ImageElements und füge sie zur Slideshow hinzu
         setUebersichtBilder(bildPfade);
 
         leftPanel.add(slideshow);
@@ -72,7 +70,6 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
                 ButtonElement.builder("speichern").buttonText("speichern").type(ButtonElement.Type.BUTTON).build(),
         };
 
-
         buttonComp = ButtonComponent.builder("BC").buttonElements(buttons)
                 .position(ButtonComponent.Position.EAST)
                 .build();
@@ -81,7 +78,7 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
 
         rightPanel.add(buttonComp);
 
-
+        //Layout einstellungen für buttonPanel
         top.weightx = 0.0;
         top.gridx = 1;
         top.gridy = 0;
@@ -89,14 +86,17 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
         top.fill = GridBagConstraints.VERTICAL;
 
         topPanel.add(rightPanel, top);
+
         uebersichtPanel.add((topPanel));
 
+        //Erstelle SuchComponennt und füge sie hinzu
         suchGUI = new GUIExponatSuchComponent(suchAttribute);
         uebersichtPanel.add(suchGUI.getPane());
 
 
     }
 
+    //Erzeuge ImageElements und für sie zur Slideshow hinzu
     public void setUebersichtBilder(String[] bildPfade) {
         if (bildPfade.length == 0 || bildPfade[0].isEmpty()) {
             bildPfade = new String[]{"src/assets/images/keineBilder.jpg"};
@@ -113,6 +113,8 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
         slideshow.setImageElements(loadedImageElements);
     }
 
+
+    //Methoden, um auf die SuchComponent zuzugreifen
     public String getTableSelection() {
         return suchGUI.getSelectionIndex();
     }
@@ -134,9 +136,11 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
         suchGUI.setGUIListener(listener);
     }
 
+    //Methode zum Erzeugen der Bearbeiten GUI, die Daten werden als Map mitgegeben.
     public void initBearbeitenGUI(Map<String, Object> data) {
 
-        bearbeitenGUI = new GUIExponatBearbeiten((String[]) data.get("bildPfade"),
+        bearbeitenGUI = new GUIExponatBearbeiten("Exponat: "+ data.get("name")+ " bearbeiten",
+                (String[]) data.get("bildPfade"),
                 (String[]) data.get("exponattypen"),
                 (String[]) data.get("kategorie"),
                 (String[]) data.get("material"),
@@ -148,31 +152,33 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
                 this);
         bearbeitenGUI.setCurrentRaum(String.valueOf(data.get("raum")));
         bearbeitenGUI.setBesitzerList((java.util.List<Besitzer>) data.get("besitzer"), true);
-        //bearbeitenGUI.setCurrentBesitzer(data.get());
         bearbeitenGUI.setInvNr((String) data.get("invNr"));
         Kuenstler k = ((Kuenstler) data.get("kuenstler"));
         bearbeitenGUI.setCurrentKuenstler(k);
-
     }
 
+    //Methode zum Erzeugen der Anlege GUI
     public void initAnlegenGUI(Map<String, Object> data) {
         bearbeitenGUI = new GUIExponatBearbeiten(this,
                 Property.getInstance().getProperty(ErweiterbareListe.EXPONATTYP),
                 Property.getInstance().getProperty(ErweiterbareListe.KATEGORIE),
                 Property.getInstance().getProperty(ErweiterbareListe.MATERIAL));
-
         bearbeitenGUI.setBesitzerList((java.util.List<Besitzer>) data.get("besitzer"), false);
     }
 
+    //Methode zum Erzeugen eines AuswahlPanels, wird vom Controller aus mit den entsprechenden Daten aufgerufen
     public void initAuswahlPanel(Object[] auswahlDaten, String elementname, String currentElement) {
         bearbeitenGUI.initAuswahlPanel(auswahlDaten, elementname, currentElement);
 
     }
 
+    //Methode zum Erzeugen eines ListAuswahlPanels, wird vom Controller aus mit den entsprechenden Daten aufgerufen
     public void initListAuswahlPanel(ArrayList<IListElement> listElements, String elementname, ArrayList<IListElement> currentElement) {
         bearbeitenGUI.initListAuswahlPanel(listElements, elementname, currentElement);
     }
 
+
+    //Events die von untergeordneten GUI Komponenten kommen (Bearbeiten, Anlegen..) und an den Controller weitergereicht werden
     @Override
     public void processGUIEvent(GUIEvent guiEvent) {
         if (ButtonComponent.Commands.BUTTON_PRESSED.equals(guiEvent.getCmd())) {
@@ -197,7 +203,6 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
                         }
                     }
                     break;
-
                 case "speichern":
                     fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "save programm", null));
                     break;
@@ -207,9 +212,11 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
                     }
                     break;
             }
-        } else if (guiEvent.getCmdText().equals("closed frame")) {
+        }
+        if (guiEvent.getCmdText().equals("closed frame")) {
             buttonComp.enableButtons(true);
-        } else if (guiEvent.getCmdText().equals("safe data")) {
+        }
+        if (guiEvent.getCmdText().equals("safe data")) {
             fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "safe data", guiEvent.getData()));
         }
         if (guiEvent.getCmdText().equals("raum gui")) {

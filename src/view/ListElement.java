@@ -6,11 +6,15 @@ import util.Statics;
 
 import java.util.HashMap;
 
+//Eigene WrapperKlasse für das Interface IListElement. So mussten wir nicht nachträglich das Interface in
+// unseren Modell-Klassen implementieren. Und können stattdessen diese Wrapperklasse verwenden
 public class ListElement implements IListElement {
 
     private String listText;
     private int hash;
 
+
+    //Erstellt aus unseren ModelObjekten ListElemente und baut die Listentexte zusammen, die angezeigt werden sollen.
     public ListElement(Anlage anlage) {
         this.listText = "Anlagedatum: " + Statics.dateFormat.format(anlage.getAnlageDatum()) + ", Angelegt von: " + anlage.getAngestellter().getName();
     }
@@ -44,6 +48,7 @@ public class ListElement implements IListElement {
                 ", lebensspanne: " + kuenstler.getLebensspanne();
     }
 
+    //speichert auch Hash der Förderung der später zur Speicherung der Förderung benötigt wird
     public ListElement(Foerderung foerderung, int hash) {
         this.hash = hash;
         this.listText = "Name: " + foerderung.getFoerdernder().getName() + ", Art: " + foerderung.getFoerderungsart()

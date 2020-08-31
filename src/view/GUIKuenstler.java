@@ -6,14 +6,15 @@ import de.dhbwka.swe.utils.gui.*;
 import model.Kuenstler;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Formatter;
 
+//GUI für das Künstler hinzufügen
 public class GUIKuenstler extends ObservableComponent implements IGUIEventListener {
 
     private JFrame kuenstlerframe;
@@ -32,6 +33,7 @@ public class GUIKuenstler extends ObservableComponent implements IGUIEventListen
             }
         });
         kuenstlerframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        //Datumsformat spezifizieren
         formatter = new SimpleDateFormat("dd.MM.YYYY");
 
         String name = "";
@@ -39,6 +41,8 @@ public class GUIKuenstler extends ObservableComponent implements IGUIEventListen
         String todesdatum = "";
         String nationalität = "";
 
+        //Wenn schon ein Kuenstler eingetragen war, hole Daten, formatiere Sie, sodass sie in den Attribute Elements
+        // angezeigt werden
         if (kuenstler != null) {
             name = kuenstler.getName();
             geburtsdatum = formatter.format(kuenstler.getGeburtsdatum());
@@ -47,7 +51,6 @@ public class GUIKuenstler extends ObservableComponent implements IGUIEventListen
             }
             nationalität = kuenstler.getNationalitaet();
         }
-
 
         attElements = new AttributeElement[]{
                 AttributeElement.builder("Name")
@@ -65,7 +68,6 @@ public class GUIKuenstler extends ObservableComponent implements IGUIEventListen
                         .actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
                         .mandatory(true).maxLength(10).allowedChars(AttributeElement.CHARSET_DATE).build(),
 
-
                 AttributeElement.builder("Todesdatum")
                         .labelName("Todesdatum")
                         .value(todesdatum)
@@ -81,7 +83,6 @@ public class GUIKuenstler extends ObservableComponent implements IGUIEventListen
                         .actionType(AttributeElement.ActionType.NONE).modificationType(AttributeElement.ModificationType.DIRECT)
                         .mandatory(true).build(),
         };
-
 
         try {
             attComp = AttributeComponent.builder("attributes").attributeElements(attElements).build();
@@ -102,13 +103,17 @@ public class GUIKuenstler extends ObservableComponent implements IGUIEventListen
                 .stretchButtons()
                 .build();
 
-
         buttonComp.addObserver(this);
         kuenstlerframe.add(attComp, BorderLayout.CENTER);
         kuenstlerframe.add(buttonComp, BorderLayout.EAST);
 
-        kuenstlerframe.setSize(400, 400);
+        Border b = BorderFactory.createEmptyBorder(7,7,7,7);
+        attComp.setBorder(b);
+        buttonComp.setBorder(b);
+
+        kuenstlerframe.setSize(400, 150);
         kuenstlerframe.setVisible(true);
+        kuenstlerframe.setResizable(false);
 
     }
 
@@ -117,8 +122,11 @@ public class GUIKuenstler extends ObservableComponent implements IGUIEventListen
         if (ButtonComponent.Commands.BUTTON_PRESSED.equals(guiEvent.getCmd())) {
             ButtonElement button = (ButtonElement) guiEvent.getData();
             switch (button.getID()) {
-                case "hinzufügen":
 
+                //Prüfe ob alle Pflichtangaben getätigt wurden, hole Daten aus Attribute Elements,
+                //prüfe Formatierung. Gebe Meldung aus, wenn etwas fehlt/fehlerhaft.
+                //Wenn alles ok, schicke Daten an Bearbeiten GUI.
+                case "hinzufügen":
                     String[] nichtEingetragen = attComp.validateMandatoryAttributeValues();
                     if (!(nichtEingetragen.length > 0)) {
                         String[] data = new String[]{
@@ -148,8 +156,6 @@ public class GUIKuenstler extends ObservableComponent implements IGUIEventListen
                                 "Daten fehlen",
                                 JOptionPane.ERROR_MESSAGE);
                     }
-
-
                     break;
                 case "abbrechen":
                     fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "Künstler closed", null));

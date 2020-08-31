@@ -13,17 +13,16 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
 
+
+//GUI Komponente, die die Suchbar und die Tabelle mit den Exponaten enthält. Wird auf der GUIExponatÜbersicht eingebungen
 public class GUIExponatSuchComponent extends ObservableComponent implements ListSelectionListener, IGUIEventListener {
 
     JPanel suchPanel;
-    //String[] suchAttribute;
-    Object[][] tabellenDaten;
     JTable ergebnisTable;
 
     public GUIExponatSuchComponent(String[] suchAttribute) {
         suchPanel = new JPanel();
         suchPanel.setLayout(new BoxLayout(suchPanel, BoxLayout.Y_AXIS));
-
         suchPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5), BorderFactory.createEtchedBorder()));
 
         JPanel suchBar = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
@@ -31,9 +30,8 @@ public class GUIExponatSuchComponent extends ObservableComponent implements List
 
         JTextField suchFeld = new JTextField("Suchattribut");
         suchFeld.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(), (BorderFactory.createEmptyBorder(3, 5, 3, 5))));
-        JButton suchButton = new JButton("suchen");
 
-        //String[] suchAttribute = { "Bird", "Cat", "Dog", "Rabbit", "Pig" };
+        JButton suchButton = new JButton("suchen");
         JComboBox suchBox = new JComboBox(suchAttribute);
 
         suchBar.add(suchFeld);
@@ -42,28 +40,7 @@ public class GUIExponatSuchComponent extends ObservableComponent implements List
 
         suchPanel.add(suchBar);
 
-       /* String[] spaltenNamen = {"Inv-Nr.",
-                "Name",
-                "Raum",
-                "Künstler",
-                "Kategorie",
-                "Änd.-Datum"};*/
-
-        /*tabellenDaten = new Object[][]{
-                {"Kathy", "Smith",
-                        "Snowboarding", new Integer(5), new Boolean(false), "test"},
-                {"John", "Doe",
-                        "Rowing", new Integer(3), new Boolean(true), "test"},
-                {"Sue", "Black",
-                        "Knitting", new Integer(2), new Boolean(false), "test"},
-                {"Jane", "White",
-                        "Speed reading", new Integer(20), new Boolean(true), "test"},
-                {"Joe", "Brown",
-                        "Pool", new Integer(10), new Boolean(false), "test"}
-        };*/
-
-        //Deaktiviere Zelllenbearbeitung
-        //JTable ergebnisTable = new JTable(tabellenDaten,spaltenNamen) ;
+        //Deaktiviere Zelllenbearbeitung der Tabelle
         DefaultTableModel model = new DefaultTableModel() {
             String[] spaltenNamen = {"Inv-Nr.",
                     "Name",
@@ -81,7 +58,6 @@ public class GUIExponatSuchComponent extends ObservableComponent implements List
             public String getColumnName(int index) {
                 return spaltenNamen[index];
             }
-
         };
 
         ergebnisTable = new JTable(model) {
@@ -89,17 +65,16 @@ public class GUIExponatSuchComponent extends ObservableComponent implements List
                 return false;
             }
         };
+
         ergebnisTable.getTableHeader().setReorderingAllowed(false);
         setTabellenListener(this);
 
+        //Tabelle in Scrollpane, um Scrollable zu machen
         JScrollPane scrollPane = new JScrollPane(ergebnisTable);
 
         tabellenPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         tabellenPane.add(scrollPane);
         suchPanel.add(tabellenPane);
-
-        //suchPanel.setSize(400,400);
-        //suchPanel.setVisible(true);
     }
 
     public void setGUIListener(IGUIEventListener listener) {
@@ -110,6 +85,7 @@ public class GUIExponatSuchComponent extends ObservableComponent implements List
         return suchPanel;
     }
 
+    //Methode um Tabellendaten zu aktualisieren
     public void setTabellenErgebnisse(Object[][] tabellenDaten) {
 
         DefaultTableModel model = (DefaultTableModel) ergebnisTable.getModel();
@@ -120,6 +96,7 @@ public class GUIExponatSuchComponent extends ObservableComponent implements List
         ergebnisTable.setModel(model);
     }
 
+    //Methode um Daten an bestimmter Zeilenindex hinzuzufügen
     public void insertRow(Object[] data, int row) {
         ((DefaultTableModel) ergebnisTable.getModel()).insertRow(row, data);
         selectRow(row);
@@ -137,6 +114,7 @@ public class GUIExponatSuchComponent extends ObservableComponent implements List
         ((DefaultTableModel) ergebnisTable.getModel()).removeRow(index);
     }
 
+    //Listener für Zeilenauswahl hinzufügen
     public void setTabellenListener(ListSelectionListener listener) {
         ListSelectionModel model = ergebnisTable.getSelectionModel();
         model.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -148,6 +126,7 @@ public class GUIExponatSuchComponent extends ObservableComponent implements List
         ergebnisTable.getSelectionModel().setLeadSelectionIndex(row);
     }
 
+    //Index von Exponat anhand InvNr holen
     public int getIndexOf(String invNr) {
         for (int i = 0; i < ergebnisTable.getRowCount(); i++) {
             if (ergebnisTable.getValueAt(i, 0).toString().equals(invNr)) {
@@ -157,6 +136,7 @@ public class GUIExponatSuchComponent extends ObservableComponent implements List
         return -1;
     }
 
+    //Hole InvNr einer bestimmten Zeile
     public String getSelectionIndex() {
         if (ergebnisTable.getSelectedRow() <= -1)
             return null;
@@ -171,6 +151,7 @@ public class GUIExponatSuchComponent extends ObservableComponent implements List
     @Override
     public void valueChanged(ListSelectionEvent e) {
         if (getSelectionIndex() != null) {
+            //event an controller, um Bilder der Slideshow für neues selektiertes Element zu ändern.
             fireGUIEvent(new GUIEvent(e.getSource(), () -> "selected element", null));
         }
     }
