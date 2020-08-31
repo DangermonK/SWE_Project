@@ -170,7 +170,11 @@ public class EntityAdapter {
                         JSONObject foer = new JSONObject();
                         foer.put("foerderungsart", foerderung.getFoerderungsart());
                         foer.put("foerderungsmittel", foerderung.getFoerderungsmittel());
-                        foer.put("exponat", ((ExponatsFoerderung) foerderung).getExponat().getInventarnummer());
+                        if(((ExponatsFoerderung) foerderung).getExponat() != null)
+                            foer.put("exponat", ((ExponatsFoerderung) foerderung).getExponat().getInventarnummer());
+                        else
+                            foer.put("exponat", "null");
+
                         exponatFoerderungArr.add(foer);
 
                     }

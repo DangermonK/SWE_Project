@@ -94,8 +94,23 @@ public class MuseumsController implements IGUIEventListener {
 
     public static void main(String[] args) {
 
-        //args = new String[]{"src/assets/database/TestData.csv"};
-        MuseumsController controller = new MuseumsController(args.length > 0 ? args[0] : null, args.length > 1 ? args[1] : null);
+        String csvPfad = null;
+        String propertiesPfad = null;
+        if(args.length > 1) {
+            if (args[0].equals("-p")) {
+                csvPfad = args[1];
+            } else if (args[0].equals("-prop")) {
+                propertiesPfad = args[1];
+            }
+        }
+        if(args.length > 3) {
+            if (args[2].equals("-p")) {
+                csvPfad = args[3];
+            } else if (args[2].equals("-prop")) {
+                propertiesPfad = args[3];
+            }
+        }
+        MuseumsController controller = new MuseumsController(csvPfad, propertiesPfad);
 
     }
 

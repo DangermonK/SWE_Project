@@ -342,6 +342,8 @@ public class ElementFactory {
         if (!args[2].equals("null")) {
             ((Exponat) adapter.getElement(Classtype.EXPONAT, args[2])).addFoerderung(foerderung);
             foerderung.setExponat((Exponat) adapter.getElement(Classtype.EXPONAT, args[2]));
+        } else {
+            foerderung.setExponat(null);
         }
         return foerderung;
 

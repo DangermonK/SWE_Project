@@ -20,7 +20,7 @@ EXPONAT;E1006;Wald;Auto am Waldrand;Gemälde;2017;400.0;Acryl auf Leinwand;false
 ;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;
-FOERDERNDER;P103;Justus Aurelius;justus@aurelius.com;Richkidstrasse 10 123456 Goldhausen;0178 1;Passbild,src/assets/images/person_3.jpg;Geld-100.0-E2103,Geld-500.0-E2131;Sponsor-400.0;;;;;;
+FOERDERNDER;P103;Justus Aurelius;justus@aurelius.com;Richkidstrasse 10 123456 Goldhausen;0178 1;Passbild,src/assets/images/person_3.jpg;Geld-100.0-null,Geld-500.0-null;Sponsor-400.0;;;;;;
 ;;;;;;;;;;;;;;
 RAUM;1;20;30;Beschreibung;Kategorie;Raum 1,src/assets/images/room_1.jpg;;;;;;;;
 RAUM;2;20;30;Beschreibung;Kategorie;Raum 2,src/assets/images/room_2.jpg;;;;;;;;
