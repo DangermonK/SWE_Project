@@ -227,6 +227,12 @@ public class MuseumsController implements IGUIEventListener {
                     entityAdapter.addElement(Classtype.EXPONAT, data);
                     view.updateElement(getExponatTabellenData(data[0]));
                 }
+                if(data[14] != null) {
+                    List<String> hashList = Arrays.asList(data[14].split(","));
+                    List<Person> pList = entityAdapter.getPersonList();
+                    pList.removeIf(p -> p instanceof Angestellter || p instanceof Besitzer);
+
+                }
                 break;
             case "raum gui":
 
