@@ -20,30 +20,36 @@ public class MainGUI extends ObservableComponent {
 
     private JFrame mainFrame;
 
-    public MainGUI(String[] bildPfade, String[] suchAttribute, Object[][] tabellenDaten){
+    private boolean update = true;
+
+    public MainGUI(String[] bildPfade, String[] suchAttribute, Object[][] tabellenDaten) {
         mainFrame = new JFrame("Museumsverwaltung");
         mainFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         mainFrame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+                if (!update) {
+                    int option = JOptionPane.showConfirmDialog(null, "Vor dem Schließen speichern?", "Programm schließen", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    if (option == 0) {
+                        fireGUIEvent(new GUIEvent(e.getSource(), () -> "close Program save", null));
 
-                int option = JOptionPane.showConfirmDialog(null, "Vor dem Schließen speichern?", "Programm schließen", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                if(option == 0) {
-                    fireGUIEvent(new GUIEvent(e.getSource(), () -> "close Program save", null));
-
+                    }
+                    if (option == 1) {
+                        fireGUIEvent(new GUIEvent(e.getSource(), () -> "close Program", null));
+                    }
+                } else {
+                    fireGUIEvent(new GUIEvent(e.getSource(), () -> "close Program", null));
                 }
-                if(option == 1){
-                fireGUIEvent(new GUIEvent(e.getSource(), () -> "close Program", null));
             }
-        }});
+        });
 
-        uebersicht = new GUIExponatUebersicht(bildPfade,suchAttribute);
+        uebersicht = new GUIExponatUebersicht(bildPfade, suchAttribute);
         uebersicht.setSuchComponentErgebnisse(tabellenDaten);
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Exponat", uebersicht.getPane());
 
         mainFrame.add(tabbedPane);
-        mainFrame.setSize(600,500);
+        mainFrame.setSize(600, 500);
         mainFrame.setVisible(true);
     }
 
@@ -55,11 +61,15 @@ public class MainGUI extends ObservableComponent {
         uebersicht.initAnlegenGUI(data);
     }
 
-    public void initAuswahlPanel(Object[] auswahlDaten, String elementname, String currentElement){
+    public void setUpdate(boolean update) {
+        this.update = update;
+    }
+
+    public void initAuswahlPanel(Object[] auswahlDaten, String elementname, String currentElement) {
         uebersicht.initAuswahlPanel(auswahlDaten, elementname, currentElement);
     }
 
-    public void initListAuswahlPanel(ArrayList<IListElement> listElements, String elementname, ArrayList<IListElement>  currentElement){
+    public void initListAuswahlPanel(ArrayList<IListElement> listElements, String elementname, ArrayList<IListElement> currentElement) {
         uebersicht.initListAuswahlPanel(listElements, elementname, currentElement);
     }
 

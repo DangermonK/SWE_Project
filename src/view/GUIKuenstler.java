@@ -18,10 +18,10 @@ public class GUIKuenstler extends ObservableComponent implements IGUIEventListen
 
     private JFrame kuenstlerframe;
     private AttributeElement[] attElements;
-    private Format formatter ;
-    private  AttributeComponent attComp = null;
+    private Format formatter;
+    private AttributeComponent attComp = null;
 
-    public GUIKuenstler(IGUIEventListener listener, Kuenstler kuenstler){
+    public GUIKuenstler(IGUIEventListener listener, Kuenstler kuenstler) {
         this.addObserver(listener);
 
         kuenstlerframe = new JFrame();
@@ -34,15 +34,15 @@ public class GUIKuenstler extends ObservableComponent implements IGUIEventListen
         kuenstlerframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         formatter = new SimpleDateFormat("dd.MM.YYYY");
 
-        String name ="";
-        String geburtsdatum="";
-        String todesdatum="";
-        String nationalität="";
+        String name = "";
+        String geburtsdatum = "";
+        String todesdatum = "";
+        String nationalität = "";
 
-        if(kuenstler != null){
-            name= kuenstler.getName();
-            geburtsdatum =formatter.format(kuenstler.getGeburtsdatum());
-            if(kuenstler.getTodesdatum() != null){
+        if (kuenstler != null) {
+            name = kuenstler.getName();
+            geburtsdatum = formatter.format(kuenstler.getGeburtsdatum());
+            if (kuenstler.getTodesdatum() != null) {
                 todesdatum = formatter.format(kuenstler.getTodesdatum());
             }
             nationalität = kuenstler.getNationalitaet();
@@ -66,9 +66,6 @@ public class GUIKuenstler extends ObservableComponent implements IGUIEventListen
                         .mandatory(true).maxLength(10).allowedChars(AttributeElement.CHARSET_DATE).build(),
 
 
-
-
-
                 AttributeElement.builder("Todesdatum")
                         .labelName("Todesdatum")
                         .value(todesdatum)
@@ -86,8 +83,6 @@ public class GUIKuenstler extends ObservableComponent implements IGUIEventListen
         };
 
 
-
-
         try {
             attComp = AttributeComponent.builder("attributes").attributeElements(attElements).build();
 
@@ -95,8 +90,6 @@ public class GUIKuenstler extends ObservableComponent implements IGUIEventListen
             var7.printStackTrace();
         }
         attComp.setEnabled(true);
-
-
 
 
         ButtonElement[] btns = new ButtonElement[]{
@@ -110,12 +103,11 @@ public class GUIKuenstler extends ObservableComponent implements IGUIEventListen
                 .build();
 
 
-
         buttonComp.addObserver(this);
-        kuenstlerframe.add(attComp,BorderLayout.CENTER);
-        kuenstlerframe.add(buttonComp,BorderLayout.EAST);
+        kuenstlerframe.add(attComp, BorderLayout.CENTER);
+        kuenstlerframe.add(buttonComp, BorderLayout.EAST);
 
-        kuenstlerframe.setSize(400,400);
+        kuenstlerframe.setSize(400, 400);
         kuenstlerframe.setVisible(true);
 
     }
@@ -128,7 +120,7 @@ public class GUIKuenstler extends ObservableComponent implements IGUIEventListen
                 case "hinzufügen":
 
                     String[] nichtEingetragen = attComp.validateMandatoryAttributeValues();
-                    if(!(nichtEingetragen.length>0)){
+                    if (!(nichtEingetragen.length > 0)) {
                         String[] data = new String[]{
                                 attElements[0].getValue(),
                                 attElements[1].getValue(),
@@ -138,10 +130,10 @@ public class GUIKuenstler extends ObservableComponent implements IGUIEventListen
 
                         try {
                             formatter.parseObject(data[1]);
-                            if(!data[2].isEmpty()){
+                            if (!data[2].isEmpty()) {
                                 formatter.parseObject(data[2]);
                             }
-                            fireGUIEvent(new GUIEvent(guiEvent.getSource(),() -> "künstler hinzugefügt", data));
+                            fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "künstler hinzugefügt", data));
                             kuenstlerframe.dispose();
 
                         } catch (ParseException e) {
@@ -150,8 +142,7 @@ public class GUIKuenstler extends ObservableComponent implements IGUIEventListen
                                     "Format fehlerhaft",
                                     JOptionPane.ERROR_MESSAGE);
                         }
-                    }
-                    else{
+                    } else {
                         JOptionPane.showMessageDialog(this,
                                 "Es wurden nicht alle benötigten Daten eingegeben",
                                 "Daten fehlen",
@@ -159,11 +150,9 @@ public class GUIKuenstler extends ObservableComponent implements IGUIEventListen
                     }
 
 
-
-
                     break;
                 case "abbrechen":
-                    fireGUIEvent(new GUIEvent(guiEvent.getSource(),() -> "Künstler closed",null));
+                    fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "Künstler closed", null));
                     kuenstlerframe.dispose();
             }
         }

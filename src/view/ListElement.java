@@ -11,7 +11,7 @@ public class ListElement implements IListElement {
     private String listText;
     private int hash;
 
-    public ListElement(Anlage anlage){
+    public ListElement(Anlage anlage) {
         this.listText = "Anlagedatum: " + Statics.dateFormat.format(anlage.getAnlageDatum()) + ", Angelegt von: " + anlage.getAngestellter().getName();
     }
 
@@ -35,16 +35,16 @@ public class ListElement implements IListElement {
         this.listText = "Verleihausgangsdatum: " + Statics.dateFormat.format(verleih.getVerleihAusgangsdatum()) + ", Verleiheingangsdatum: Datum: " + Statics.dateFormat.format(verleih.getVerleihEingangsdatum());
     }
 
-    public ListElement(Besitzer besitzer){
+    public ListElement(Besitzer besitzer) {
         this.listText = "Name: " + besitzer.getName();
     }
 
     public ListElement(Kuenstler kuenstler) {
         this.listText = "Name: " + kuenstler.getName() + ", nationalität: " + kuenstler.getNationalitaet() +
-                        ", lebensspanne: " + kuenstler.getLebensspanne();
+                ", lebensspanne: " + kuenstler.getLebensspanne();
     }
 
-    public ListElement(Foerderung foerderung, int hash){
+    public ListElement(Foerderung foerderung, int hash) {
         this.hash = hash;
         this.listText = "Name: " + foerderung.getFoerdernder().getName() + ", Art: " + foerderung.getFoerderungsart()
                 + ", Mittel: " + foerderung.getFoerderungsmittel() + "€";
@@ -54,7 +54,7 @@ public class ListElement implements IListElement {
         this.listText = "Bezeichnung: " + exponattyp.getBezeichnung() + ", Beschreibung: " + exponattyp.getBeschreibung();
     }
 
-    public int getFoerderungElementHash(){
+    public int getFoerderungElementHash() {
         return hash;
     }
 

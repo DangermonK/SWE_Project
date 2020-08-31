@@ -91,7 +91,7 @@ public class ElementFactory {
 
         String[] exponatFoerderungArray = args[6].split(",");
         for (String exponatFoerderung : exponatFoerderungArray) {
-            if(!exponatFoerderung.isEmpty()) {
+            if (!exponatFoerderung.isEmpty()) {
                 ExponatsFoerderung foerderung = createExponatFoerderung(exponatFoerderung.split("-"));
                 foerderung.setFoerdernder(foerdernder);
                 foerdernder.addFoerderung(foerderung);
@@ -177,7 +177,7 @@ public class ElementFactory {
 
         if (!args[4].equals("null") && !args[4].isEmpty()) {
             Anlage anlage = createAnlage(args[4].split("-"));
-            if(anlage != null) {
+            if (anlage != null) {
                 anlage.setHistorie(historie);
                 historie.setAnlage(anlage);
             }
@@ -285,7 +285,7 @@ public class ElementFactory {
     public Anlage createAnlage(String[] arg) {
 
         try {
-            if(!arg[0].equals("null")) {
+            if (!arg[0].equals("null")) {
                 Anlage anlage = new Anlage(Statics.dateFormat.parse(arg[0]));
                 ((Angestellter) adapter.getElement(Classtype.ANGESTELLTER, arg[1])).addAnlage(anlage);
                 anlage.setAngestellter((Angestellter) adapter.getElement(Classtype.ANGESTELLTER, arg[1]));
@@ -336,7 +336,7 @@ public class ElementFactory {
 
     public ExponatsFoerderung createExponatFoerderung(String[] args) {
         ExponatsFoerderung foerderung = new ExponatsFoerderung(args[0], Double.parseDouble(args[1]));
-        if(!args[2].equals("null")) {
+        if (!args[2].equals("null")) {
             ((Exponat) adapter.getElement(Classtype.EXPONAT, args[2])).addFoerderung(foerderung);
             foerderung.setExponat((Exponat) adapter.getElement(Classtype.EXPONAT, args[2]));
         }

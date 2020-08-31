@@ -36,24 +36,24 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
 
     private ButtonComponent buttonComp;
 
-    public GUIExponatUebersicht(String[] bildPfade, String[] suchAttribute){
+    public GUIExponatUebersicht(String[] bildPfade, String[] suchAttribute) {
 
         uebersichtPanel = new JPanel();
-        uebersichtPanel.setLayout(new GridLayout(2,1));
+        uebersichtPanel.setLayout(new GridLayout(2, 1));
 
         topPanel = new JPanel();
         topPanel.setLayout(new GridBagLayout());
         GridBagConstraints top = new GridBagConstraints();
-        top.weightx=1.0;
-        top.weighty=1.0;
-        top.gridx=0;
-        top.gridy =0;
-        top.fill= GridBagConstraints.HORIZONTAL;
+        top.weightx = 1.0;
+        top.weighty = 1.0;
+        top.gridx = 0;
+        top.gridy = 0;
+        top.fill = GridBagConstraints.HORIZONTAL;
 
-        leftPanel = new JPanel(new GridLayout(1,1));
+        leftPanel = new JPanel(new GridLayout(1, 1));
         JPanel rightPanel = new JPanel();
 
-        Border panelBorder = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5,5,5,5),BorderFactory.createEtchedBorder());
+        Border panelBorder = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5), BorderFactory.createEtchedBorder());
         rightPanel.setBorder(panelBorder);
         leftPanel.setBorder(panelBorder);
 
@@ -61,7 +61,7 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
         setUebersichtBilder(bildPfade);
 
         leftPanel.add(slideshow);
-        topPanel.add(leftPanel,top);
+        topPanel.add(leftPanel, top);
 
         ButtonElement[] buttons = new ButtonElement[]{
                 ButtonElement.builder("anlegen").buttonText("anlegen").type(ButtonElement.Type.BUTTON).build(),
@@ -82,13 +82,13 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
         rightPanel.add(buttonComp);
 
 
-        top.weightx=0.0;
-        top.gridx=1;
-        top.gridy =0;
+        top.weightx = 0.0;
+        top.gridx = 1;
+        top.gridy = 0;
         top.anchor = GridBagConstraints.NORTH;
         top.fill = GridBagConstraints.VERTICAL;
 
-        topPanel.add(rightPanel,top);
+        topPanel.add(rightPanel, top);
         uebersichtPanel.add((topPanel));
 
         suchGUI = new GUIExponatSuchComponent(suchAttribute);
@@ -103,11 +103,10 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
         }
 
         ImageElement[] loadedImageElements = null;
-        try{
+        try {
             loadedImageElements = ImageLoader.loadImageElements(bildPfade);
 
-        }
-        catch( Exception e ){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -118,11 +117,11 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
         return suchGUI.getSelectionIndex();
     }
 
-    public JPanel getPane(){
+    public JPanel getPane() {
         return uebersichtPanel;
     }
 
-    public void setSuchComponentErgebnisse(Object[][] tabellenDaten){
+    public void setSuchComponentErgebnisse(Object[][] tabellenDaten) {
         suchGUI.setTabellenErgebnisse(tabellenDaten);
     }
 
@@ -137,26 +136,26 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
 
     public void initBearbeitenGUI(Map<String, Object> data) {
 
-         bearbeitenGUI = new GUIExponatBearbeiten((String[])data.get("bildPfade"),
-                 (String[])data.get("exponattypen"),
-                 (String[])data.get("kategorie"),
-                (String[])data.get("material"),
-                (String)data.get("name"),
+        bearbeitenGUI = new GUIExponatBearbeiten((String[]) data.get("bildPfade"),
+                (String[]) data.get("exponattypen"),
+                (String[]) data.get("kategorie"),
+                (String[]) data.get("material"),
+                (String) data.get("name"),
                 String.valueOf(data.get("erstellungsjahr")),
                 String.valueOf(data.get("schaetzwert")),
                 Boolean.parseBoolean(data.get("schowInWeb").toString()),
-                (String)data.get("beschreibung"),
+                (String) data.get("beschreibung"),
                 this);
-         bearbeitenGUI.setCurrentRaum(String.valueOf(data.get("raum")));
-         bearbeitenGUI.setBesitzerList((java.util.List<Besitzer>) data.get("besitzer"), true);
-         //bearbeitenGUI.setCurrentBesitzer(data.get());
-         bearbeitenGUI.setInvNr((String)data.get("invNr"));
-         Kuenstler k = ((Kuenstler) data.get("kuenstler"));
-         bearbeitenGUI.setCurrentKuenstler(k);
+        bearbeitenGUI.setCurrentRaum(String.valueOf(data.get("raum")));
+        bearbeitenGUI.setBesitzerList((java.util.List<Besitzer>) data.get("besitzer"), true);
+        //bearbeitenGUI.setCurrentBesitzer(data.get());
+        bearbeitenGUI.setInvNr((String) data.get("invNr"));
+        Kuenstler k = ((Kuenstler) data.get("kuenstler"));
+        bearbeitenGUI.setCurrentKuenstler(k);
 
     }
 
-    public void initAnlegenGUI(Map<String, Object> data){
+    public void initAnlegenGUI(Map<String, Object> data) {
         bearbeitenGUI = new GUIExponatBearbeiten(this,
                 Property.getInstance().getProperty(ErweiterbareListe.EXPONATTYP),
                 Property.getInstance().getProperty(ErweiterbareListe.KATEGORIE),
@@ -165,34 +164,34 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
         bearbeitenGUI.setBesitzerList((java.util.List<Besitzer>) data.get("besitzer"), false);
     }
 
-    public void initAuswahlPanel(Object[] auswahlDaten, String elementname, String currentElement){
+    public void initAuswahlPanel(Object[] auswahlDaten, String elementname, String currentElement) {
         bearbeitenGUI.initAuswahlPanel(auswahlDaten, elementname, currentElement);
 
     }
 
-    public void initListAuswahlPanel(ArrayList<IListElement> listElements, String elementname, ArrayList<IListElement>  currentElement){
+    public void initListAuswahlPanel(ArrayList<IListElement> listElements, String elementname, ArrayList<IListElement> currentElement) {
         bearbeitenGUI.initListAuswahlPanel(listElements, elementname, currentElement);
     }
 
     @Override
     public void processGUIEvent(GUIEvent guiEvent) {
         if (ButtonComponent.Commands.BUTTON_PRESSED.equals(guiEvent.getCmd())) {
-            ButtonElement button = (ButtonElement)guiEvent.getData();
+            ButtonElement button = (ButtonElement) guiEvent.getData();
             switch (button.getID()) {
                 case "anlegen":
                     buttonComp.enableButtons(false);
                     fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "load anlegen", null));
                     break;
                 case "bearbeiten":
-                    if(suchGUI.getSelectionIndex() != null) {
+                    if (suchGUI.getSelectionIndex() != null) {
                         buttonComp.enableButtons(false);
                         fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "load edit", null));
                     }
                     break;
                 case "loeschen":
-                    if(suchGUI.getSelectionIndex() != null) {
+                    if (suchGUI.getSelectionIndex() != null) {
                         int option = JOptionPane.showConfirmDialog(this, "löschen?", "Exponat löschen", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                        if(option == 0) {
+                        if (option == 0) {
                             fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "delete element", null));
                             suchGUI.removeSelectedRow();
                         }
@@ -203,36 +202,36 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
                     fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "save programm", null));
                     break;
                 case "details":
-                    if(suchGUI.getSelectionIndex() != null) {
+                    if (suchGUI.getSelectionIndex() != null) {
                         fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "open details", null));
                     }
                     break;
             }
-        } else if(guiEvent.getCmdText().equals("closed frame")){
+        } else if (guiEvent.getCmdText().equals("closed frame")) {
             buttonComp.enableButtons(true);
-        } else if(guiEvent.getCmdText().equals("safe data")) {
+        } else if (guiEvent.getCmdText().equals("safe data")) {
             fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "safe data", guiEvent.getData()));
         }
-        if(guiEvent.getCmdText().equals("raum gui")) {
+        if (guiEvent.getCmdText().equals("raum gui")) {
             fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "raum gui", guiEvent.getData()));
         }
-        if(guiEvent.getCmdText().equals("foerderung gui")) {
+        if (guiEvent.getCmdText().equals("foerderung gui")) {
             fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "foerderung gui", guiEvent.getData()));
         }
-        if(guiEvent.getCmdText().equals("besitzer gui")) {
+        if (guiEvent.getCmdText().equals("besitzer gui")) {
             fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "besitzer gui", guiEvent.getData()));
         }
-        if(guiEvent.getCmdText().equals("historie gui")) {
+        if (guiEvent.getCmdText().equals("historie gui")) {
             fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "historie gui", guiEvent.getData()));
         }
-        if(guiEvent.getCmdText().equals("kuenstler gui")) {
+        if (guiEvent.getCmdText().equals("kuenstler gui")) {
             fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "kuenstler gui", guiEvent.getData()));
         }
     }
 
     public void updateTabellenElement(Object[] data) {
         int index = suchGUI.getIndexOf(data[0].toString());
-        if(index != -1) {
+        if (index != -1) {
             suchGUI.removeRowAt(index);
             suchGUI.insertRow(data, index);
         }

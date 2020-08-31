@@ -20,7 +20,7 @@ public class StorageAdapter {
     public List<String[]> importData(String path, Dateiformat format) {
 
         List<String[]> data = new ArrayList<>();
-        switch(format) {
+        switch (format) {
             case CSV:
                 CSVReader csvReader = new CSVReader(path);
                 try {
@@ -34,33 +34,32 @@ public class StorageAdapter {
             case JSON:
                 JSONParser parser = new JSONParser();
 
-                try (FileReader reader = new FileReader(path))
-                {
+                try (FileReader reader = new FileReader(path)) {
                     //Read JSON file
                     JSONObject obj = (JSONObject) parser.parse(reader);
 
                     JSONArray exponatArr = (JSONArray) obj.get("exponate");
-                    for(Object exponat: exponatArr) {
+                    for (Object exponat : exponatArr) {
                         data.add(getExponatData((JSONObject) exponat));
                     }
 
                     JSONArray raumArr = (JSONArray) obj.get("raeume");
-                    for(Object raum: raumArr) {
+                    for (Object raum : raumArr) {
                         data.add(getRaumData((JSONObject) raum));
                     }
 
                     JSONArray besitzerArr = (JSONArray) obj.get("besitzer");
-                    for(Object besitzer: besitzerArr) {
+                    for (Object besitzer : besitzerArr) {
                         data.add(getBesitzerData((JSONObject) besitzer));
                     }
 
                     JSONArray angestellterArr = (JSONArray) obj.get("angestellte");
-                    for(Object angestellter: angestellterArr) {
+                    for (Object angestellter : angestellterArr) {
                         data.add(getAngestellterData((JSONObject) angestellter));
                     }
 
                     JSONArray foerdernderArr = (JSONArray) obj.get("foerdernde");
-                    for(Object foerdernder: foerdernderArr) {
+                    for (Object foerdernder : foerdernderArr) {
                         data.add(getFoerdernderData((JSONObject) foerdernder));
                     }
 
@@ -88,15 +87,15 @@ public class StorageAdapter {
         attributes[5] = (String) object.get("telefon");
         attributes[6] = "";
         JSONArray bilder = (JSONArray) object.get("bilder");
-        bilder.forEach(bild -> attributes[6] += ((JSONObject)bild).get("titel") + "," + ((JSONObject)bild).get("pfad") + "-");
+        bilder.forEach(bild -> attributes[6] += ((JSONObject) bild).get("titel") + "," + ((JSONObject) bild).get("pfad") + "-");
 
         attributes[7] = "";
         JSONArray expFoerArr = (JSONArray) object.get("exponatsFoerderung");
-        expFoerArr.forEach(foerderung -> attributes[7] += ((JSONObject)foerderung).get("foerderungsart") + "-" + ((JSONObject)foerderung).get("foerderungsmittel")
-                                                            + "-" + ((JSONObject)foerderung).get("exponat") + ",");
+        expFoerArr.forEach(foerderung -> attributes[7] += ((JSONObject) foerderung).get("foerderungsart") + "-" + ((JSONObject) foerderung).get("foerderungsmittel")
+                + "-" + ((JSONObject) foerderung).get("exponat") + ",");
         attributes[8] = "";
         JSONArray musFoerArr = (JSONArray) object.get("museumsFoerderung");
-        musFoerArr.forEach(foerderung -> attributes[8] += ((JSONObject)foerderung).get("foerderungsart") + "-" + ((JSONObject)foerderung).get("foerderungsmittel") + ",");
+        musFoerArr.forEach(foerderung -> attributes[8] += ((JSONObject) foerderung).get("foerderungsart") + "-" + ((JSONObject) foerderung).get("foerderungsmittel") + ",");
 
         return attributes;
 
@@ -113,7 +112,7 @@ public class StorageAdapter {
         attributes[5] = (String) object.get("telefon");
         attributes[6] = "";
         JSONArray bilder = (JSONArray) object.get("bilder");
-        bilder.forEach(bild -> attributes[6] += ((JSONObject)bild).get("titel") + "," + ((JSONObject)bild).get("pfad") + "-");
+        bilder.forEach(bild -> attributes[6] += ((JSONObject) bild).get("titel") + "," + ((JSONObject) bild).get("pfad") + "-");
 
         return attributes;
     }
@@ -127,7 +126,7 @@ public class StorageAdapter {
         attributes[4] = (String) object.get("rolle");
         attributes[5] = "";
         JSONArray bilder = (JSONArray) object.get("bilder");
-        bilder.forEach(bild -> attributes[5] += ((JSONObject)bild).get("titel") + "," + ((JSONObject)bild).get("pfad") + "-");
+        bilder.forEach(bild -> attributes[5] += ((JSONObject) bild).get("titel") + "," + ((JSONObject) bild).get("pfad") + "-");
 
         return attributes;
     }
@@ -142,7 +141,7 @@ public class StorageAdapter {
         attributes[5] = (String) object.get("kategorie");
         attributes[6] = "";
         JSONArray bilder = (JSONArray) object.get("bilder");
-        bilder.forEach(bild -> attributes[6] += ((JSONObject)bild).get("titel") + "," + ((JSONObject)bild).get("pfad") + "-");
+        bilder.forEach(bild -> attributes[6] += ((JSONObject) bild).get("titel") + "," + ((JSONObject) bild).get("pfad") + "-");
         return attributes;
     }
 
@@ -161,43 +160,43 @@ public class StorageAdapter {
 
         JSONObject kuenstler = (JSONObject) object.get("kuenstler");
         attributes[9] = "";
-        if(kuenstler != null)
+        if (kuenstler != null)
             attributes[9] = kuenstler.get("name") + "," + kuenstler.get("geburt") + "," + kuenstler.get("tod") + "," + kuenstler.get("nationalitaet");
 
         // Todo: check all necessary elements for null pointers
         attributes[10] = "";
         JSONArray bilder = (JSONArray) object.get("bilder");
-        if(bilder != null)
-            bilder.forEach(bild -> attributes[10] += ((JSONObject)bild).get("titel") + "," + ((JSONObject)bild).get("pfad") + "-");
+        if (bilder != null)
+            bilder.forEach(bild -> attributes[10] += ((JSONObject) bild).get("titel") + "," + ((JSONObject) bild).get("pfad") + "-");
 
         attributes[11] = "";
         JSONArray exptypArr = (JSONArray) object.get("exponattypen");
-        exptypArr.forEach(exptyp -> attributes[11] += ((JSONObject)exptyp).get("bezeichnung") + "," + ((JSONObject)exptyp).get("beschreibung") + ":");
+        exptypArr.forEach(exptyp -> attributes[11] += ((JSONObject) exptyp).get("bezeichnung") + "," + ((JSONObject) exptyp).get("beschreibung") + ":");
 
         attributes[12] = "";
         JSONObject historie = (JSONObject) object.get("historie");
         JSONArray verleihArr = (JSONArray) historie.get("verleih");
-        verleihArr.forEach(verleih -> attributes[12] += ((JSONObject)verleih).get("eingangsdatum") + "-" + ((JSONObject)verleih).get("ausgangsdatum") + "-" + ((JSONObject)verleih).get("wert") +
-         ",");
+        verleihArr.forEach(verleih -> attributes[12] += ((JSONObject) verleih).get("eingangsdatum") + "-" + ((JSONObject) verleih).get("ausgangsdatum") + "-" + ((JSONObject) verleih).get("wert") +
+                ",");
         attributes[12] += ":";
 
         JSONArray ausleiheArr = (JSONArray) historie.get("ausleihe");
-        ausleiheArr.forEach(ausleihe -> attributes[12] += ((JSONObject)ausleihe).get("eingangsdatum") + "-" + ((JSONObject)ausleihe).get("ausgangsdatum") + ",");
+        ausleiheArr.forEach(ausleihe -> attributes[12] += ((JSONObject) ausleihe).get("eingangsdatum") + "-" + ((JSONObject) ausleihe).get("ausgangsdatum") + ",");
         attributes[12] += ":";
 
         JSONArray kaufArr = (JSONArray) historie.get("kauf");
-        kaufArr.forEach(kauf -> attributes[12] += ((JSONObject)kauf).get("erwerbsdatum") + "-" + ((JSONObject)kauf).get("kaufwert") + ",");
+        kaufArr.forEach(kauf -> attributes[12] += ((JSONObject) kauf).get("erwerbsdatum") + "-" + ((JSONObject) kauf).get("kaufwert") + ",");
         attributes[12] += ":";
 
         JSONArray verkaufArr = (JSONArray) historie.get("verkauf");
-        verkaufArr.forEach(verkauf -> attributes[12] += ((JSONObject)verkauf).get("verkaufsdatum") + "-" + ((JSONObject)verkauf).get("verkaufswert") + ",");
+        verkaufArr.forEach(verkauf -> attributes[12] += ((JSONObject) verkauf).get("verkaufsdatum") + "-" + ((JSONObject) verkauf).get("verkaufswert") + ",");
         attributes[12] += ":";
 
         JSONObject anlage = (JSONObject) historie.get("anlage");
         attributes[12] += anlage.get("anlagedatum") + "-" + anlage.get("angestellter") + ":";
 
         JSONArray aenderungArr = (JSONArray) historie.get("aenderung");
-        aenderungArr.forEach(aenderung -> attributes[12] += ((JSONObject)aenderung).get("aenderungsdatum") + "-" + ((JSONObject)aenderung).get("angestellter") + ",");
+        aenderungArr.forEach(aenderung -> attributes[12] += ((JSONObject) aenderung).get("aenderungsdatum") + "-" + ((JSONObject) aenderung).get("angestellter") + ",");
 
         attributes[13] = "";
         JSONArray besitzer = (JSONArray) object.get("besitzer");
@@ -213,31 +212,31 @@ public class StorageAdapter {
         List<String[]> sorted = new ArrayList<>();
 
         data.forEach(element -> {
-            if(element[0].equals(Classtype.RAUM.toString())) {
+            if (element[0].equals(Classtype.RAUM.toString())) {
                 sorted.add(element);
             }
         });
 
         data.forEach(element -> {
-            if(element[0].equals(Classtype.ANGESTELLTER.toString())) {
+            if (element[0].equals(Classtype.ANGESTELLTER.toString())) {
                 sorted.add(element);
             }
         });
 
         data.forEach(element -> {
-            if(element[0].equals(Classtype.BESITZER.toString())) {
+            if (element[0].equals(Classtype.BESITZER.toString())) {
                 sorted.add(element);
             }
         });
 
         data.forEach(element -> {
-            if(element[0].equals(Classtype.EXPONAT.toString())) {
+            if (element[0].equals(Classtype.EXPONAT.toString())) {
                 sorted.add(element);
             }
         });
 
         data.forEach(element -> {
-            if(element[0].equals(Classtype.FOERDERNDER.toString())) {
+            if (element[0].equals(Classtype.FOERDERNDER.toString())) {
                 sorted.add(element);
             }
         });
@@ -271,8 +270,7 @@ public class StorageAdapter {
         File propertiesFile = new File("./src/assets/database/auswahllisten.properties");
         Properties properties = new Properties();
 
-        if(propertiesFile.exists())
-        {
+        if (propertiesFile.exists()) {
             BufferedInputStream bis;
             try {
                 bis = new BufferedInputStream(new FileInputStream(propertiesFile));
@@ -287,7 +285,7 @@ public class StorageAdapter {
 
         Property.getInstance().putProperties(ErweiterbareListe.KATEGORIE, properties.getProperty("kategorie").split(","));
         String[] arr = properties.getProperty("exponattyp").split(",");
-        for(int i = 0; i < arr.length; i++) {
+        for (int i = 0; i < arr.length; i++) {
             arr[i] = arr[i].replace(":", ",");
         }
         Property.getInstance().putProperties(ErweiterbareListe.EXPONATTYP, arr);

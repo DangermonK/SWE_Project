@@ -84,7 +84,7 @@ public class GUIExponatSuchComponent extends ObservableComponent implements List
 
         };
 
-        ergebnisTable = new JTable(model){
+        ergebnisTable = new JTable(model) {
             public boolean editCellAt(int row, int column, java.util.EventObject e) {
                 return false;
             }
@@ -94,7 +94,7 @@ public class GUIExponatSuchComponent extends ObservableComponent implements List
 
         JScrollPane scrollPane = new JScrollPane(ergebnisTable);
 
-        tabellenPane.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        tabellenPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         tabellenPane.add(scrollPane);
         suchPanel.add(tabellenPane);
 
@@ -106,27 +106,27 @@ public class GUIExponatSuchComponent extends ObservableComponent implements List
         this.addObserver(listener);
     }
 
-    public JPanel getPane(){
-        return  suchPanel;
+    public JPanel getPane() {
+        return suchPanel;
     }
 
-    public void setTabellenErgebnisse(Object[][] tabellenDaten){
+    public void setTabellenErgebnisse(Object[][] tabellenDaten) {
 
         DefaultTableModel model = (DefaultTableModel) ergebnisTable.getModel();
 
-        for(int i= 0; i< tabellenDaten.length;i++){
+        for (int i = 0; i < tabellenDaten.length; i++) {
             model.addRow(tabellenDaten[i]);
         }
         ergebnisTable.setModel(model);
     }
 
     public void insertRow(Object[] data, int row) {
-        ((DefaultTableModel)ergebnisTable.getModel()).insertRow(row, data);
+        ((DefaultTableModel) ergebnisTable.getModel()).insertRow(row, data);
         selectRow(row);
     }
 
     public void addRow(Object[] data) {
-        ((DefaultTableModel)ergebnisTable.getModel()).addRow(data);
+        ((DefaultTableModel) ergebnisTable.getModel()).addRow(data);
     }
 
     public void removeSelectedRow() {
@@ -134,7 +134,7 @@ public class GUIExponatSuchComponent extends ObservableComponent implements List
     }
 
     public void removeRowAt(int index) {
-        ((DefaultTableModel)ergebnisTable.getModel()).removeRow(index);
+        ((DefaultTableModel) ergebnisTable.getModel()).removeRow(index);
     }
 
     public void setTabellenListener(ListSelectionListener listener) {
@@ -149,8 +149,8 @@ public class GUIExponatSuchComponent extends ObservableComponent implements List
     }
 
     public int getIndexOf(String invNr) {
-        for(int i = 0; i < ergebnisTable.getRowCount(); i++) {
-            if(ergebnisTable.getValueAt(i,0).toString().equals(invNr)) {
+        for (int i = 0; i < ergebnisTable.getRowCount(); i++) {
+            if (ergebnisTable.getValueAt(i, 0).toString().equals(invNr)) {
                 return i;
             }
         }
@@ -158,7 +158,7 @@ public class GUIExponatSuchComponent extends ObservableComponent implements List
     }
 
     public String getSelectionIndex() {
-        if(ergebnisTable.getSelectedRow() <= -1)
+        if (ergebnisTable.getSelectedRow() <= -1)
             return null;
 
         return ergebnisTable.getValueAt(ergebnisTable.getSelectedRow(), ergebnisTable.getColumn("Inv-Nr.").getModelIndex()).toString();
@@ -170,7 +170,7 @@ public class GUIExponatSuchComponent extends ObservableComponent implements List
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
-        if(getSelectionIndex() != null) {
+        if (getSelectionIndex() != null) {
             fireGUIEvent(new GUIEvent(e.getSource(), () -> "selected element", null));
         }
     }

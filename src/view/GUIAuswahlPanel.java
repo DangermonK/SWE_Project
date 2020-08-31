@@ -15,7 +15,7 @@ public class GUIAuswahlPanel extends ObservableComponent implements IGUIEventLis
     private JFrame auswahlFrame;
     private String elementName;
 
-    public GUIAuswahlPanel(Object[] listeneintraege, String elementName, IGUIEventListener listener, String currentElement){
+    public GUIAuswahlPanel(Object[] listeneintraege, String elementName, IGUIEventListener listener, String currentElement) {
         this.addObserver(listener);
         this.elementName = elementName;
 
@@ -24,18 +24,18 @@ public class GUIAuswahlPanel extends ObservableComponent implements IGUIEventLis
         auswahlFrame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
-                fireGUIEvent(new GUIEvent(e.getSource(), () -> elementName+" closed", null));
+                fireGUIEvent(new GUIEvent(e.getSource(), () -> elementName + " closed", null));
             }
         });
         auswahlFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        auswahlFrame.setLayout(new GridLayout(1,2));
+        auswahlFrame.setLayout(new GridLayout(1, 2));
         JPanel raumPanel = new JPanel();
         JPanel buttonPanel = new JPanel();
 
         String comboBoxDefaultValue = String.valueOf(listeneintraege[0]);
 
 
-        if(!currentElement.isEmpty()) {
+        if (!currentElement.isEmpty()) {
             for (int i = 0; i < listeneintraege.length; i++) {
                 if (listeneintraege[i].toString().equals(currentElement)) {
                     comboBoxDefaultValue = String.valueOf(listeneintraege[i]);
@@ -49,8 +49,8 @@ public class GUIAuswahlPanel extends ObservableComponent implements IGUIEventLis
 
                 AttributeElement.builder(elementName)
                         .labelName(elementName)
-                        .labelSize(new Dimension(50,5))
-                        .actionElementSize(new Dimension(300,5))
+                        .labelSize(new Dimension(50, 5))
+                        .actionElementSize(new Dimension(300, 5))
                         .value(comboBoxDefaultValue)
                         .data(listeneintraege)
                         .mandatory(true)
@@ -62,9 +62,8 @@ public class GUIAuswahlPanel extends ObservableComponent implements IGUIEventLis
         AttributeComponent attComp = null;
 
 
-
         try {
-            attComp = AttributeComponent.builder("combobox").attributeElements(attElems).actionElementSizes(new Dimension(100,20)).build();
+            attComp = AttributeComponent.builder("combobox").attributeElements(attElems).actionElementSizes(new Dimension(100, 20)).build();
 
         } catch (Exception var7) {
             var7.printStackTrace();
@@ -74,7 +73,7 @@ public class GUIAuswahlPanel extends ObservableComponent implements IGUIEventLis
         raumPanel.add(attComp);
 
         ButtonElement[] btns = new ButtonElement[]{
-                ButtonElement.builder("auswählen").buttonText(elementName+" auswählen").type(ButtonElement.Type.BUTTON).build(),
+                ButtonElement.builder("auswählen").buttonText(elementName + " auswählen").type(ButtonElement.Type.BUTTON).build(),
                 ButtonElement.builder("abbrechen").buttonText("Abbrechen").type(ButtonElement.Type.BUTTON).build(),
         };
 
@@ -90,7 +89,7 @@ public class GUIAuswahlPanel extends ObservableComponent implements IGUIEventLis
         auswahlFrame.add(raumPanel);
         auswahlFrame.add(buttonPanel);
 
-        auswahlFrame.setSize(350,150);
+        auswahlFrame.setSize(350, 150);
         auswahlFrame.setResizable(false);
         auswahlFrame.setVisible(true);
 
@@ -103,12 +102,12 @@ public class GUIAuswahlPanel extends ObservableComponent implements IGUIEventLis
             ButtonElement button = (ButtonElement) guiEvent.getData();
             switch (button.getID()) {
                 case "auswählen":
-                    fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> (elementName+" ausgewaehlt"), attElems[0].getValue()));
+                    fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> (elementName + " ausgewaehlt"), attElems[0].getValue()));
                     auswahlFrame.dispose();
                     break;
 
                 case "abbrechen":
-                    fireGUIEvent(new GUIEvent(guiEvent.getSource(),() -> elementName+" closed",null));
+                    fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> elementName + " closed", null));
                     auswahlFrame.dispose();
             }
         }

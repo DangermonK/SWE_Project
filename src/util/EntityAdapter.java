@@ -45,7 +45,7 @@ public class EntityAdapter {
 
     private JSONArray getRaumData() {
         JSONArray raumArr = new JSONArray();
-        for(Raum raum: raumEntityManager.getAsList()) {
+        for (Raum raum : raumEntityManager.getAsList()) {
             JSONObject r = new JSONObject();
             r.put("nummer", raum.getNummer());
             r.put("groesse", raum.getGroesse());
@@ -60,8 +60,8 @@ public class EntityAdapter {
 
     private JSONArray getFoerderndeData() {
         JSONArray foerderndeArr = new JSONArray();
-        for(Person person: personEntityManager.getAsList()) {
-            if(person instanceof Foerdernder) {
+        for (Person person : personEntityManager.getAsList()) {
+            if (person instanceof Foerdernder) {
                 Foerdernder foe = (Foerdernder) person;
                 JSONObject foerdernder = new JSONObject();
                 foerdernder.put("persNr", foe.getPersNr());
@@ -73,17 +73,17 @@ public class EntityAdapter {
 
                 JSONArray exponatFoerderungArr = new JSONArray();
                 JSONArray museumFoerderungArr = new JSONArray();
-                for(Foerderung foerderung: foe.getFoerderungList()) {
-                    if(foerderung instanceof MuseumsFoerderung) {
+                for (Foerderung foerderung : foe.getFoerderungList()) {
+                    if (foerderung instanceof MuseumsFoerderung) {
                         JSONObject foer = new JSONObject();
                         foer.put("foerderungsart", foerderung.getFoerderungsart());
                         foer.put("foerderungsmittel", foerderung.getFoerderungsmittel());
                         museumFoerderungArr.add(foer);
-                    } else if(foerderung instanceof ExponatsFoerderung) {
+                    } else if (foerderung instanceof ExponatsFoerderung) {
                         JSONObject foer = new JSONObject();
                         foer.put("foerderungsart", foerderung.getFoerderungsart());
                         foer.put("foerderungsmittel", foerderung.getFoerderungsmittel());
-                        foer.put("exponat", ((ExponatsFoerderung)foerderung).getExponat().getInventarnummer());
+                        foer.put("exponat", ((ExponatsFoerderung) foerderung).getExponat().getInventarnummer());
                         exponatFoerderungArr.add(foer);
 
                     }
@@ -99,9 +99,9 @@ public class EntityAdapter {
 
     private JSONArray getBesitzerData() {
         JSONArray besitzerArr = new JSONArray();
-        for(Person person: personEntityManager.getAsList()) {
-            if(person instanceof Besitzer) {
-                Besitzer bes = (Besitzer)person;
+        for (Person person : personEntityManager.getAsList()) {
+            if (person instanceof Besitzer) {
+                Besitzer bes = (Besitzer) person;
                 JSONObject besitzer = new JSONObject();
                 besitzer.put("persNr", bes.getPersNr());
                 besitzer.put("name", bes.getName());
@@ -117,9 +117,9 @@ public class EntityAdapter {
 
     private JSONArray getAngestellteData() {
         JSONArray angestellterArr = new JSONArray();
-        for(Person person: personEntityManager.getAsList()) {
-            if(person instanceof Angestellter) {
-                Angestellter ang = (Angestellter)person;
+        for (Person person : personEntityManager.getAsList()) {
+            if (person instanceof Angestellter) {
+                Angestellter ang = (Angestellter) person;
                 JSONObject angestellter = new JSONObject();
                 angestellter.put("persNr", ang.getPersNr());
                 angestellter.put("name", ang.getName());
@@ -134,7 +134,7 @@ public class EntityAdapter {
 
     private JSONArray createBildArray(List<Bild> bildList) {
         JSONArray bildArr = new JSONArray();
-        for(Bild bild: bildList) {
+        for (Bild bild : bildList) {
             JSONObject b = new JSONObject();
             b.put("titel", bild.getTitel());
             b.put("pfad", bild.getPfad());
@@ -145,7 +145,7 @@ public class EntityAdapter {
 
     private JSONArray getExponatData() {
         JSONArray exponatArray = new JSONArray();
-        for(Exponat exp: exponatEntityManager.getAsList()) {
+        for (Exponat exp : exponatEntityManager.getAsList()) {
             JSONObject exponat = new JSONObject();
             exponat.put("invNr", exp.getInventarnummer());
             exponat.put("name", exp.getName());
@@ -159,8 +159,8 @@ public class EntityAdapter {
 
             JSONObject kuenstler = new JSONObject();
             kuenstler.put("name", exp.getKuenstler().getName());
-            kuenstler.put("geburt", (exp.getKuenstler().getGeburtsdatum()!= null ? Statics.dateFormat.format(exp.getKuenstler().getGeburtsdatum()) : null));
-            kuenstler.put("tod", (exp.getKuenstler().getTodesdatum()!= null ? Statics.dateFormat.format(exp.getKuenstler().getTodesdatum()) : null));
+            kuenstler.put("geburt", (exp.getKuenstler().getGeburtsdatum() != null ? Statics.dateFormat.format(exp.getKuenstler().getGeburtsdatum()) : null));
+            kuenstler.put("tod", (exp.getKuenstler().getTodesdatum() != null ? Statics.dateFormat.format(exp.getKuenstler().getTodesdatum()) : null));
             kuenstler.put("nationalitaet", exp.getKuenstler().getNationalitaet());
             exponat.put("kuenstler", kuenstler);
 
@@ -232,7 +232,7 @@ public class EntityAdapter {
             exponat.put("historie", historie);
 
             JSONArray besitzerArr = new JSONArray();
-            for(Besitzer besitzer: exp.getBesitzerList()) {
+            for (Besitzer besitzer : exp.getBesitzerList()) {
                 besitzerArr.add(besitzer.getPersNr());
             }
             exponat.put("besitzer", besitzerArr);
@@ -289,7 +289,8 @@ public class EntityAdapter {
         }
     }
 
-    public void changeElement(Classtype type, Object key, String data) {}
+    public void changeElement(Classtype type, Object key, String data) {
+    }
 
     public void addElement(Classtype type, String[] data) {
         switch (type) {
@@ -319,7 +320,7 @@ public class EntityAdapter {
     public void createAll(List<String[]> data) {
         data.forEach(element -> {
             Classtype type = Classtype.valueOf(element[0]);
-            String[] attribuutes = new String[element.length-1];
+            String[] attribuutes = new String[element.length - 1];
             System.arraycopy(element, 1, attribuutes, 0, attribuutes.length);
             addElement(type, attribuutes);
         });
