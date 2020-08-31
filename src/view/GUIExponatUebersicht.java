@@ -27,6 +27,7 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
     private SlideshowComponent slideshow;
     private JPanel leftPanel;
     private ButtonComponent buttonComp;
+    private ButtonElement[] buttons;
 
     public GUIExponatUebersicht(String[] bildPfade, String[] suchAttribute) {
 
@@ -61,7 +62,7 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
         leftPanel.add(slideshow);
         topPanel.add(leftPanel, top);
 
-        ButtonElement[] buttons = new ButtonElement[]{
+        buttons = new ButtonElement[]{
                 ButtonElement.builder("anlegen").buttonText("anlegen").type(ButtonElement.Type.BUTTON).build(),
                 ButtonElement.builder("bearbeiten").buttonText("bearbeiten").type(ButtonElement.Type.BUTTON).build(),
                 ButtonElement.builder("loeschen").buttonText("löschen").type(ButtonElement.Type.BUTTON).build(),
@@ -216,6 +217,7 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
         }
         if (guiEvent.getCmdText().equals("closed frame")) {
             buttonComp.enableButtons(true);
+            buttons[4].setEnabled(false);
         }
         if (guiEvent.getCmdText().equals("safe data")) {
             fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "safe data", guiEvent.getData()));

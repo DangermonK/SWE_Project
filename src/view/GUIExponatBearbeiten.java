@@ -476,7 +476,7 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
                                 "Kuenstler nicht hinzgefügt",
                                 "Daten fehlen",
                                 JOptionPane.ERROR_MESSAGE);
-                    } else if (besitzer==null) {
+                    } else if (besitzer.isEmpty()) {
                         JOptionPane.showMessageDialog(this,
                                 "Besitzer nicht ausgewählt",
                                 "Daten fehlen",
