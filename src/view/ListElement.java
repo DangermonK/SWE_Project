@@ -12,6 +12,7 @@ public class ListElement implements IListElement {
 
     private String listText;
     private int hash;
+    private String besitzerPersNr;
 
 
     //Erstellt aus unseren ModelObjekten ListElemente und baut die Listentexte zusammen, die angezeigt werden sollen.
@@ -39,8 +40,10 @@ public class ListElement implements IListElement {
         this.listText = "Verleihausgangsdatum: " + Statics.dateFormat.format(verleih.getVerleihAusgangsdatum()) + ", Verleiheingangsdatum: Datum: " + Statics.dateFormat.format(verleih.getVerleihEingangsdatum());
     }
 
-    public ListElement(Besitzer besitzer) {
-        this.listText = "Name: " + besitzer.getName();
+    public ListElement(Besitzer besitzer, String besitzerPersNr) {
+        this.besitzerPersNr = besitzerPersNr;
+        this.listText = "Name: " + besitzer.getName()
+        +", E-Mail: "+besitzer.getEmail();
     }
 
     public ListElement(Kuenstler kuenstler) {
@@ -48,7 +51,7 @@ public class ListElement implements IListElement {
                 ", lebensspanne: " + kuenstler.getLebensspanne();
     }
 
-    //speichert auch Hash der Förderung der später zur Speicherung der Förderung benötigt wird
+    //speichert auch den Hash der Förderung der später zur Speicherung der Förderung benötigt wird
     public ListElement(Foerderung foerderung, int hash) {
         this.hash = hash;
         this.listText = "Name: " + foerderung.getFoerdernder().getName() + ", Art: " + foerderung.getFoerderungsart()
@@ -61,6 +64,10 @@ public class ListElement implements IListElement {
 
     public int getFoerderungElementHash() {
         return hash;
+    }
+
+    public String getBesitzerPersNr() {
+        return besitzerPersNr;
     }
 
     @Override
@@ -87,4 +94,6 @@ public class ListElement implements IListElement {
     public String[] getAttributeNames() {
         return new String[0];
     }
+
+
 }

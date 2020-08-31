@@ -35,11 +35,12 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
 
     private int currentImageIndex = 0;
     private String currentRaumnummer;
-    private String currentBesitzer;
+    private String currentBesitzerNrs;
     private String invNr;
     private List<String> imagePaths = new ArrayList<>();
     private Map<String, String> besitzerMap;
     private List<ListElement> foerderungen;
+    private List<ListElement> besitzer = new ArrayList<>();
     private String currentFoerderungen;
     private String currentKuenstler = "";
     private Kuenstler kuenstler;
@@ -243,7 +244,7 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
                 if (e.getSource() == besitzerButton) {
                     //Sende Event an ÜbersichtGUI.
                     //Diese leitet dann weiter an den Controller, der das AuswahlPanel mit allen Besitzern erzeugt.
-                    fireGUIEvent(new GUIEvent(e.getSource(), () -> "besitzer gui", null));
+                    fireGUIEvent(new GUIEvent(e.getSource(), () -> "besitzer gui", invNr));
                     besitzerButton.setEnabled(false);
                 }
 
@@ -401,17 +402,18 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
         new GUIKuenstler(this, kuenstler);
     }
 
-    //Methode um Besitzer zu setzen und speichern dieser in einer Map, um PersNr. zu Besitzer zuzuordnen
-    //Dies ist nötig, da zum speichern dem Controller die PersNr übergeben wird.
-    public void setBesitzerList(List<Besitzer> besitzerList, Boolean bearbeiten) {
-        //TODO : Exponat kann mehrere Besitzer haben?
-        if (bearbeiten) {
-            currentBesitzer = besitzerList.get(0).getName();
+
+    public void setBesitzerList(List<Besitzer> besitzerList) {
+
+        for (int i =0 ;i < besitzerList.size();i++) {
+            besitzer.add(new ListElement(besitzerList.get(i), besitzerList.get(i).getPersNr()));
+            if(i==0){
+                currentBesitzerNrs = besitzer.get(i).getBesitzerPersNr();
+            }
+            currentBesitzerNrs = currentBesitzerNrs+ ","+besitzer.get(i).getBesitzerPersNr();
+
         }
-        this.besitzerMap = new HashMap<>();
-        for (Besitzer b : besitzerList) {
-            besitzerMap.put(b.getName(), b.getPersNr());
-        }
+
     }
 
     public void processGUIEvent(GUIEvent guiEvent) {
@@ -454,7 +456,6 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
                     String exponattyp = attElemsLeft[5].getValue();
                     Property.getInstance().addPropertyValue(ErweiterbareListe.EXPONATTYP, exponattyp);
 
-
                     //Prüfe nicht ausgefüllte Pflichtfelder und gebe ggf. Meldung aus
                     String[] nichtEingetragen = attComp.validateMandatoryAttributeValues();
                     if ((nichtEingetragen.length > 0)) {
@@ -475,7 +476,7 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
                                 "Kuenstler nicht hinzgefügt",
                                 "Daten fehlen",
                                 JOptionPane.ERROR_MESSAGE);
-                    } else if (currentBesitzer == null) {
+                    } else if (besitzer==null) {
                         JOptionPane.showMessageDialog(this,
                                 "Besitzer nicht ausgewählt",
                                 "Daten fehlen",
@@ -494,7 +495,7 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
                                 currentKuenstler,
                                 imageString,
                                 exponattyp,
-                                "", besitzerMap.get(currentBesitzer),
+                                "", currentBesitzerNrs,
                                 currentRaumnummer, currentFoerderungen
                         };
                         fireGUIEvent(new GUIEvent(guiEvent.getSource(), () -> "safe data", data));
@@ -530,7 +531,17 @@ public class GUIExponatBearbeiten extends ObservableComponent implements IGUIEve
         }
         if (guiEvent.getCmdText().equals("Besitzer ausgewaehlt")) {
             besitzerButton.setEnabled(true);
-            currentBesitzer = guiEvent.getData().toString();
+            //currentBesitzer = guiEvent.getData().toString();
+            besitzer = (List<ListElement>) guiEvent.getData();
+            int index = 0;
+            for (ListElement il : besitzer) {
+                if (index == 0) {
+                    currentBesitzerNrs = il.getBesitzerPersNr();
+                    index++;
+                    continue;
+                }
+                currentBesitzerNrs = currentBesitzerNrs + "," + il.getBesitzerPersNr();
+            }
         }
 
         //Wenn Förderungen ausgewählt wurden. Hole den Hash der gewählten Förderungen und setze diese als String zusammen.

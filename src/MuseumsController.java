@@ -94,6 +94,7 @@ public class MuseumsController implements IGUIEventListener {
 
     public static void main(String[] args) {
 
+        //args = new String[]{"src/assets/database/TestData.csv"};
         MuseumsController controller = new MuseumsController(args.length > 0 ? args[0] : null, args.length > 1 ? args[1] : null);
 
     }
@@ -130,7 +131,7 @@ public class MuseumsController implements IGUIEventListener {
         details.setKuenstler(kuenstler);
 
         ArrayList<IListElement> besitzer = new ArrayList<>();
-        exponat.getBesitzerList().forEach(b -> besitzer.add(new ListElement(b)));
+        exponat.getBesitzerList().forEach(b -> besitzer.add(new ListElement(b,b.getPersNr())));
         details.setBesitzer(besitzer);
 
         ArrayList<IListElement> foerderungen = new ArrayList<>();
@@ -292,14 +293,8 @@ public class MuseumsController implements IGUIEventListener {
                 view.initAuswahlPanel(raeume, "Raum", currentElement);
                 break;
             case "historie gui":
-                System.out.println("historie ist geil");
                 break;
             case "foerderung gui":
-                System.out.println("foerderung ist geil");
-
-                if (guiEvent.getData() != null) {
-
-                }
 
                 Exponat ex = (Exponat) entityAdapter.getElement(Classtype.EXPONAT, guiEvent.getData());
 
@@ -327,15 +322,31 @@ public class MuseumsController implements IGUIEventListener {
                     }
                 }
 
-
                 view.initListAuswahlPanel(foerderungElements, "Förderungen", currentFoerderungElements);
                 break;
             case "besitzer gui":
                 List<Person> besitzerList = entityAdapter.getPersonList();
                 besitzerList.removeIf(p -> p instanceof Foerdernder || p instanceof Angestellter);
+                ArrayList<IListElement> besitzerElements = new ArrayList<>();
 
+                for (Person p: besitzerList) {
+                    Besitzer besitzer = (Besitzer) p;
+                    besitzerElements.add(new ListElement(besitzer,besitzer.getPersNr()));
 
-                String[] besitzer = new String[besitzerList.size()];
+                }
+
+                Exponat expBesitzer = (Exponat) entityAdapter.getElement(Classtype.EXPONAT, guiEvent.getData());
+
+                ArrayList<IListElement> currentBesitzerElements = new ArrayList<>();
+                if (expBesitzer != null) {
+
+                    List<Besitzer> currentSelected = new ArrayList<>(expBesitzer.getBesitzerList());
+
+                    for (Besitzer be : currentSelected) {
+                        currentBesitzerElements.add(new ListElement(be,be.getPersNr()));
+                    }
+                }
+                /*String[] besitzer = new String[besitzerList.size()];
                 index = 0;
                 for (Person b : besitzerList) {
                     besitzer[index] = String.valueOf(b.getName());
@@ -347,11 +358,11 @@ public class MuseumsController implements IGUIEventListener {
                     currentBesitzer = "";
                 } else {
                     currentBesitzer = guiEvent.getData().toString();
-                }
-                view.initAuswahlPanel(besitzer, "Besitzer", currentBesitzer);
-                break;
-            case "kuenstler gui":
-                System.out.println("kuenstler ist geil");
+                }*/
+
+
+                //view.initAuswahlPanel(besitzer, "Besitzer", currentBesitzer);
+                view.initListAuswahlPanel(besitzerElements,"Besitzer", currentBesitzerElements);
                 break;
         }
     }

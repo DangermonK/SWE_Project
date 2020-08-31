@@ -151,10 +151,11 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
                 (String) data.get("beschreibung"),
                 this);
         bearbeitenGUI.setCurrentRaum(String.valueOf(data.get("raum")));
-        bearbeitenGUI.setBesitzerList((java.util.List<Besitzer>) data.get("besitzer"), true);
+        //bearbeitenGUI.setBesitzerList((java.util.List<Besitzer>) data.get("besitzer"), true);
         bearbeitenGUI.setInvNr((String) data.get("invNr"));
         Kuenstler k = ((Kuenstler) data.get("kuenstler"));
         bearbeitenGUI.setCurrentKuenstler(k);
+        bearbeitenGUI.setBesitzerList((java.util.List<Besitzer>) data.get("besitzer"));
     }
 
     //Methode zum Erzeugen der Anlege GUI
@@ -163,7 +164,7 @@ public class GUIExponatUebersicht extends ObservableComponent implements IGUIEve
                 Property.getInstance().getProperty(ErweiterbareListe.EXPONATTYP),
                 Property.getInstance().getProperty(ErweiterbareListe.KATEGORIE),
                 Property.getInstance().getProperty(ErweiterbareListe.MATERIAL));
-        bearbeitenGUI.setBesitzerList((java.util.List<Besitzer>) data.get("besitzer"), false);
+        //bearbeitenGUI.setBesitzerList((java.util.List<Besitzer>) data.get("besitzer"), false);
     }
 
     //Methode zum Erzeugen eines AuswahlPanels, wird vom Controller aus mit den entsprechenden Daten aufgerufen
